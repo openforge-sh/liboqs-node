@@ -26,7 +26,7 @@ jobs:
       - name: Build WASM modules
         run: bun run build
         env:
-          PARALLEL_JOBS: 8
+          PARALLEL_JOBS: 12
 
       - name: Run tests
         run: bun run test

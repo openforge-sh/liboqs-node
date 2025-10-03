@@ -388,7 +388,12 @@ main() {
         export BUILD_DIR OUTPUT_DIR BUILD_JOBS ALGORITHM_REGISTRY LIBOQS_DIR
         export RED GREEN YELLOW BLUE NC
 
-        printf '%s\n' "${algorithms[@]}" | parallel -j "$parallel_jobs" --bar build_algorithm {}
+        # Use --bar only if we have a TTY, otherwise use line-buffered output
+        if [ -t 1 ]; then
+            printf '%s\n' "${algorithms[@]}" | parallel -j "$parallel_jobs" --bar build_algorithm {}
+        else
+            printf '%s\n' "${algorithms[@]}" | parallel -j "$parallel_jobs" --line-buffer build_algorithm {}
+        fi
 
         for algorithm in "${algorithms[@]}"; do
             if [ -f "$OUTPUT_DIR/$algorithm.min.js" ]; then
