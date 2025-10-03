@@ -389,10 +389,11 @@ main() {
         export RED GREEN YELLOW BLUE NC
 
         # Use --bar only if we have a TTY, otherwise use line-buffered output
+        # --halt now,fail=1 stops on first failure and returns non-zero exit code
         if [ -t 1 ]; then
-            printf '%s\n' "${algorithms[@]}" | parallel -j "$parallel_jobs" --bar build_algorithm {}
+            printf '%s\n' "${algorithms[@]}" | parallel -j "$parallel_jobs" --halt now,fail=1 --bar build_algorithm {}
         else
-            printf '%s\n' "${algorithms[@]}" | parallel -j "$parallel_jobs" --line-buffer build_algorithm {}
+            printf '%s\n' "${algorithms[@]}" | parallel -j "$parallel_jobs" --halt now,fail=1 --line-buffer build_algorithm {}
         fi
 
         for algorithm in "${algorithms[@]}"; do
