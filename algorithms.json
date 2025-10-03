@@ -1,0 +1,528 @@
+{
+  "kem": {
+    "ml-kem": {
+      "ML-KEM-512": {
+        "slug": "ml-kem-512",
+        "cmake_var": "ML_KEM_512",
+        "security": 1,
+        "standardized": true
+      },
+      "ML-KEM-768": {
+        "slug": "ml-kem-768",
+        "cmake_var": "ML_KEM_768",
+        "security": 3,
+        "standardized": true
+      },
+      "ML-KEM-1024": {
+        "slug": "ml-kem-1024",
+        "cmake_var": "ML_KEM_1024",
+        "security": 5,
+        "standardized": true
+      }
+    },
+    "kyber": {
+      "Kyber512": {
+        "slug": "kyber-512",
+        "cmake_var": "KYBER_512",
+        "security": 1,
+        "deprecated": true
+      },
+      "Kyber768": {
+        "slug": "kyber-768",
+        "cmake_var": "KYBER_768",
+        "security": 3,
+        "deprecated": true
+      },
+      "Kyber1024": {
+        "slug": "kyber-1024",
+        "cmake_var": "KYBER_1024",
+        "security": 5,
+        "deprecated": true
+      }
+    },
+    "frodokem": {
+      "FrodoKEM-640-AES": {
+        "slug": "frodokem-640-aes",
+        "cmake_var": "FRODOKEM_640_AES",
+        "security": 1
+      },
+      "FrodoKEM-640-SHAKE": {
+        "slug": "frodokem-640-shake",
+        "cmake_var": "FRODOKEM_640_SHAKE",
+        "security": 1
+      },
+      "FrodoKEM-976-AES": {
+        "slug": "frodokem-976-aes",
+        "cmake_var": "FRODOKEM_976_AES",
+        "security": 3
+      },
+      "FrodoKEM-976-SHAKE": {
+        "slug": "frodokem-976-shake",
+        "cmake_var": "FRODOKEM_976_SHAKE",
+        "security": 3
+      },
+      "FrodoKEM-1344-AES": {
+        "slug": "frodokem-1344-aes",
+        "cmake_var": "FRODOKEM_1344_AES",
+        "security": 5
+      },
+      "FrodoKEM-1344-SHAKE": {
+        "slug": "frodokem-1344-shake",
+        "cmake_var": "FRODOKEM_1344_SHAKE",
+        "security": 5
+      }
+    },
+    "hqc": {
+      "HQC-128": {
+        "slug": "hqc-128",
+        "cmake_var": "HQC_128",
+        "security": 1
+      },
+      "HQC-192": {
+        "slug": "hqc-192",
+        "cmake_var": "HQC_192",
+        "security": 3
+      },
+      "HQC-256": {
+        "slug": "hqc-256",
+        "cmake_var": "HQC_256",
+        "security": 5
+      }
+    },
+    "classic-mceliece": {
+      "Classic-McEliece-348864": {
+        "slug": "classic-mceliece-348864",
+        "cmake_var": "CLASSIC_MCELIECE_348864",
+        "security": 1
+      },
+      "Classic-McEliece-348864f": {
+        "slug": "classic-mceliece-348864f",
+        "cmake_var": "CLASSIC_MCELIECE_348864F",
+        "security": 1
+      },
+      "Classic-McEliece-460896": {
+        "slug": "classic-mceliece-460896",
+        "cmake_var": "CLASSIC_MCELIECE_460896",
+        "security": 3
+      },
+      "Classic-McEliece-460896f": {
+        "slug": "classic-mceliece-460896f",
+        "cmake_var": "CLASSIC_MCELIECE_460896F",
+        "security": 3
+      },
+      "Classic-McEliece-6688128": {
+        "slug": "classic-mceliece-6688128",
+        "cmake_var": "CLASSIC_MCELIECE_6688128",
+        "security": 5
+      },
+      "Classic-McEliece-6688128f": {
+        "slug": "classic-mceliece-6688128f",
+        "cmake_var": "CLASSIC_MCELIECE_6688128F",
+        "security": 5
+      },
+      "Classic-McEliece-6960119": {
+        "slug": "classic-mceliece-6960119",
+        "cmake_var": "CLASSIC_MCELIECE_6960119",
+        "security": 5
+      },
+      "Classic-McEliece-6960119f": {
+        "slug": "classic-mceliece-6960119f",
+        "cmake_var": "CLASSIC_MCELIECE_6960119F",
+        "security": 5
+      },
+      "Classic-McEliece-8192128": {
+        "slug": "classic-mceliece-8192128",
+        "cmake_var": "CLASSIC_MCELIECE_8192128",
+        "security": 5
+      },
+      "Classic-McEliece-8192128f": {
+        "slug": "classic-mceliece-8192128f",
+        "cmake_var": "CLASSIC_MCELIECE_8192128F",
+        "security": 5
+      }
+    },
+    "ntru": {
+      "NTRU-HPS-2048-509": {
+        "slug": "ntru-hps-2048-509",
+        "cmake_var": "NTRU_HPS_2048_509",
+        "security": 1
+      },
+      "NTRU-HPS-2048-677": {
+        "slug": "ntru-hps-2048-677",
+        "cmake_var": "NTRU_HPS_2048_677",
+        "security": 3
+      },
+      "NTRU-HPS-4096-821": {
+        "slug": "ntru-hps-4096-821",
+        "cmake_var": "NTRU_HPS_4096_821",
+        "security": 5
+      },
+      "NTRU-HPS-4096-1229": {
+        "slug": "ntru-hps-4096-1229",
+        "cmake_var": "NTRU_HPS_4096_1229",
+        "security": 5
+      },
+      "NTRU-HRSS-701": {
+        "slug": "ntru-hrss-701",
+        "cmake_var": "NTRU_HRSS_701",
+        "security": 3
+      },
+      "NTRU-HRSS-1373": {
+        "slug": "ntru-hrss-1373",
+        "cmake_var": "NTRU_HRSS_1373",
+        "security": 5
+      }
+    },
+    "ntruprime": {
+      "sntrup761": {
+        "slug": "sntrup761",
+        "cmake_var": "ntruprime_sntrup761",
+        "security": 3
+      }
+    }
+  },
+  "sig": {
+    "ml-dsa": {
+      "ML-DSA-44": {
+        "slug": "ml-dsa-44",
+        "cmake_var": "ML_DSA_44",
+        "security": 2,
+        "standardized": true
+      },
+      "ML-DSA-65": {
+        "slug": "ml-dsa-65",
+        "cmake_var": "ML_DSA_65",
+        "security": 3,
+        "standardized": true
+      },
+      "ML-DSA-87": {
+        "slug": "ml-dsa-87",
+        "cmake_var": "ML_DSA_87",
+        "security": 5,
+        "standardized": true
+      }
+    },
+    "falcon": {
+      "Falcon-512": {
+        "slug": "falcon-512",
+        "cmake_var": "FALCON_512",
+        "security": 1
+      },
+      "Falcon-1024": {
+        "slug": "falcon-1024",
+        "cmake_var": "FALCON_1024",
+        "security": 5
+      },
+      "Falcon-padded-512": {
+        "slug": "falcon-padded-512",
+        "cmake_var": "FALCON_PADDED_512",
+        "security": 1
+      },
+      "Falcon-padded-1024": {
+        "slug": "falcon-padded-1024",
+        "cmake_var": "FALCON_PADDED_1024",
+        "security": 5
+      }
+    },
+    "sphincs": {
+      "SPHINCS+-SHA2-128f-simple": {
+        "slug": "sphincs-sha2-128f-simple",
+        "cmake_var": "SPHINCS_SHA2_128F_SIMPLE",
+        "security": 1
+      },
+      "SPHINCS+-SHA2-128s-simple": {
+        "slug": "sphincs-sha2-128s-simple",
+        "cmake_var": "SPHINCS_SHA2_128S_SIMPLE",
+        "security": 1
+      },
+      "SPHINCS+-SHA2-192f-simple": {
+        "slug": "sphincs-sha2-192f-simple",
+        "cmake_var": "SPHINCS_SHA2_192F_SIMPLE",
+        "security": 3
+      },
+      "SPHINCS+-SHA2-192s-simple": {
+        "slug": "sphincs-sha2-192s-simple",
+        "cmake_var": "SPHINCS_SHA2_192S_SIMPLE",
+        "security": 3
+      },
+      "SPHINCS+-SHA2-256f-simple": {
+        "slug": "sphincs-sha2-256f-simple",
+        "cmake_var": "SPHINCS_SHA2_256F_SIMPLE",
+        "security": 5
+      },
+      "SPHINCS+-SHA2-256s-simple": {
+        "slug": "sphincs-sha2-256s-simple",
+        "cmake_var": "SPHINCS_SHA2_256S_SIMPLE",
+        "security": 5
+      },
+      "SPHINCS+-SHAKE-128f-simple": {
+        "slug": "sphincs-shake-128f-simple",
+        "cmake_var": "SPHINCS_SHAKE_128F_SIMPLE",
+        "security": 1
+      },
+      "SPHINCS+-SHAKE-128s-simple": {
+        "slug": "sphincs-shake-128s-simple",
+        "cmake_var": "SPHINCS_SHAKE_128S_SIMPLE",
+        "security": 1
+      },
+      "SPHINCS+-SHAKE-192f-simple": {
+        "slug": "sphincs-shake-192f-simple",
+        "cmake_var": "SPHINCS_SHAKE_192F_SIMPLE",
+        "security": 3
+      },
+      "SPHINCS+-SHAKE-192s-simple": {
+        "slug": "sphincs-shake-192s-simple",
+        "cmake_var": "SPHINCS_SHAKE_192S_SIMPLE",
+        "security": 3
+      },
+      "SPHINCS+-SHAKE-256f-simple": {
+        "slug": "sphincs-shake-256f-simple",
+        "cmake_var": "SPHINCS_SHAKE_256F_SIMPLE",
+        "security": 5
+      },
+      "SPHINCS+-SHAKE-256s-simple": {
+        "slug": "sphincs-shake-256s-simple",
+        "cmake_var": "SPHINCS_SHAKE_256S_SIMPLE",
+        "security": 5
+      }
+    },
+    "mayo": {
+      "MAYO-1": {
+        "slug": "mayo-1",
+        "cmake_var": "MAYO_1",
+        "security": 1
+      },
+      "MAYO-2": {
+        "slug": "mayo-2",
+        "cmake_var": "MAYO_2",
+        "security": 1
+      },
+      "MAYO-3": {
+        "slug": "mayo-3",
+        "cmake_var": "MAYO_3",
+        "security": 3
+      },
+      "MAYO-5": {
+        "slug": "mayo-5",
+        "cmake_var": "MAYO_5",
+        "security": 5
+      }
+    },
+    "cross": {
+      "CROSS-rsdp-128-balanced": {
+        "slug": "cross-rsdp-128-balanced",
+        "cmake_var": "CROSS_RSDP_128_BALANCED",
+        "security": 1
+      },
+      "CROSS-rsdp-128-fast": {
+        "slug": "cross-rsdp-128-fast",
+        "cmake_var": "CROSS_RSDP_128_FAST",
+        "security": 1
+      },
+      "CROSS-rsdp-128-small": {
+        "slug": "cross-rsdp-128-small",
+        "cmake_var": "CROSS_RSDP_128_SMALL",
+        "security": 1
+      },
+      "CROSS-rsdp-192-balanced": {
+        "slug": "cross-rsdp-192-balanced",
+        "cmake_var": "CROSS_RSDP_192_BALANCED",
+        "security": 3
+      },
+      "CROSS-rsdp-192-fast": {
+        "slug": "cross-rsdp-192-fast",
+        "cmake_var": "CROSS_RSDP_192_FAST",
+        "security": 3
+      },
+      "CROSS-rsdp-192-small": {
+        "slug": "cross-rsdp-192-small",
+        "cmake_var": "CROSS_RSDP_192_SMALL",
+        "security": 3
+      },
+      "CROSS-rsdp-256-balanced": {
+        "slug": "cross-rsdp-256-balanced",
+        "cmake_var": "CROSS_RSDP_256_BALANCED",
+        "security": 5
+      },
+      "CROSS-rsdp-256-fast": {
+        "slug": "cross-rsdp-256-fast",
+        "cmake_var": "CROSS_RSDP_256_FAST",
+        "security": 5
+      },
+      "CROSS-rsdp-256-small": {
+        "slug": "cross-rsdp-256-small",
+        "cmake_var": "CROSS_RSDP_256_SMALL",
+        "security": 5
+      },
+      "CROSS-rsdpg-128-balanced": {
+        "slug": "cross-rsdpg-128-balanced",
+        "cmake_var": "CROSS_RSDPG_128_BALANCED",
+        "security": 1
+      },
+      "CROSS-rsdpg-128-fast": {
+        "slug": "cross-rsdpg-128-fast",
+        "cmake_var": "CROSS_RSDPG_128_FAST",
+        "security": 1
+      },
+      "CROSS-rsdpg-128-small": {
+        "slug": "cross-rsdpg-128-small",
+        "cmake_var": "CROSS_RSDPG_128_SMALL",
+        "security": 1
+      },
+      "CROSS-rsdpg-192-balanced": {
+        "slug": "cross-rsdpg-192-balanced",
+        "cmake_var": "CROSS_RSDPG_192_BALANCED",
+        "security": 3
+      },
+      "CROSS-rsdpg-192-fast": {
+        "slug": "cross-rsdpg-192-fast",
+        "cmake_var": "CROSS_RSDPG_192_FAST",
+        "security": 3
+      },
+      "CROSS-rsdpg-192-small": {
+        "slug": "cross-rsdpg-192-small",
+        "cmake_var": "CROSS_RSDPG_192_SMALL",
+        "security": 3
+      },
+      "CROSS-rsdpg-256-balanced": {
+        "slug": "cross-rsdpg-256-balanced",
+        "cmake_var": "CROSS_RSDPG_256_BALANCED",
+        "security": 5
+      },
+      "CROSS-rsdpg-256-fast": {
+        "slug": "cross-rsdpg-256-fast",
+        "cmake_var": "CROSS_RSDPG_256_FAST",
+        "security": 5
+      },
+      "CROSS-rsdpg-256-small": {
+        "slug": "cross-rsdpg-256-small",
+        "cmake_var": "CROSS_RSDPG_256_SMALL",
+        "security": 5
+      }
+    },
+    "snova": {
+      "SNOVA-24-5-4": {
+        "slug": "snova-24-5-4",
+        "cmake_var": "SNOVA_24_5_4",
+        "security": 1
+      },
+      "SNOVA-24-5-4-esk": {
+        "slug": "snova-24-5-4-esk",
+        "cmake_var": "SNOVA_24_5_4_ESK",
+        "security": 1
+      },
+      "SNOVA-24-5-4-SHAKE": {
+        "slug": "snova-24-5-4-shake",
+        "cmake_var": "SNOVA_24_5_4_SHAKE",
+        "security": 1
+      },
+      "SNOVA-24-5-4-SHAKE-esk": {
+        "slug": "snova-24-5-4-shake-esk",
+        "cmake_var": "SNOVA_24_5_4_SHAKE_ESK",
+        "security": 1
+      },
+      "SNOVA-24-5-5": {
+        "slug": "snova-24-5-5",
+        "cmake_var": "SNOVA_24_5_5",
+        "security": 1
+      },
+      "SNOVA-25-8-3": {
+        "slug": "snova-25-8-3",
+        "cmake_var": "SNOVA_25_8_3",
+        "security": 1
+      },
+      "SNOVA-29-6-5": {
+        "slug": "snova-29-6-5",
+        "cmake_var": "SNOVA_29_6_5",
+        "security": 3
+      },
+      "SNOVA-37-17-2": {
+        "slug": "snova-37-17-2",
+        "cmake_var": "SNOVA_37_17_2",
+        "security": 3
+      },
+      "SNOVA-37-8-4": {
+        "slug": "snova-37-8-4",
+        "cmake_var": "SNOVA_37_8_4",
+        "security": 3
+      },
+      "SNOVA-49-11-3": {
+        "slug": "snova-49-11-3",
+        "cmake_var": "SNOVA_49_11_3",
+        "security": 5
+      },
+      "SNOVA-56-25-2": {
+        "slug": "snova-56-25-2",
+        "cmake_var": "SNOVA_56_25_2",
+        "security": 5
+      },
+      "SNOVA-60-10-4": {
+        "slug": "snova-60-10-4",
+        "cmake_var": "SNOVA_60_10_4",
+        "security": 5
+      }
+    },
+    "uov": {
+      "OV-Ip": {
+        "slug": "ov-ip",
+        "cmake_var": "uov_ov_Ip",
+        "security": 1
+      },
+      "OV-Ip-pkc": {
+        "slug": "ov-ip-pkc",
+        "cmake_var": "uov_ov_Ip_pkc",
+        "security": 1
+      },
+      "OV-Ip-pkc-skc": {
+        "slug": "ov-ip-pkc-skc",
+        "cmake_var": "uov_ov_Ip_pkc_skc",
+        "security": 1
+      },
+      "OV-Is": {
+        "slug": "ov-is",
+        "cmake_var": "uov_ov_Is",
+        "security": 1
+      },
+      "OV-Is-pkc": {
+        "slug": "ov-is-pkc",
+        "cmake_var": "uov_ov_Is_pkc",
+        "security": 1
+      },
+      "OV-Is-pkc-skc": {
+        "slug": "ov-is-pkc-skc",
+        "cmake_var": "uov_ov_Is_pkc_skc",
+        "security": 1
+      },
+      "OV-III": {
+        "slug": "ov-iii",
+        "cmake_var": "uov_ov_III",
+        "security": 3
+      },
+      "OV-III-pkc": {
+        "slug": "ov-iii-pkc",
+        "cmake_var": "uov_ov_III_pkc",
+        "security": 3
+      },
+      "OV-III-pkc-skc": {
+        "slug": "ov-iii-pkc-skc",
+        "cmake_var": "uov_ov_III_pkc_skc",
+        "security": 3
+      },
+      "OV-V": {
+        "slug": "ov-v",
+        "cmake_var": "uov_ov_V",
+        "security": 5
+      },
+      "OV-V-pkc": {
+        "slug": "ov-v-pkc",
+        "cmake_var": "uov_ov_V_pkc",
+        "security": 5
+      },
+      "OV-V-pkc-skc": {
+        "slug": "ov-v-pkc-skc",
+        "cmake_var": "uov_ov_V_pkc_skc",
+        "security": 5
+      }
+    }
+  }
+}
