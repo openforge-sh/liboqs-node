@@ -317,7 +317,7 @@ build_algorithm() {
         -s EXPORTED_FUNCTIONS="@$export_file" \
         -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap","getValue","setValue","UTF8ToString","stringToUTF8","lengthBytesUTF8","HEAPU8","HEAP32"]' \
         -s ALLOW_MEMORY_GROWTH=1 \
-        -s INITIAL_MEMORY=8454144 \
+        -s INITIAL_MEMORY=8519680 \
         -s MAXIMUM_MEMORY=268435456 \
         -s STACK_SIZE=8392064 \
         -s SUPPORT_BIG_ENDIAN=0 \

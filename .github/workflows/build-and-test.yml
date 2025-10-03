@@ -20,13 +20,51 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Get LibOQS latest commit hash
+        id: liboqs-hash
+        run: |
+          LIBOQS_REPO="https://github.com/open-quantum-safe/liboqs.git"
+          LIBOQS_BRANCH="main"
+          LIBOQS_HASH=$(git ls-remote $LIBOQS_REPO refs/heads/$LIBOQS_BRANCH | cut -f1)
+          echo "hash=$LIBOQS_HASH" >> $GITHUB_OUTPUT
+          echo "LibOQS latest commit: $LIBOQS_HASH"
+
+      - name: Cache WASM modules
+        id: cache-wasm
+        uses: actions/cache@v4
+        with:
+          path: dist/
+          key: wasm-modules-${{ steps.liboqs-hash.outputs.hash }}-${{ hashFiles('build.sh', 'algorithms.json') }}
+          restore-keys: |
+            wasm-modules-${{ steps.liboqs-hash.outputs.hash }}-
+            wasm-modules-
+
       - name: Install dependencies
         run: bun install
 
       - name: Build WASM modules
+        if: steps.cache-wasm.outputs.cache-hit != 'true'
         run: bun run build
         env:
           PARALLEL_JOBS: 12
+
+      - name: Verify WASM modules completeness
+        run: |
+          set -euo pipefail
+          # 97 algorithms total (32 KEM + 65 SIG)
+          expected_count=97
+          actual_count=$(find dist/ -name "*.min.js" -type f | wc -l)
+
+          echo "Expected: $expected_count WASM modules"
+          echo "Actual: $actual_count WASM modules"
+
+          if [ "$actual_count" -ne "$expected_count" ]; then
+            echo "::error::WASM module count mismatch. Expected $expected_count, got $actual_count"
+            find dist/ -name "*.min.js" -type f | sort
+            exit 1
+          fi
+
+          echo "✅ All $expected_count WASM modules verified"
 
       - name: Run tests
         run: bun run test
