@@ -80,9 +80,9 @@ setup_liboqs() {
     cd "$LIBOQS_DIR"
 
     # Apply patch if it exists
-    local patch_file="$SCRIPT_DIR/ov-iii-pkc-skc.patch"
+    local patch_file="$SCRIPT_DIR/liboqs.patch"
     if [ -f "$patch_file" ]; then
-        log_info "Applying patch: ov-iii-pkc-skc.patch"
+        log_info "Applying patch: liboqs.patch"
         if git apply --check "$patch_file" 2>/dev/null; then
             git apply "$patch_file"
             log_success "Patch applied successfully"

@@ -48,6 +48,13 @@ jobs:
         env:
           PARALLEL_JOBS: 8
 
+      - name: Save WASM modules to cache
+        if: steps.cache-wasm.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: dist/
+          key: wasm-modules-${{ steps.liboqs-hash.outputs.hash }}-${{ hashFiles('build.sh', 'algorithms.json') }}
+
       - name: Verify WASM modules completeness
         run: |
           set -euo pipefail
