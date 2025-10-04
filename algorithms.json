@@ -503,11 +503,6 @@
         "cmake_var": "uov_ov_III_pkc",
         "security": 3
       },
-      "OV-III-pkc-skc": {
-        "slug": "ov-iii-pkc-skc",
-        "cmake_var": "uov_ov_III_pkc_skc",
-        "security": 3
-      },
       "OV-V": {
         "slug": "ov-v",
         "cmake_var": "uov_ov_V",

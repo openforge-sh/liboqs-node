@@ -46,7 +46,7 @@ jobs:
         if: steps.cache-wasm.outputs.cache-hit != 'true'
         run: bun run build
         env:
-          PARALLEL_JOBS: 12
+          PARALLEL_JOBS: 8
 
       - name: Verify WASM modules completeness
         run: |
