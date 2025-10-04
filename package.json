@@ -84,7 +84,7 @@
   "bugs": {
     "url": "https://github.com/openforge-sh/liboqs-node/issues"
   },
-  "homepage": "https://github.com/openforge-sh/liboqs-node#readme",
+  "homepage": "https://liboqs-node.openforge.sh",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

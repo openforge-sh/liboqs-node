@@ -120,8 +120,8 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          npm version "${VERSION}-dev.$(date +%s)" --no-git-tag-version
-          npm publish --tag dev --access public
+          npm version "${VERSION}" --no-git-tag-version
+          npm publish --access public
 
   deploy-docs:
     needs: build-and-test
