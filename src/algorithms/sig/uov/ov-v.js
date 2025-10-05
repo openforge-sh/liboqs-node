@@ -16,7 +16,17 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import moduleFactory from '../../../../dist/ov-v.min.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/ov-v.deno.js'
+    : '../../../../dist/ov-v.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Algorithm metadata for OV-V
@@ -62,6 +72,7 @@ export const OV_V_INFO = {
  * sig.destroy();
  */
 export async function createOVV() {
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

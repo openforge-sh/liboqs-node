@@ -171,7 +171,7 @@ export interface Snova56252Module extends SIGModule {}
 export interface Snova60104Module extends SIGModule {}
 
 // Module factory type
-export type WASMModuleFactory<T = BaseWASMModule> = (moduleOverrides?: any) => Promise<T>;
+export type WASMModuleFactory<T = BaseWASMModule> = (moduleOverrides?: Record<string, unknown>) => Promise<T>;
 
 // Algorithm identifiers
 export type KEMAlgorithm =

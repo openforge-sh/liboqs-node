@@ -16,8 +16,18 @@
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
-import moduleFactory from '../../../../dist/classic-mceliece-460896.min.js';
 import { isUint8Array } from '../../../core/validation.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/classic-mceliece-460896.deno.js'
+    : '../../../../dist/classic-mceliece-460896.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Classic-McEliece-460896 algorithm constants and metadata
@@ -58,7 +68,7 @@ export const CLASSIC_MCELIECE_460896_INFO = {
  * const kem = await createClassicMcEliece460896();
  */
 export async function createClassicMcEliece460896() {
-
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

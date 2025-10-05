@@ -1,11 +1,14 @@
 {
   "name": "@openforge-sh/liboqs",
-  "version": "0.14.0",
+  "version": "0.14.0+cli.1.0",
   "description": "Post-quantum cryptography for Node.js and browsers via WebAssembly bindings to liboqs",
   "type": "module",
   "main": "src/index.js",
   "types": "src/types/index.d.ts",
   "sideEffects": false,
+  "bin": {
+    "liboqs": "./bin/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./src/types/index.d.ts",
@@ -26,7 +29,8 @@
   },
   "files": [
     "src/",
-    "dist/"
+    "dist/",
+    "bin/"
   ],
   "scripts": {
     "build": "./build.sh",
@@ -93,6 +97,7 @@
     "node": ">=22.0.0"
   },
   "devDependencies": {
+    "@types/node": "^22.0.0",
     "jsdom": "^27.0.0",
     "typedoc": "^0.28.13",
     "typescript": "^5.9.3",

@@ -15,8 +15,18 @@
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
-import moduleFactory from '../../../../dist/ntru-hrss-701.min.js';
 import { isUint8Array } from '../../../core/validation.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/ntru-hrss-701.deno.js'
+    : '../../../../dist/ntru-hrss-701.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Algorithm metadata for NTRU-HRSS-701
@@ -64,6 +74,7 @@ export const NTRU_HRSS_701_INFO = {
  * kem.destroy();
  */
 export async function createNTRUHrss701() {
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

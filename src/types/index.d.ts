@@ -4,6 +4,6 @@
  */
 
 // Re-export everything from main module types
-export type * from './algorithms.js';
-export * from './algorithms.js';
-export * from './errors.js';
+export type * from './algorithms.d.ts';
+export * from './algorithms.d.ts';
+export * from './errors.d.ts';

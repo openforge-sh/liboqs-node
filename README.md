@@ -91,7 +91,7 @@ pnpm add @openforge-sh/liboqs
 # yarn
 yarn add @openforge-sh/liboqs
 
-# deno (via npm: specifier - no install needed)
+# deno (via JSR or npm: specifier - no install needed)
 # See "Deno Usage" section below
 ```
 
@@ -99,10 +99,13 @@ This project uses **bun** by default for development, but all package managers a
 
 ### Deno Usage
 
-Deno works differently - it doesn't use package.json or require installation:
+✅ **Fully Supported** - Available on both **JSR** (recommended) and **npm**:
 
 ```typescript
-// Import directly using npm: specifier
+// Recommended: Import from JSR
+import { createMLKEM768 } from "jsr:@openforge-sh/liboqs";
+
+// Alternative: Import from npm
 import { createMLKEM768 } from "npm:@openforge-sh/liboqs";
 
 const kem = await createMLKEM768();
@@ -110,11 +113,13 @@ const { publicKey, secretKey } = await kem.generateKeyPair();
 kem.destroy();
 ```
 
-**Optional**: Create a `deno.json` for cleaner imports:
+**How it works:** The library automatically detects the Deno runtime and loads optimized WASM modules built specifically for web-standard environments (uses `ENVIRONMENT='web'` Emscripten build).
+
+**Recommended Setup** - Create a `deno.json` for cleaner imports:
 ```json
 {
   "imports": {
-    "liboqs": "npm:@openforge-sh/liboqs"
+    "liboqs": "jsr:@openforge-sh/liboqs@^0.14.0"
   }
 }
 ```
@@ -124,23 +129,81 @@ Then import like:
 import { createMLKEM768 } from "liboqs";
 ```
 
-**Run with:**
+**Using the CLI with Deno:**
 ```bash
-deno run --allow-read --allow-env your-script.ts
+# Run CLI directly (JSR)
+deno run --allow-read jsr:@openforge-sh/liboqs/cli kem keygen ml-kem-768
+
+# Or from npm
+deno run --allow-read npm:@openforge-sh/liboqs/cli kem keygen ml-kem-768
+
+# Or add to deno.json tasks:
+{
+  "tasks": {
+    "liboqs": "deno run --allow-read jsr:@openforge-sh/liboqs/cli"
+  }
+}
+
+# Then run:
+deno task liboqs list --kem
 ```
 
-Deno automatically caches npm packages on first run - no separate install step needed.
+**Permissions:**
+```bash
+# Library usage (cryptographic operations only)
+deno run --allow-read your-script.ts
+
+# CLI usage (may need write for output files)
+deno run --allow-read --allow-write jsr:@openforge-sh/liboqs/cli kem keygen ml-kem-768 --output-dir ./keys
+```
+
+Deno automatically caches packages on first run - no separate install step needed.
 
 ## Requirements
 
 - **Node.js 22.0 or higher** (for WASM SIMD support)
 - **Package Managers**: Bun 1.0+, npm 10+, pnpm 8+, yarn 4+ (for Node.js)
-- **Deno 2.0+** (uses npm: specifier, no package manager needed)
+- **Deno 2.0+** (available on JSR and npm, no package manager needed)
 - **Modern browsers** with WebAssembly support (Chrome 91+, Firefox 89+, Safari 16.4+, Edge 91+)
 
 ## Quick Start
 
 For detailed examples and usage patterns, see the [API documentation](API_FINAL.md).
+
+### Command Line Interface
+
+The package includes a CLI for cryptographic operations without writing code:
+
+```bash
+# Generate ML-KEM-768 keypair
+npx @openforge-sh/liboqs kem keygen ml-kem-768 --output-dir ./keys
+
+# Encapsulate to create shared secret
+npx @openforge-sh/liboqs kem encapsulate ml-kem-768 ./keys/public.key --format base64
+
+# Sign a message
+npx @openforge-sh/liboqs sig sign ml-dsa-65 message.txt ./keys/secret.key -o signature.sig
+
+# Verify signature
+npx @openforge-sh/liboqs sig verify ml-dsa-65 message.txt signature.sig ./keys/public.key
+
+# List available algorithms
+npx @openforge-sh/liboqs list --kem
+
+# Get algorithm info
+npx @openforge-sh/liboqs info ml-kem-768
+```
+
+**Works with all package managers:**
+- `npx @openforge-sh/liboqs` (npm)
+- `bunx @openforge-sh/liboqs` (bun)
+- `pnpm dlx @openforge-sh/liboqs` (pnpm)
+- `yarn dlx @openforge-sh/liboqs` (yarn)
+
+**For full CLI documentation, run:**
+```bash
+npx @openforge-sh/liboqs --help
+```
 
 ### Key Encapsulation (ML-KEM)
 

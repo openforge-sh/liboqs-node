@@ -16,8 +16,18 @@
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
-import moduleFactory from '../../../../dist/sphincs-sha2-256f-simple.min.js';
 import { isUint8Array } from '../../../core/validation.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/sphincs-sha2-256f-simple.deno.js'
+    : '../../../../dist/sphincs-sha2-256f-simple.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Algorithm metadata for SPHINCS+-sha2-256f-simple
@@ -63,6 +73,7 @@ export const SPHINCSPLUS_SHA2_256F_SIMPLE_INFO = {
  * sig.destroy();
  */
 export async function createSphincsSha2256fSimple() {
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

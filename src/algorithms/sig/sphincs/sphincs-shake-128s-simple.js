@@ -16,8 +16,18 @@
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
-import moduleFactory from '../../../../dist/sphincs-shake-128s-simple.min.js';
 import { isUint8Array } from '../../../core/validation.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/sphincs-shake-128s-simple.deno.js'
+    : '../../../../dist/sphincs-shake-128s-simple.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Algorithm metadata for SPHINCS+-shake-128s-simple
@@ -63,6 +73,7 @@ export const SPHINCSPLUS_SHAKE_128S_SIMPLE_INFO = {
  * sig.destroy();
  */
 export async function createSphincsShake128sSimple() {
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

@@ -16,8 +16,18 @@
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
-import moduleFactory from '../../../../dist/ml-dsa-87.min.js';
 import { isUint8Array } from '../../../core/validation.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/ml-dsa-87.deno.js'
+    : '../../../../dist/ml-dsa-87.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Algorithm metadata for ML-DSA-87
@@ -56,7 +66,7 @@ export const ML_DSA_87_INFO = {
  * const sig = await createMLDSA87();
  */
 export async function createMLDSA87() {
-
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

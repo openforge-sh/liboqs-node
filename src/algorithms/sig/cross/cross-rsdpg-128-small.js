@@ -18,6 +18,17 @@ import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationErr
 import moduleFactory from '../../../../dist/cross-rsdpg-128-small.min.js';
 import { isUint8Array } from '../../../core/validation.js';
 
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/cross-rsdp-128-small.deno.js'
+    : '../../../../dist/cross-rsdp-128-small.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
+
 /**
  * Algorithm metadata for CROSS-rsdpg-128-small
  * @constant {Object} CROSS_RSDPG_128_SMALL_INFO
@@ -62,6 +73,7 @@ export const CROSS_RSDPG_128_SMALL_INFO = {
  * sig.destroy();
  */
 export async function createCrossRsdpg128Small() {
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

@@ -58,23 +58,32 @@ jobs:
       - name: Verify WASM modules completeness
         run: |
           set -euo pipefail
-          # 97 algorithms total (32 KEM + 65 SIG)
+          # 97 algorithms total (32 KEM + 65 SIG), each with Node.js and Deno builds
           expected_count=97
-          actual_count=$(find dist/ -name "*.min.js" -type f | wc -l)
+          node_count=$(find dist/ -name "*.min.js" -type f | wc -l)
+          deno_count=$(find dist/ -name "*.deno.js" -type f | wc -l)
 
-          echo "Expected: $expected_count WASM modules"
-          echo "Actual: $actual_count WASM modules"
+          echo "Expected: $expected_count modules per runtime"
+          echo "Node.js modules: $node_count"
+          echo "Deno modules: $deno_count"
 
-          if [ "$actual_count" -ne "$expected_count" ]; then
-            echo "::error::WASM module count mismatch. Expected $expected_count, got $actual_count"
-            find dist/ -name "*.min.js" -type f | sort
+          if [ "$node_count" -ne "$expected_count" ]; then
+            echo "::error::Node.js module count mismatch. Expected $expected_count, got $node_count"
             exit 1
           fi
 
-          echo "✅ All $expected_count WASM modules verified"
+          if [ "$deno_count" -ne "$expected_count" ]; then
+            echo "::error::Deno module count mismatch. Expected $expected_count, got $deno_count"
+            exit 1
+          fi
+
+          echo "✅ All $expected_count Node.js and Deno modules verified"
 
       - name: Run tests
         run: bun run test
+
+      - name: Run Deno tests
+        run: deno test --allow-read --allow-write --allow-run --allow-env --no-check tests/deno/
 
       - name: Generate documentation
         run: bun run docs
@@ -98,6 +107,10 @@ jobs:
     runs-on: [self-hosted, wasm]
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
 
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -114,6 +127,9 @@ jobs:
 
       - name: Publish to npm (latest)
         run: npm publish --access public
+
+      - name: Publish to JSR
+        run: npx jsr publish
 
   deploy-docs:
     needs: build-and-test

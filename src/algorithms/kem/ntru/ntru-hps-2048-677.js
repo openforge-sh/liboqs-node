@@ -15,8 +15,18 @@
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
-import moduleFactory from '../../../../dist/ntru-hps-2048-677.min.js';
 import { isUint8Array } from '../../../core/validation.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/ntru-hps-2048-677.deno.js'
+    : '../../../../dist/ntru-hps-2048-677.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Algorithm metadata for NTRU-HPS-2048-677
@@ -64,6 +74,7 @@ export const NTRU_HPS_2048_677_INFO = {
  * kem.destroy();
  */
 export async function createNTRUHps2048677() {
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

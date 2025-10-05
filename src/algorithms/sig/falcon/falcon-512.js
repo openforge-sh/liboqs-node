@@ -16,7 +16,17 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import moduleFactory from '../../../../dist/falcon-512.min.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/falcon-512.deno.js'
+    : '../../../../dist/falcon-512.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Algorithm metadata for Falcon-512
@@ -62,7 +72,7 @@ export const FALCON_512_INFO = {
  * sig.destroy();
  */
 export async function createFalcon512() {
-
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

@@ -17,8 +17,18 @@ import { isUint8Array } from '../../../core/validation.js';
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
-import moduleFactory from '../../../../dist/ml-kem-1024.min.js';
 import { isUint8Array } from '../../../core/validation.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/ml-kem-1024.deno.js'
+    : '../../../../dist/ml-kem-1024.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * ML-KEM-1024 algorithm constants and metadata
@@ -66,6 +76,7 @@ export const ML_KEM_1024_INFO = {
  * kem.destroy();
  */
 export async function createMLKEM1024() {
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

@@ -15,8 +15,18 @@
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
-import moduleFactory from '../../../../dist/cross-rsdp-256-balanced.min.js';
 import { isUint8Array } from '../../../core/validation.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/cross-rsdp-256-balanced.deno.js'
+    : '../../../../dist/cross-rsdp-256-balanced.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Algorithm metadata for CROSS-rsdp-256-balanced
@@ -62,6 +72,7 @@ export const CROSS_RSDP_256_BALANCED_INFO = {
  * sig.destroy();
  */
 export async function createCrossRsdp256Balanced() {
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

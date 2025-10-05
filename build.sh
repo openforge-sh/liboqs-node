@@ -318,7 +318,7 @@ build_algorithm() {
     log_info "Creating WASM module for $slug..."
     mkdir -p "$OUTPUT_DIR"
 
-    log_info "Building single-file module for $slug..."
+    log_info "Building Node.js module for $slug..."
     emcc "$static_lib" \
         -o "$OUTPUT_DIR/$slug.min.js" \
         -s WASM=1 \
@@ -326,7 +326,7 @@ build_algorithm() {
         -s EXPORT_NAME="LibOQS_$(echo $slug | tr '-' '_')" \
         -s EXPORT_ES6=1 \
         -s SINGLE_FILE=1 \
-        -s ENVIRONMENT='web,node' \
+        -s ENVIRONMENT='web,worker,webview,node' \
         -s EXPORTED_FUNCTIONS="@$export_file" \
         -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap","getValue","setValue","UTF8ToString","stringToUTF8","lengthBytesUTF8","HEAPU8","HEAP32"]' \
         -s ALLOW_MEMORY_GROWTH=1 \
@@ -343,14 +343,41 @@ build_algorithm() {
         --closure 1 \
         --no-entry
 
-    if [ -f "$OUTPUT_DIR/$slug.min.js" ]; then
-        local file_size=$(ls -lh "$OUTPUT_DIR/$slug.min.js" | awk '{print $5}')
+    log_info "Building Deno module for $slug..."
+    emcc "$static_lib" \
+        -o "$OUTPUT_DIR/$slug.deno.js" \
+        -s WASM=1 \
+        -s MODULARIZE=1 \
+        -s EXPORT_NAME="LibOQS_$(echo $slug | tr '-' '_')" \
+        -s EXPORT_ES6=1 \
+        -s SINGLE_FILE=1 \
+        -s ENVIRONMENT='web' \
+        -s EXPORTED_FUNCTIONS="@$export_file" \
+        -s EXPORTED_RUNTIME_METHODS='["ccall","cwrap","getValue","setValue","UTF8ToString","stringToUTF8","lengthBytesUTF8","HEAPU8","HEAP32"]' \
+        -s ALLOW_MEMORY_GROWTH=1 \
+        -s INITIAL_MEMORY=8519680 \
+        -s MAXIMUM_MEMORY=268435456 \
+        -s STACK_SIZE=8392064 \
+        -s SUPPORT_BIG_ENDIAN=0 \
+        -s MALLOC="emmalloc" \
+        -s FILESYSTEM=0 \
+        -s ASSERTIONS=0 \
+        -s SAFE_HEAP=0 \
+        -msimd128 \
+        -O3 \
+        --closure 1 \
+        --no-entry
+
+    if [ -f "$OUTPUT_DIR/$slug.min.js" ] && [ -f "$OUTPUT_DIR/$slug.deno.js" ]; then
+        local node_size=$(ls -lh "$OUTPUT_DIR/$slug.min.js" | awk '{print $5}')
+        local deno_size=$(ls -lh "$OUTPUT_DIR/$slug.deno.js" | awk '{print $5}')
 
         log_success "Successfully built $slug:"
-        log_info "  Output: $file_size"
+        log_info "  Node.js: $node_size"
+        log_info "  Deno: $deno_size"
         return 0
     else
-        log_error "Failed to generate WASM module for $slug"
+        log_error "Failed to generate WASM modules for $slug"
         return 1
     fi
 }

@@ -16,8 +16,18 @@
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
-import moduleFactory from '../../../../dist/snova-24-5-4-shake.min.js';
 import { isUint8Array } from '../../../core/validation.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/snova-24-5-4-shake.deno.js'
+    : '../../../../dist/snova-24-5-4-shake.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Algorithm metadata for SNOVA-24-5-4-SHAKE
@@ -63,6 +73,7 @@ export const SNOVA_24_5_4_SHAKE_INFO = {
  * sig.destroy();
  */
 export async function createSnova2454Shake() {
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

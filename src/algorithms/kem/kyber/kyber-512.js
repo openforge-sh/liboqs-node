@@ -17,8 +17,18 @@
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
-import moduleFactory from '../../../../dist/kyber-512.min.js';
 import { isUint8Array } from '../../../core/validation.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/kyber-512.deno.js'
+    : '../../../../dist/kyber-512.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Kyber512 algorithm constants and metadata
@@ -67,6 +77,7 @@ export const KYBER512_INFO = {
  * kem.destroy();
  */
 export async function createKyber512() {
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

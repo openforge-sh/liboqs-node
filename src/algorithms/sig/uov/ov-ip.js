@@ -16,7 +16,17 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import moduleFactory from '../../../../dist/ov-ip.min.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/ov-ip.deno.js'
+    : '../../../../dist/ov-ip.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Algorithm metadata for OV-Ip
@@ -62,6 +72,7 @@ export const OV_IP_INFO = {
  * sig.destroy();
  */
 export async function createOVIp() {
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

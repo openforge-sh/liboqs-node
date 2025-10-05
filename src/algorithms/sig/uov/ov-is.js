@@ -16,7 +16,17 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import moduleFactory from '../../../../dist/ov-is.min.js';
+
+// Dynamic module loading for cross-runtime compatibility
+async function loadModule() {
+  const isDeno = typeof Deno !== 'undefined';
+  const modulePath = isDeno
+    ? '../../../../dist/ov-is.deno.js'
+    : '../../../../dist/ov-is.min.js';
+
+  const module = await import(modulePath);
+  return module.default;
+}
 
 /**
  * Algorithm metadata for OV-Is
@@ -62,6 +72,7 @@ export const OV_IS_INFO = {
  * sig.destroy();
  */
 export async function createOVIs() {
+  const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 

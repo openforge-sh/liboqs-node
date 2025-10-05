@@ -25,6 +25,7 @@
     "docs-generated",
     "examples",
     "liboqs",
-    "builds-wasm"
+    "builds-wasm",
+    "tests/deno"
   ]
 }
