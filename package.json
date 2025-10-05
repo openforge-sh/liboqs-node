@@ -1,5 +1,5 @@
 {
-  "name": "@openforge-sh/liboqs-node",
+  "name": "@openforge-sh/liboqs",
   "version": "0.14.0",
   "description": "Post-quantum cryptography for Node.js and browsers via WebAssembly bindings to liboqs",
   "type": "module",

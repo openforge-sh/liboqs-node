@@ -57,7 +57,7 @@ export const NTRU_HPS_4096_1229_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createNTRUHps40961229 } from '@openforge-sh/liboqs-node';
+ * import { createNTRUHps40961229 } from '@openforge-sh/liboqs';
  *
  * const kem = await createNTRUHps40961229();
  * const { publicKey, secretKey } = await kem.generateKeyPair();

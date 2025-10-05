@@ -11,7 +11,7 @@ We support the latest release and provide security updates for critical vulnerab
 
 ## Scope of This Library
 
-This library (@openforge-sh/liboqs-node) is a **JavaScript/WebAssembly wrapper** for the native [LibOQS library](https://github.com/open-quantum-safe/liboqs). Security issues can originate from:
+This library (@openforge-sh/liboqs) is a **JavaScript/WebAssembly wrapper** for the native [LibOQS library](https://github.com/open-quantum-safe/liboqs). Security issues can originate from:
 
 1. **This wrapper library** - JavaScript/TypeScript code, WASM bindings, memory management, API design
 2. **The underlying LibOQS library** - Native cryptographic implementations compiled to WASM

@@ -57,7 +57,7 @@ export const HQC_128_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createHQC128 } from '@openforge-sh/liboqs-node';
+ * import { createHQC128 } from '@openforge-sh/liboqs';
  *
  * const kem = await createHQC128();
  * const { publicKey, secretKey } = await kem.generateKeyPair();

@@ -56,7 +56,7 @@ export const SPHINCSPLUS_SHA2_128S_SIMPLE_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createSphincsSha2128sSimple } from '@openforge-sh/liboqs-node';
+ * import { createSphincsSha2128sSimple } from '@openforge-sh/liboqs';
  *
  * const sig = await createSphincsSha2128sSimple();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

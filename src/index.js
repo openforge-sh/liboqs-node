@@ -1,10 +1,10 @@
 /**
- * @fileoverview Main entry point for @openforge-sh/liboqs-node
+ * @fileoverview Main entry point for @openforge-sh/liboqs
  * @description Post-quantum cryptography for Node.js and browsers via WebAssembly bindings to liboqs
  *
  * @example
  * // Key encapsulation (ML-KEM)
- * import { createMLKEM768 } from '@openforge-sh/liboqs-node';
+ * import { createMLKEM768 } from '@openforge-sh/liboqs';
  *
  * const kem = await createMLKEM768();
  * const { publicKey, secretKey } = await kem.generateKeyPair();
@@ -13,7 +13,7 @@
  *
  * @example
  * // Digital signatures (ML-DSA)
- * import { createMLDSA65 } from '@openforge-sh/liboqs-node';
+ * import { createMLDSA65 } from '@openforge-sh/liboqs';
  *
  * const sig = await createMLDSA65();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

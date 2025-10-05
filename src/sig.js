@@ -1,7 +1,7 @@
 /**
  * @fileoverview Signature algorithm exports
  * @description Shorthand exports for all signature algorithms
- * @module @openforge-sh/liboqs-node/sig
+ * @module @openforge-sh/liboqs/sig
  */
 
 // Export all ML-DSA algorithms

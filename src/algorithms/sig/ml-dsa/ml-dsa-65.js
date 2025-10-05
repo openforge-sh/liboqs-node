@@ -52,7 +52,7 @@ export const ML_DSA_65_INFO = {
  * @returns {Promise<MLDSA65>} Initialized ML-DSA-65 instance
  * @throws {LibOQSInitError} If initialization fails
  * @example
- * import { createMLDSA65 } from '@openforge-sh/liboqs-node';
+ * import { createMLDSA65 } from '@openforge-sh/liboqs';
  * const sig = await createMLDSA65();
  */
 export async function createMLDSA65() {

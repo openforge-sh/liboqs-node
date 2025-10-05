@@ -55,7 +55,7 @@ export const OV_V_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createOVV } from '@openforge-sh/liboqs-node';
+ * import { createOVV } from '@openforge-sh/liboqs';
  *
  * const sig = await createOVV();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

@@ -1,6 +1,6 @@
 /**
- * @fileoverview TypeScript definitions for @openforge-sh/liboqs-node
- * @module @openforge-sh/liboqs-node
+ * @fileoverview TypeScript definitions for @openforge-sh/liboqs
+ * @module @openforge-sh/liboqs
  */
 
 // Re-export everything from main module types

@@ -55,7 +55,7 @@ export const CROSS_RSDP_128_SMALL_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createCrossRsdp128Small } from '@openforge-sh/liboqs-node';
+ * import { createCrossRsdp128Small } from '@openforge-sh/liboqs';
  *
  * const sig = await createCrossRsdp128Small();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

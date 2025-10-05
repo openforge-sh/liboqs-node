@@ -55,7 +55,7 @@ export const OV_III_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createOVIII } from '@openforge-sh/liboqs-node';
+ * import { createOVIII } from '@openforge-sh/liboqs';
  *
  * const sig = await createOVIII();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

@@ -56,7 +56,7 @@ export const SNOVA_24_5_4_SHAKE_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createSnova2454Shake } from '@openforge-sh/liboqs-node';
+ * import { createSnova2454Shake } from '@openforge-sh/liboqs';
  *
  * const sig = await createSnova2454Shake();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

@@ -55,7 +55,7 @@ export const CROSS_RSDP_256_FAST_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createCrossRsdp256Fast } from '@openforge-sh/liboqs-node';
+ * import { createCrossRsdp256Fast } from '@openforge-sh/liboqs';
  *
  * const sig = await createCrossRsdp256Fast();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

@@ -55,7 +55,7 @@ export const CROSS_RSDPG_256_BALANCED_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createCrossRsdpg256Balanced } from '@openforge-sh/liboqs-node';
+ * import { createCrossRsdpg256Balanced } from '@openforge-sh/liboqs';
  *
  * const sig = await createCrossRsdpg256Balanced();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

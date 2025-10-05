@@ -57,7 +57,7 @@ export const FRODOKEM_976_SHAKE_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createFrodoKEM976SHAKE } from '@openforge-sh/liboqs-node';
+ * import { createFrodoKEM976SHAKE } from '@openforge-sh/liboqs';
  *
  * const kem = await createFrodoKEM976SHAKE();
  * const { publicKey, secretKey } = await kem.generateKeyPair();

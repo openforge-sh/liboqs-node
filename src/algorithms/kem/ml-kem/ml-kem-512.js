@@ -59,7 +59,7 @@ export const ML_KEM_512_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createMLKEM512 } from '@openforge-sh/liboqs-node';
+ * import { createMLKEM512 } from '@openforge-sh/liboqs';
  *
  * const kem = await createMLKEM512();
  * const { publicKey, secretKey } = await kem.generateKeyPair();
@@ -93,8 +93,8 @@ export async function createMLKEM512() {
  *
  * @class MLKEM512
  * @example
- * import LibOQS_ml_kem_512 from '@openforge-sh/liboqs-node/ml-kem-512';
- * import { createMLKEM512 } from '@openforge-sh/liboqs-node/algorithms/ml-kem-512';
+ * import LibOQS_ml_kem_512 from '@openforge-sh/liboqs/ml-kem-512';
+ * import { createMLKEM512 } from '@openforge-sh/liboqs/algorithms/ml-kem-512';
  *
  * const kem = await createMLKEM512(LibOQS_ml_kem_512);
  * const { publicKey, secretKey } = await kem.generateKeyPair();

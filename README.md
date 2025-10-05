@@ -1,4 +1,4 @@
-# @openforge-sh/liboqs-node
+# @openforge-sh/liboqs
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-22+-green.svg)](https://nodejs.org/)
@@ -80,16 +80,16 @@ This package works with all major JavaScript package managers:
 
 ```bash
 # bun (recommended - fastest)
-bun add @openforge-sh/liboqs-node
+bun add @openforge-sh/liboqs
 
 # npm
-npm install @openforge-sh/liboqs-node
+npm install @openforge-sh/liboqs
 
 # pnpm
-pnpm add @openforge-sh/liboqs-node
+pnpm add @openforge-sh/liboqs
 
 # yarn
-yarn add @openforge-sh/liboqs-node
+yarn add @openforge-sh/liboqs
 
 # deno (via npm: specifier - no install needed)
 # See "Deno Usage" section below
@@ -103,7 +103,7 @@ Deno works differently - it doesn't use package.json or require installation:
 
 ```typescript
 // Import directly using npm: specifier
-import { createMLKEM768 } from "npm:@openforge-sh/liboqs-node";
+import { createMLKEM768 } from "npm:@openforge-sh/liboqs";
 
 const kem = await createMLKEM768();
 const { publicKey, secretKey } = await kem.generateKeyPair();
@@ -114,7 +114,7 @@ kem.destroy();
 ```json
 {
   "imports": {
-    "liboqs": "npm:@openforge-sh/liboqs-node"
+    "liboqs": "npm:@openforge-sh/liboqs"
   }
 }
 ```
@@ -145,7 +145,7 @@ For detailed examples and usage patterns, see the [API documentation](API_FINAL.
 ### Key Encapsulation (ML-KEM)
 
 ```javascript
-import { createMLKEM768 } from '@openforge-sh/liboqs-node';
+import { createMLKEM768 } from '@openforge-sh/liboqs';
 
 // Alice generates keypair
 const alice = await createMLKEM768();
@@ -169,7 +169,7 @@ bob.destroy();
 ### Digital Signatures (ML-DSA)
 
 ```javascript
-import { createMLDSA65 } from '@openforge-sh/liboqs-node';
+import { createMLDSA65 } from '@openforge-sh/liboqs';
 
 const signer = await createMLDSA65();
 const { publicKey, secretKey } = await signer.generateKeyPair();
@@ -214,11 +214,11 @@ Each algorithm is compiled separately into individual WASM modules, so you only 
 
 ```javascript
 // Single algorithm (~80-160KB depending on algorithm complexity)
-import { createMLKEM768 } from '@openforge-sh/liboqs-node';
+import { createMLKEM768 } from '@openforge-sh/liboqs';
 const kem = await createMLKEM768();
 
 // Multiple algorithms - each adds its own WASM module
-import { createMLKEM768, createMLDSA65 } from '@openforge-sh/liboqs-node';
+import { createMLKEM768, createMLDSA65 } from '@openforge-sh/liboqs';
 const kem = await createMLKEM768();
 const sig = await createMLDSA65();
 ```
@@ -231,30 +231,30 @@ Tree-shaking ensures unused algorithms are never included in your bundle. WASM m
 
 ```javascript
 // Main entry - all 97 algorithm factory functions, classes, and metadata
-import { createMLKEM768, MLKEM768, ML_KEM_768_INFO } from '@openforge-sh/liboqs-node';
+import { createMLKEM768, MLKEM768, ML_KEM_768_INFO } from '@openforge-sh/liboqs';
 
 // KEM-only exports (32 algorithms)
 import {
   createMLKEM512,
   createClassicMcEliece348864,
   createFrodoKEM640AES
-} from '@openforge-sh/liboqs-node/kem';
+} from '@openforge-sh/liboqs/kem';
 
 // Signature-only exports (65 algorithms)
 import {
   createMLDSA44,
   createFalcon512,
   createSphincsSha2128fSimple
-} from '@openforge-sh/liboqs-node/sig';
+} from '@openforge-sh/liboqs/sig';
 
 // Error classes only
-import { LibOQSError, LibOQSInitError } from '@openforge-sh/liboqs-node/errors';
+import { LibOQSError, LibOQSInitError } from '@openforge-sh/liboqs/errors';
 ```
 
 ### File Structure
 
 ```
-@openforge-sh/liboqs-node/
+@openforge-sh/liboqs/
 ├── src/
 │   ├── algorithms/
 │   │   ├── kem/
@@ -522,7 +522,7 @@ MIT License - see [LICENSE.md](LICENSE.md) for details.
 ## Versioning
 
 This library's version tracks the bundled liboqs version:
-- `@openforge-sh/liboqs-node 0.14.0` includes `liboqs 0.14.0`
+- `@openforge-sh/liboqs 0.14.0` includes `liboqs 0.14.0`
 
 ## Disclaimer
 

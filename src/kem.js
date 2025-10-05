@@ -1,7 +1,7 @@
 /**
  * @fileoverview KEM (Key Encapsulation Mechanism) algorithm exports
  * @description Shorthand exports for all KEM algorithms
- * @module @openforge-sh/liboqs-node/kem
+ * @module @openforge-sh/liboqs/kem
  */
 
 // Export all ML-KEM algorithms (NIST FIPS 203 standardized)

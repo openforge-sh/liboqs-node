@@ -57,7 +57,7 @@ export const FRODOKEM_640_AES_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createFrodoKEM640AES } from '@openforge-sh/liboqs-node';
+ * import { createFrodoKEM640AES } from '@openforge-sh/liboqs';
  *
  * const kem = await createFrodoKEM640AES();
  * const { publicKey, secretKey } = await kem.generateKeyPair();

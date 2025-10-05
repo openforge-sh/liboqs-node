@@ -62,7 +62,7 @@ export const KYBER1024_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createKyber1024 } from '@openforge-sh/liboqs-node';
+ * import { createKyber1024 } from '@openforge-sh/liboqs';
  *
  * const kem = await createKyber1024();
  * const { publicKey, secretKey } = await kem.generateKeyPair();
@@ -96,8 +96,8 @@ export async function createKyber1024() {
  *
  * @class Kyber1024
  * @example
- * import LibOQS_ml_kem_1024 from '@openforge-sh/liboqs-node/kyber-1024';
- * import { createKyber1024 } from '@openforge-sh/liboqs-node/algorithms/kyber-1024';
+ * import LibOQS_ml_kem_1024 from '@openforge-sh/liboqs/kyber-1024';
+ * import { createKyber1024 } from '@openforge-sh/liboqs/algorithms/kyber-1024';
  *
  * const kem = await createKyber1024(LibOQS_ml_kem_1024);
  * const { publicKey, secretKey } = await kem.generateKeyPair();

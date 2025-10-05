@@ -1,6 +1,6 @@
 /**
  * @fileoverview TypeScript definitions for LibOQS error classes
- * @module @openforge-sh/liboqs-node/errors
+ * @module @openforge-sh/liboqs/errors
  */
 
 /**

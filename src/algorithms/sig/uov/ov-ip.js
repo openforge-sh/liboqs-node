@@ -55,7 +55,7 @@ export const OV_IP_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createOVIp } from '@openforge-sh/liboqs-node';
+ * import { createOVIp } from '@openforge-sh/liboqs';
  *
  * const sig = await createOVIp();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

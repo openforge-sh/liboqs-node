@@ -62,7 +62,7 @@ export const KYBER768_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createKyber768 } from '@openforge-sh/liboqs-node';
+ * import { createKyber768 } from '@openforge-sh/liboqs';
  *
  * const kem = await createKyber768();
  * const { publicKey, secretKey } = await kem.generateKeyPair();
@@ -96,7 +96,7 @@ export async function createKyber768() {
  *
  * @class Kyber768
  * @example
- * import { createKyber768 } from '@openforge-sh/liboqs-node';
+ * import { createKyber768 } from '@openforge-sh/liboqs';
  *
  * const kem = await createKyber768();
  * const { publicKey, secretKey } = await kem.generateKeyPair();

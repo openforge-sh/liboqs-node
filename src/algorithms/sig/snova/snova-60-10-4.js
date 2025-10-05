@@ -56,7 +56,7 @@ export const SNOVA_60_10_4_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createSnova60104 } from '@openforge-sh/liboqs-node';
+ * import { createSnova60104 } from '@openforge-sh/liboqs';
  *
  * const sig = await createSnova60104();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

@@ -1,7 +1,7 @@
 {
   "entryPoints": ["src/index.js"],
   "out": "docs",
-  "name": "@openforge-sh/liboqs-node",
+  "name": "@openforge-sh/liboqs",
   "readme": "README.md",
   "excludePrivate": true,
   "excludeProtected": true,
@@ -46,6 +46,6 @@
   "titleLink": "https://github.com/openforge-sh/liboqs-node",
   "navigationLinks": {
     "GitHub": "https://github.com/openforge-sh/liboqs-node",
-    "NPM": "https://www.npmjs.com/package/@openforge-sh/liboqs-node"
+    "NPM": "https://www.npmjs.com/package/@openforge-sh/liboqs"
   }
 }

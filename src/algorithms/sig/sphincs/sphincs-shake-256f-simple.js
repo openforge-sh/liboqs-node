@@ -56,7 +56,7 @@ export const SPHINCSPLUS_SHAKE_256F_SIMPLE_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createSphincsShake256fSimple } from '@openforge-sh/liboqs-node';
+ * import { createSphincsShake256fSimple } from '@openforge-sh/liboqs';
  *
  * const sig = await createSphincsShake256fSimple();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

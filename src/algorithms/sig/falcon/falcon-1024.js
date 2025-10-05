@@ -55,7 +55,7 @@ export const FALCON_1024_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createFalcon1024 } from '@openforge-sh/liboqs-node';
+ * import { createFalcon1024 } from '@openforge-sh/liboqs';
  *
  * const sig = await createFalcon1024();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

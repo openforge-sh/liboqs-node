@@ -55,7 +55,7 @@ export const OV_V_PKC_SKC_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createOVVPkcSkc } from '@openforge-sh/liboqs-node';
+ * import { createOVVPkcSkc } from '@openforge-sh/liboqs';
  *
  * const sig = await createOVVPkcSkc();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

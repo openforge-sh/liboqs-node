@@ -60,7 +60,7 @@ export const KYBER512_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createKyber512 } from '@openforge-sh/liboqs-node';
+ * import { createKyber512 } from '@openforge-sh/liboqs';
  *
  * const kem = await createKyber512();
  * const { publicKey, secretKey } = await kem.generateKeyPair();
@@ -94,8 +94,8 @@ export async function createKyber512() {
  *
  * @class Kyber512
  * @example
- * import LibOQS_ml_kem_512 from '@openforge-sh/liboqs-node/kyber-512';
- * import { createKyber512 } from '@openforge-sh/liboqs-node/algorithms/kyber-512';
+ * import LibOQS_ml_kem_512 from '@openforge-sh/liboqs/kyber-512';
+ * import { createKyber512 } from '@openforge-sh/liboqs/algorithms/kyber-512';
  *
  * const kem = await createKyber512(LibOQS_ml_kem_512);
  * const { publicKey, secretKey } = await kem.generateKeyPair();

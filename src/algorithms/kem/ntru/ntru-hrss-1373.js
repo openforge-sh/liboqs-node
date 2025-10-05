@@ -57,7 +57,7 @@ export const NTRU_HRSS_1373_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createNTRUHrss1373 } from '@openforge-sh/liboqs-node';
+ * import { createNTRUHrss1373 } from '@openforge-sh/liboqs';
  *
  * const kem = await createNTRUHrss1373();
  * const { publicKey, secretKey } = await kem.generateKeyPair();

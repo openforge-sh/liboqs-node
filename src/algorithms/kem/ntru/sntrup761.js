@@ -58,7 +58,7 @@ export const SNTRUP761_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createSntrup761 } from '@openforge-sh/liboqs-node';
+ * import { createSntrup761 } from '@openforge-sh/liboqs';
  *
  * const kem = await createSntrup761();
  * const { publicKey, secretKey } = await kem.generateKeyPair();

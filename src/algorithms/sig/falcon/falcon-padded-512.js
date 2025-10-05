@@ -55,7 +55,7 @@ export const FALCON_PADDED_512_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createFalconPadded512 } from '@openforge-sh/liboqs-node';
+ * import { createFalconPadded512 } from '@openforge-sh/liboqs';
  *
  * const sig = await createFalconPadded512();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

@@ -55,7 +55,7 @@ export const MAYO_2_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createMAYO2 } from '@openforge-sh/liboqs-node';
+ * import { createMAYO2 } from '@openforge-sh/liboqs';
  *
  * const sig = await createMAYO2();
  * const { publicKey, secretKey } = await sig.generateKeyPair();

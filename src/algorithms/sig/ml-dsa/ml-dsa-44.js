@@ -52,7 +52,7 @@ export const ML_DSA_44_INFO = {
  * @returns {Promise<MLDSA44>} Initialized ML-DSA-44 instance
  * @throws {LibOQSInitError} If initialization fails
  * @example
- * import { createMLDSA44 } from '@openforge-sh/liboqs-node';
+ * import { createMLDSA44 } from '@openforge-sh/liboqs';
  * const sig = await createMLDSA44();
  */
 export async function createMLDSA44() {

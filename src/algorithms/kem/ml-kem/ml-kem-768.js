@@ -59,7 +59,7 @@ export const ML_KEM_768_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createMLKEM768 } from '@openforge-sh/liboqs-node';
+ * import { createMLKEM768 } from '@openforge-sh/liboqs';
  *
  * const kem = await createMLKEM768();
  * const { publicKey, secretKey } = await kem.generateKeyPair();
@@ -93,7 +93,7 @@ export async function createMLKEM768() {
  *
  * @class MLKEM768
  * @example
- * import { createMLKEM768 } from '@openforge-sh/liboqs-node';
+ * import { createMLKEM768 } from '@openforge-sh/liboqs';
  *
  * const kem = await createMLKEM768();
  * const { publicKey, secretKey } = await kem.generateKeyPair();

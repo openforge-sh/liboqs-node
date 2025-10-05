@@ -54,7 +54,7 @@ export const CLASSIC_MCELIECE_6688128_INFO = {
  * @returns {Promise<ClassicMcEliece6688128>} Initialized Classic-McEliece-6688128 instance
  * @throws {LibOQSInitError} If initialization fails
  * @example
- * import { createClassicMcEliece6688128 } from '@openforge-sh/liboqs-node';
+ * import { createClassicMcEliece6688128 } from '@openforge-sh/liboqs';
  * const kem = await createClassicMcEliece6688128();
  */
 export async function createClassicMcEliece6688128() {
@@ -86,7 +86,7 @@ export async function createClassicMcEliece6688128() {
  *
  * @class ClassicMcEliece6688128
  * @example
- * import { createClassicMcEliece6688128 } from '@openforge-sh/liboqs-node';
+ * import { createClassicMcEliece6688128 } from '@openforge-sh/liboqs';
  *
  * const kem = await createClassicMcEliece6688128();
  * const { publicKey, secretKey } = await kem.generateKeyPair();

@@ -55,7 +55,7 @@ export const OV_IS_INFO = {
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createOVIs } from '@openforge-sh/liboqs-node';
+ * import { createOVIs } from '@openforge-sh/liboqs';
  *
  * const sig = await createOVIs();
  * const { publicKey, secretKey } = await sig.generateKeyPair();
