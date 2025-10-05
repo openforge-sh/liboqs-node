@@ -102,7 +102,7 @@ jobs:
           path: docs/
           retention-days: 7
 
-  publish-npm:
+  publish-package:
     needs: build-and-test
     runs-on: [self-hosted, wasm]
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
