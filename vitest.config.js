@@ -4,6 +4,7 @@ export default defineConfig({
   test: {
     // Test file patterns
     include: ['tests/**/*.test.{js,ts}'],
+    exclude: ['**/node_modules/**', '**/dist/**', 'tests/deno/**'],
 
     // Timeout for each test (10 seconds)
     testTimeout: 30000,
