@@ -102,7 +102,43 @@ jobs:
           path: docs/
           retention-days: 7
 
-  publish-package:
+  publish-npm:
+    needs: build-and-test
+    runs-on: [self-hosted, wasm]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Check if version already published
+        id: check
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if npm view @openforge-sh/liboqs@$PACKAGE_VERSION version &>/dev/null; then
+            echo "Version $PACKAGE_VERSION already published to npm"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "Version $PACKAGE_VERSION not yet published"
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Configure npm authentication
+        if: steps.check.outputs.skip == 'false'
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_API_KEY }}" >> ~/.npmrc
+
+      - name: Publish to npm
+        if: steps.check.outputs.skip == 'false'
+        run: npm publish --access public
+
+  publish-jsr:
     needs: build-and-test
     runs-on: [self-hosted, wasm]
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
@@ -120,13 +156,6 @@ jobs:
         with:
           name: dist
           path: dist/
-
-      - name: Configure npm authentication
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_API_KEY }}" >> ~/.npmrc
-
-      - name: Publish to npm (latest)
-        run: npm publish --access public
 
       - name: Publish to JSR
         run: npx jsr publish
