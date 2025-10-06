@@ -1,5 +1,6 @@
 /**
 import { isUint8Array } from '../../../core/validation.js';
+import { VERSION } from '../../../index.js';
  * @fileoverview ML-KEM-768 KEM algorithm implementation
  * @module algorithms/kem/ml-kem/ml-kem-768
  * @description
@@ -18,13 +19,14 @@ import { isUint8Array } from '../../../core/validation.js';
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
+import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? '../../../../dist/ml-kem-768.deno.js'
-    : '../../../../dist/ml-kem-768.min.js';
+    ? `https://cdn.openforge.sh/${VERSION}/ml-kem-768.deno.js`
+    : `https://cdn.openforge.sh/${VERSION}/ml-kem-768.min.js`;
 
   const module = await import(modulePath);
   return module.default;
@@ -72,7 +74,7 @@ export const ML_KEM_768_INFO = {
  * import { createMLKEM768 } from '@openforge-sh/liboqs';
  *
  * const kem = await createMLKEM768();
- * const { publicKey, secretKey } = await kem.generateKeyPair();
+ * const { publicKey, secretKey } = kem.generateKeyPair();
  * kem.destroy();
  */
 export async function createMLKEM768() {
@@ -107,8 +109,8 @@ export async function createMLKEM768() {
  * import { createMLKEM768 } from '@openforge-sh/liboqs';
  *
  * const kem = await createMLKEM768();
- * const { publicKey, secretKey } = await kem.generateKeyPair();
- * const { ciphertext, sharedSecret } = await kem.encapsulate(publicKey);
+ * const { publicKey, secretKey } = kem.generateKeyPair();
+ * const { ciphertext, sharedSecret } = kem.encapsulate(publicKey);
  * kem.destroy();
  */
 export class MLKEM768 {
@@ -135,15 +137,15 @@ export class MLKEM768 {
    * Generates a public/private keypair using the algorithm's internal
    * random number generator. The secret key must be kept confidential.
    *
-   * @returns {Promise<{publicKey: Uint8Array, secretKey: Uint8Array}>} Generated keypair
+   * @returns {{publicKey: Uint8Array, secretKey: Uint8Array}}
    * @throws {LibOQSOperationError} If keypair generation fails
    * @throws {LibOQSError} If instance has been destroyed
    * @example
-   * const { publicKey, secretKey } = await kem.generateKeyPair();
+   * const { publicKey, secretKey } = kem.generateKeyPair();
    * // publicKey: 1184 bytes
    * // secretKey: 2400 bytes (keep confidential!)
    */
-  async generateKeyPair() {
+  generateKeyPair() {
     this.#checkDestroyed();
     
     const publicKeyPtr = this.#wasmModule._malloc(ML_KEM_768_INFO.keySize.publicKey);
@@ -178,16 +180,16 @@ export class MLKEM768 {
    * encryption.
    *
    * @param {Uint8Array} publicKey - Recipient's public key (1184 bytes)
-   * @returns {Promise<{ciphertext: Uint8Array, sharedSecret: Uint8Array}>} Encapsulation result
+   * @returns {{ciphertext: Uint8Array, sharedSecret: Uint8Array}}
    * @throws {LibOQSValidationError} If public key is invalid
    * @throws {LibOQSOperationError} If encapsulation fails
    * @throws {LibOQSError} If instance has been destroyed
    * @example
-   * const { ciphertext, sharedSecret } = await kem.encapsulate(recipientPublicKey);
+   * const { ciphertext, sharedSecret } = kem.encapsulate(recipientPublicKey);
    * // ciphertext: 1088 bytes (send to recipient)
    * // sharedSecret: 32 bytes (use for symmetric encryption)
    */
-  async encapsulate(publicKey) {
+  encapsulate(publicKey) {
     this.#checkDestroyed();
     this.#validatePublicKey(publicKey);
     
@@ -233,15 +235,15 @@ export class MLKEM768 {
    *
    * @param {Uint8Array} ciphertext - Ciphertext received (1088 bytes)
    * @param {Uint8Array} secretKey - Recipient's secret key (2400 bytes)
-   * @returns {Promise<Uint8Array>} Recovered shared secret (32 bytes)
+   * @returns {Uint8Array} Recovered shared secret (32 bytes)
    * @throws {LibOQSValidationError} If inputs are invalid
    * @throws {LibOQSOperationError} If decapsulation fails
    * @throws {LibOQSError} If instance has been destroyed
    * @example
-   * const sharedSecret = await kem.decapsulate(ciphertext, mySecretKey);
+   * const sharedSecret = kem.decapsulate(ciphertext, mySecretKey);
    * // sharedSecret: 32 bytes (matches sender's shared secret)
    */
-  async decapsulate(ciphertext, secretKey) {
+  decapsulate(ciphertext, secretKey) {
     this.#checkDestroyed();
     this.#validateCiphertext(ciphertext);
     this.#validateSecretKey(secretKey);

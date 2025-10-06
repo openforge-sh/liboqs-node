@@ -506,7 +506,7 @@ describe('Signature Algorithms', () => {
     test('should generate valid keypair', async () => {
       const sig = await factory();
 
-      const { publicKey, secretKey } = await sig.generateKeyPair();
+      const { publicKey, secretKey } = sig.generateKeyPair();
 
       expect(publicKey).toBeInstanceOf(Uint8Array);
       expect(secretKey).toBeInstanceOf(Uint8Array);
@@ -518,10 +518,10 @@ describe('Signature Algorithms', () => {
 
     test('should sign message and produce valid signature', async () => {
       const sig = await factory();
-      const { secretKey } = await sig.generateKeyPair();
+      const { secretKey } = sig.generateKeyPair();
       const message = new TextEncoder().encode('Test message for signing');
 
-      const signature = await sig.sign(message, secretKey);
+      const signature = sig.sign(message, secretKey);
 
       expect(signature).toBeInstanceOf(Uint8Array);
       expect(signature.length).toBeGreaterThan(0);
@@ -532,11 +532,11 @@ describe('Signature Algorithms', () => {
 
     test('should verify valid signature', async () => {
       const sig = await factory();
-      const { publicKey, secretKey } = await sig.generateKeyPair();
+      const { publicKey, secretKey } = sig.generateKeyPair();
       const message = new TextEncoder().encode('Test message');
 
-      const signature = await sig.sign(message, secretKey);
-      const isValid = await sig.verify(message, signature, publicKey);
+      const signature = sig.sign(message, secretKey);
+      const isValid = sig.verify(message, signature, publicKey);
 
       expect(isValid).toBe(true);
 
@@ -545,12 +545,12 @@ describe('Signature Algorithms', () => {
 
     test('should reject signature with wrong message', async () => {
       const sig = await factory();
-      const { publicKey, secretKey } = await sig.generateKeyPair();
+      const { publicKey, secretKey } = sig.generateKeyPair();
       const message = new TextEncoder().encode('Original message');
       const wrongMessage = new TextEncoder().encode('Wrong message');
 
-      const signature = await sig.sign(message, secretKey);
-      const isValid = await sig.verify(wrongMessage, signature, publicKey);
+      const signature = sig.sign(message, secretKey);
+      const isValid = sig.verify(wrongMessage, signature, publicKey);
 
       expect(isValid).toBe(false);
 
@@ -559,12 +559,12 @@ describe('Signature Algorithms', () => {
 
     test('should reject signature with wrong public key', async () => {
       const sig = await factory();
-      const keypair1 = await sig.generateKeyPair();
-      const keypair2 = await sig.generateKeyPair();
+      const keypair1 = sig.generateKeyPair();
+      const keypair2 = sig.generateKeyPair();
       const message = new TextEncoder().encode('Test message');
 
-      const signature = await sig.sign(message, keypair1.secretKey);
-      const isValid = await sig.verify(message, signature, keypair2.publicKey);
+      const signature = sig.sign(message, keypair1.secretKey);
+      const isValid = sig.verify(message, signature, keypair2.publicKey);
 
       expect(isValid).toBe(false);
 
@@ -573,16 +573,16 @@ describe('Signature Algorithms', () => {
 
     test('should reject tampered signature', async () => {
       const sig = await factory();
-      const { publicKey, secretKey } = await sig.generateKeyPair();
+      const { publicKey, secretKey } = sig.generateKeyPair();
       const message = new TextEncoder().encode('Test message');
 
-      const signature = await sig.sign(message, secretKey);
+      const signature = sig.sign(message, secretKey);
 
       // Tamper with signature
       const tamperedSignature = new Uint8Array(signature);
       tamperedSignature[0] ^= 0xFF;
 
-      const isValid = await sig.verify(message, tamperedSignature, publicKey);
+      const isValid = sig.verify(message, tamperedSignature, publicKey);
 
       expect(isValid).toBe(false);
 
@@ -591,11 +591,11 @@ describe('Signature Algorithms', () => {
 
     test('should produce different signatures on each signing', async () => {
       const sig = await factory();
-      const { secretKey } = await sig.generateKeyPair();
+      const { secretKey } = sig.generateKeyPair();
       const message = new TextEncoder().encode('Test message');
 
-      const signature1 = await sig.sign(message, secretKey);
-      const signature2 = await sig.sign(message, secretKey);
+      const signature1 = sig.sign(message, secretKey);
+      const signature2 = sig.sign(message, secretKey);
 
       // ML-DSA is randomized, so signatures should differ
       expect(compareArrays(signature1, signature2)).not.toBe(0);
@@ -606,8 +606,8 @@ describe('Signature Algorithms', () => {
     test('should produce different keypairs on each generation', async () => {
       const sig = await factory();
 
-      const keypair1 = await sig.generateKeyPair();
-      const keypair2 = await sig.generateKeyPair();
+      const keypair1 = sig.generateKeyPair();
+      const keypair2 = sig.generateKeyPair();
 
       // Public keys should differ
       expect(compareArrays(keypair1.publicKey, keypair2.publicKey)).not.toBe(0);
@@ -619,11 +619,11 @@ describe('Signature Algorithms', () => {
 
     test('should sign and verify empty message', async () => {
       const sig = await factory();
-      const { publicKey, secretKey } = await sig.generateKeyPair();
+      const { publicKey, secretKey } = sig.generateKeyPair();
       const emptyMessage = new Uint8Array(0);
 
-      const signature = await sig.sign(emptyMessage, secretKey);
-      const isValid = await sig.verify(emptyMessage, signature, publicKey);
+      const signature = sig.sign(emptyMessage, secretKey);
+      const isValid = sig.verify(emptyMessage, signature, publicKey);
 
       expect(isValid).toBe(true);
 
@@ -632,12 +632,12 @@ describe('Signature Algorithms', () => {
 
     test('should sign and verify large message', async () => {
       const sig = await factory();
-      const { publicKey, secretKey } = await sig.generateKeyPair();
+      const { publicKey, secretKey } = sig.generateKeyPair();
       // Create 1MB message
       const largeMessage = new Uint8Array(1024 * 1024).fill(42);
 
-      const signature = await sig.sign(largeMessage, secretKey);
-      const isValid = await sig.verify(largeMessage, signature, publicKey);
+      const signature = sig.sign(largeMessage, secretKey);
+      const isValid = sig.verify(largeMessage, signature, publicKey);
 
       expect(isValid).toBe(true);
 
@@ -661,17 +661,17 @@ describe('Signature Algorithms', () => {
       const sig = await factory();
       sig.destroy();
 
-      await expect(sig.generateKeyPair()).rejects.toThrow(/destroyed/);
+      expect(() => sig.generateKeyPair()).toThrow(/destroyed/);
     });
 
     test('should throw error on invalid public key size', async () => {
       const sig = await factory();
-      const { secretKey } = await sig.generateKeyPair();
+      const { secretKey } = sig.generateKeyPair();
       const message = new TextEncoder().encode('Test');
-      const signature = await sig.sign(message, secretKey);
+      const signature = sig.sign(message, secretKey);
       const invalidPublicKey = new Uint8Array(10); // Wrong size
 
-      await expect(sig.verify(message, signature, invalidPublicKey)).rejects.toThrow(/Invalid public key/);
+      expect(() => sig.verify(message, signature, invalidPublicKey)).toThrow(/Invalid public key/);
 
       sig.destroy();
     });
@@ -681,18 +681,18 @@ describe('Signature Algorithms', () => {
       const message = new TextEncoder().encode('Test');
       const invalidSecretKey = new Uint8Array(10); // Wrong size
 
-      await expect(sig.sign(message, invalidSecretKey)).rejects.toThrow(/Invalid secret key/);
+      expect(() => sig.sign(message, invalidSecretKey)).toThrow(/Invalid secret key/);
 
       sig.destroy();
     });
 
     test('should throw error on invalid signature size', async () => {
       const sig = await factory();
-      const { publicKey } = await sig.generateKeyPair();
+      const { publicKey } = sig.generateKeyPair();
       const message = new TextEncoder().encode('Test');
       const invalidSignature = new Uint8Array(0); // Empty signature
 
-      await expect(sig.verify(message, invalidSignature, publicKey)).rejects.toThrow(/Invalid signature/);
+      expect(() => sig.verify(message, invalidSignature, publicKey)).toThrow(/Invalid signature/);
 
       sig.destroy();
     });

@@ -16,13 +16,14 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
+import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? '../../../../dist/cross-rsdp-256-balanced.deno.js'
-    : '../../../../dist/cross-rsdp-256-balanced.min.js';
+    ? `https://cdn.openforge.sh/${VERSION}/cross-rsdp-256-balanced.deno.js`
+    : `https://cdn.openforge.sh/${VERSION}/cross-rsdp-256-balanced.min.js`;
 
   const module = await import(modulePath);
   return module.default;
@@ -68,7 +69,7 @@ export const CROSS_RSDP_256_BALANCED_INFO = {
  * import { createCrossRsdp256Balanced } from '@openforge-sh/liboqs';
  *
  * const sig = await createCrossRsdp256Balanced();
- * const { publicKey, secretKey } = await sig.generateKeyPair();
+ * const { publicKey, secretKey } = sig.generateKeyPair();
  * sig.destroy();
  */
 export async function createCrossRsdp256Balanced() {
@@ -108,14 +109,14 @@ export async function createCrossRsdp256Balanced() {
  * const sig = await createCrossRsdp256Balanced(moduleFactory);
  *
  * // Generate keypair
- * const { publicKey, secretKey } = await sig.generateKeyPair();
+ * const { publicKey, secretKey } = sig.generateKeyPair();
  *
  * // Sign message
  * const message = new TextEncoder().encode('Hello, quantum world!');
- * const signature = await sig.sign(message, secretKey);
+ * const signature = sig.sign(message, secretKey);
  *
  * // Verify signature
- * const isValid = await sig.verify(message, signature, publicKey);
+ * const isValid = sig.verify(message, signature, publicKey);
  * console.log('Valid:', isValid); // true
  *
  * // Cleanup
@@ -141,16 +142,16 @@ export class CrossRsdp256Balanced {
    * Generate a new CROSS-rsdp-256-balanced keypair
    *
    * @async
-   * @returns {Promise<{publicKey: Uint8Array, secretKey: Uint8Array}>} Generated keypair
+   * @returns {{publicKey: Uint8Array, secretKey: Uint8Array}}
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSOperationError} If key generation fails
    *
    * @example
-   * const { publicKey, secretKey } = await sig.generateKeyPair();
+   * const { publicKey, secretKey } = sig.generateKeyPair();
    * console.log('Public key:', publicKey.length);  // 153 bytes
    * console.log('Secret key:', secretKey.length);  // 64 bytes
    */
-  async generateKeyPair() {
+  generateKeyPair() {
     this.#checkDestroyed();
 
     const publicKey = new Uint8Array(CROSS_RSDP_256_BALANCED_INFO.keySize.publicKey);
@@ -182,17 +183,17 @@ export class CrossRsdp256Balanced {
    * @async
    * @param {Uint8Array} message - Message to sign (any length)
    * @param {Uint8Array} secretKey - Secret key (64 bytes)
-   * @returns {Promise<Uint8Array>} Signature (variable length, max 53527 bytes)
+   * @returns {Uint8Array} Signature (variable length, max 53527 bytes)
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If secret key size is invalid
    * @throws {LibOQSOperationError} If signing fails
    *
    * @example
    * const message = new TextEncoder().encode('Sign this message');
-   * const signature = await sig.sign(message, secretKey);
+   * const signature = sig.sign(message, secretKey);
    * console.log('Signature length:', signature.length);
    */
-  async sign(message, secretKey) {
+  sign(message, secretKey) {
     this.#checkDestroyed();
     this.#validateMessage(message);
     this.#validateSecretKey(secretKey);
@@ -239,19 +240,19 @@ export class CrossRsdp256Balanced {
    * @param {Uint8Array} message - Original message
    * @param {Uint8Array} signature - Signature to verify
    * @param {Uint8Array} publicKey - Public key (153 bytes)
-   * @returns {Promise<boolean>} True if signature is valid, false otherwise
+   * @returns {boolean} True if signature is valid, false otherwise
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If public key or signature size is invalid
    *
    * @example
-   * const isValid = await sig.verify(message, signature, publicKey);
+   * const isValid = sig.verify(message, signature, publicKey);
    * if (isValid) {
    *   console.log('Signature is valid!');
    * } else {
    *   console.log('Signature verification failed');
    * }
    */
-  async verify(message, signature, publicKey) {
+  verify(message, signature, publicKey) {
     this.#checkDestroyed();
     this.#validateMessage(message);
     this.#validatePublicKey(publicKey);

@@ -16,13 +16,14 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
+import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? '../../../../dist/ntru-hps-2048-509.deno.js'
-    : '../../../../dist/ntru-hps-2048-509.min.js';
+    ? `https://cdn.openforge.sh/${VERSION}/ntru-hps-2048-509.deno.js`
+    : `https://cdn.openforge.sh/${VERSION}/ntru-hps-2048-509.min.js`;
 
   const module = await import(modulePath);
   return module.default;
@@ -70,7 +71,7 @@ export const NTRU_HPS_2048_509_INFO = {
  * import { createNTRUHps2048509 } from '@openforge-sh/liboqs';
  *
  * const kem = await createNTRUHps2048509();
- * const { publicKey, secretKey } = await kem.generateKeyPair();
+ * const { publicKey, secretKey } = kem.generateKeyPair();
  * kem.destroy();
  */
 export async function createNTRUHps2048509() {
@@ -110,13 +111,13 @@ export async function createNTRUHps2048509() {
  * const kem = await createNTRUHps2048509();
  *
  * // Generate keypair
- * const { publicKey, secretKey } = await kem.generateKeyPair();
+ * const { publicKey, secretKey } = kem.generateKeyPair();
  *
  * // Encapsulate
- * const { ciphertext, sharedSecret: senderSecret } = await kem.encapsulate(publicKey);
+ * const { ciphertext, sharedSecret: senderSecret } = kem.encapsulate(publicKey);
  *
  * // Decapsulate
- * const receiverSecret = await kem.decapsulate(ciphertext, secretKey);
+ * const receiverSecret = kem.decapsulate(ciphertext, secretKey);
  *
  * // Cleanup
  * kem.destroy();
@@ -141,16 +142,16 @@ export class NTRUHps2048509 {
    * Generate a new NTRU-HPS-2048-509 keypair
    *
    * @async
-   * @returns {Promise<{publicKey: Uint8Array, secretKey: Uint8Array}>} Generated keypair
+   * @returns {{publicKey: Uint8Array, secretKey: Uint8Array}}
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSOperationError} If key generation fails
    *
    * @example
-   * const { publicKey, secretKey } = await kem.generateKeyPair();
+   * const { publicKey, secretKey } = kem.generateKeyPair();
    * console.log('Public key:', publicKey.length);  // 699 bytes
    * console.log('Secret key:', secretKey.length);  // 935 bytes
    */
-  async generateKeyPair() {
+  generateKeyPair() {
     this.#checkDestroyed();
 
     const publicKey = new Uint8Array(NTRU_HPS_2048_509_INFO.keySize.publicKey);
@@ -181,17 +182,18 @@ export class NTRUHps2048509 {
    *
    * @async
    * @param {Uint8Array} publicKey - Public key for encapsulation (699 bytes)
-   * @returns {Promise<{ciphertext: Uint8Array, sharedSecret: Uint8Array}>} Ciphertext and shared secret
+   * @returns {{ciphertext: Uint8Array, sharedSecret: Uint8Array}}
+   * @returns {Uint8Array} returns.sharedSecret - Shared secret Ciphertext and shared secret
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If public key is invalid
    * @throws {LibOQSOperationError} If encapsulation fails
    *
    * @example
-   * const { ciphertext, sharedSecret } = await kem.encapsulate(publicKey);
+   * const { ciphertext, sharedSecret } = kem.encapsulate(publicKey);
    * console.log('Ciphertext:', ciphertext.length);     // 699 bytes
    * console.log('Shared secret:', sharedSecret.length); // 32 bytes
    */
-  async encapsulate(publicKey) {
+  encapsulate(publicKey) {
     this.#checkDestroyed();
     this.#validatePublicKey(publicKey);
 
@@ -233,16 +235,16 @@ export class NTRUHps2048509 {
    * @async
    * @param {Uint8Array} ciphertext - Ciphertext to decapsulate (699 bytes)
    * @param {Uint8Array} secretKey - Secret key for decapsulation (935 bytes)
-   * @returns {Promise<Uint8Array>} Shared secret (32 bytes)
+   * @returns {Uint8Array} Shared secret (32 bytes)
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If inputs are invalid
    * @throws {LibOQSOperationError} If decapsulation fails
    *
    * @example
-   * const sharedSecret = await kem.decapsulate(ciphertext, secretKey);
+   * const sharedSecret = kem.decapsulate(ciphertext, secretKey);
    * console.log('Shared secret:', sharedSecret.length); // 32 bytes
    */
-  async decapsulate(ciphertext, secretKey) {
+  decapsulate(ciphertext, secretKey) {
     this.#checkDestroyed();
     this.#validateCiphertext(ciphertext);
     this.#validateSecretKey(secretKey);

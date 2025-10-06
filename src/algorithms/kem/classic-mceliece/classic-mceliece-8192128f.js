@@ -17,13 +17,14 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
+import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? '../../../../dist/classic-mceliece-8192128f.deno.js'
-    : '../../../../dist/classic-mceliece-8192128f.min.js';
+    ? `https://cdn.openforge.sh/${VERSION}/classic-mceliece-8192128f.deno.js`
+    : `https://cdn.openforge.sh/${VERSION}/classic-mceliece-8192128f.min.js`;
 
   const module = await import(modulePath);
   return module.default;
@@ -99,8 +100,8 @@ export async function createClassicMcEliece8192128f() {
  * import { createClassicMcEliece8192128f } from '@openforge-sh/liboqs';
  *
  * const kem = await createClassicMcEliece8192128f();
- * const { publicKey, secretKey } = await kem.generateKeyPair();
- * const { ciphertext, sharedSecret } = await kem.encapsulate(publicKey);
+ * const { publicKey, secretKey } = kem.generateKeyPair();
+ * const { ciphertext, sharedSecret } = kem.encapsulate(publicKey);
  * kem.destroy();
  */
 export class ClassicMcEliece8192128f {
@@ -127,15 +128,15 @@ export class ClassicMcEliece8192128f {
    * Generates a public/private keypair using the algorithm's internal
    * random number generator. The secret key must be kept confidential.
    *
-   * @returns {Promise<{publicKey: Uint8Array, secretKey: Uint8Array}>} Generated keypair
+   * @returns {{publicKey: Uint8Array, secretKey: Uint8Array}}
    * @throws {LibOQSOperationError} If keypair generation fails
    * @throws {LibOQSError} If instance has been destroyed
    * @example
-   * const { publicKey, secretKey } = await kem.generateKeyPair();
+   * const { publicKey, secretKey } = kem.generateKeyPair();
    * // publicKey: 1357824 bytes
    * // secretKey: 14120 bytes (keep confidential!)
    */
-  async generateKeyPair() {
+  generateKeyPair() {
     this.#checkDestroyed();
 
     const publicKeyPtr = this.#wasmModule._malloc(CLASSIC_MCELIECE_8192128F_INFO.keySize.publicKey);
@@ -170,16 +171,16 @@ export class ClassicMcEliece8192128f {
    * encryption.
    *
    * @param {Uint8Array} publicKey - Recipient's public key (1357824 bytes)
-   * @returns {Promise<{ciphertext: Uint8Array, sharedSecret: Uint8Array}>} Encapsulation result
+   * @returns {{ciphertext: Uint8Array, sharedSecret: Uint8Array}}
    * @throws {LibOQSValidationError} If public key is invalid
    * @throws {LibOQSOperationError} If encapsulation fails
    * @throws {LibOQSError} If instance has been destroyed
    * @example
-   * const { ciphertext, sharedSecret } = await kem.encapsulate(recipientPublicKey);
+   * const { ciphertext, sharedSecret } = kem.encapsulate(recipientPublicKey);
    * // ciphertext: 208 bytes (send to recipient)
    * // sharedSecret: 32 bytes (use for symmetric encryption)
    */
-  async encapsulate(publicKey) {
+  encapsulate(publicKey) {
     this.#checkDestroyed();
     this.#validatePublicKey(publicKey);
 
@@ -225,15 +226,15 @@ export class ClassicMcEliece8192128f {
    *
    * @param {Uint8Array} ciphertext - Ciphertext received (208 bytes)
    * @param {Uint8Array} secretKey - Recipient's secret key (14120 bytes)
-   * @returns {Promise<Uint8Array>} Recovered shared secret (32 bytes)
+   * @returns {Uint8Array} Recovered shared secret (32 bytes)
    * @throws {LibOQSValidationError} If inputs are invalid
    * @throws {LibOQSOperationError} If decapsulation fails
    * @throws {LibOQSError} If instance has been destroyed
    * @example
-   * const sharedSecret = await kem.decapsulate(ciphertext, mySecretKey);
+   * const sharedSecret = kem.decapsulate(ciphertext, mySecretKey);
    * // sharedSecret: 32 bytes (matches sender's shared secret)
    */
-  async decapsulate(ciphertext, secretKey) {
+  decapsulate(ciphertext, secretKey) {
     this.#checkDestroyed();
     this.#validateCiphertext(ciphertext);
     this.#validateSecretKey(secretKey);

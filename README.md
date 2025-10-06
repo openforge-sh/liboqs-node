@@ -109,7 +109,7 @@ import { createMLKEM768 } from "jsr:@openforge-sh/liboqs";
 import { createMLKEM768 } from "npm:@openforge-sh/liboqs";
 
 const kem = await createMLKEM768();
-const { publicKey, secretKey } = await kem.generateKeyPair();
+const { publicKey, secretKey } = kem.generateKeyPair();
 kem.destroy();
 ```
 
@@ -136,14 +136,17 @@ deno run --allow-read jsr:@openforge-sh/liboqs/cli kem keygen ml-kem-768
 
 # Or from npm
 deno run --allow-read npm:@openforge-sh/liboqs/cli kem keygen ml-kem-768
+```
 
+```json
 # Or add to deno.json tasks:
 {
   "tasks": {
     "liboqs": "deno run --allow-read jsr:@openforge-sh/liboqs/cli"
   }
 }
-
+```
+```bash
 # Then run:
 deno task liboqs list --kem
 ```
@@ -212,14 +215,14 @@ import { createMLKEM768 } from '@openforge-sh/liboqs';
 
 // Alice generates keypair
 const alice = await createMLKEM768();
-const { publicKey, secretKey } = await alice.generateKeyPair();
+const { publicKey, secretKey } = alice.generateKeyPair();
 
 // Bob encapsulates shared secret
 const bob = await createMLKEM768();
-const { ciphertext, sharedSecret } = await bob.encapsulate(publicKey);
+const { ciphertext, sharedSecret } = bob.encapsulate(publicKey);
 
 // Alice decapsulates
-const aliceSecret = await alice.decapsulate(ciphertext, secretKey);
+const aliceSecret = alice.decapsulate(ciphertext, secretKey);
 
 // Verify shared secrets match
 console.log('Secrets match:', Buffer.compare(sharedSecret, aliceSecret) === 0);
@@ -235,12 +238,12 @@ bob.destroy();
 import { createMLDSA65 } from '@openforge-sh/liboqs';
 
 const signer = await createMLDSA65();
-const { publicKey, secretKey } = await signer.generateKeyPair();
+const { publicKey, secretKey } = signer.generateKeyPair();
 
 const message = new TextEncoder().encode('Hello, quantum world!');
-const signature = await signer.sign(message, secretKey);
+const signature = signer.sign(message, secretKey);
 
-const isValid = await signer.verify(message, signature, publicKey);
+const isValid = signer.verify(message, signature, publicKey);
 console.log('Valid:', isValid); // true
 
 signer.destroy();
@@ -335,19 +338,45 @@ import { LibOQSError, LibOQSInitError } from '@openforge-sh/liboqs/errors';
 │   │       ├── mayo/             # MAYO (4 variants)
 │   │       ├── snova/            # SNOVA (12 variants)
 │   │       └── uov/              # UOV (12 variants)
+│   ├── cli/
+│   │   ├── commands/             # CLI command implementations
+│   │   │   ├── info.js           # Algorithm information
+│   │   │   ├── kem.js            # KEM operations (keygen, encaps, decaps)
+│   │   │   ├── sig.js            # Signature operations (keygen, sign, verify)
+│   │   │   └── list.js           # List available algorithms
+│   │   ├── algorithms.js         # Algorithm registry
+│   │   ├── index.js              # CLI entry point
+│   │   ├── io.js                 # File I/O utilities
+│   │   └── parser.js             # Command parser
 │   ├── core/
-│   │   └── errors.js             # Error classes
+│   │   ├── errors.js             # Error classes
+│   │   └── validation.js         # Input validation utilities
 │   ├── types/                    # TypeScript definitions
+│   │   ├── algorithms.d.ts
+│   │   ├── errors.d.ts
+│   │   └── index.d.ts
 │   ├── index.js                  # Main entry (all 97 algorithms)
 │   ├── kem.js                    # KEM exports (32 algorithms)
 │   └── sig.js                    # Signature exports (65 algorithms)
-└── dist/                         # WASM modules (97 total, ~100-200KB each)
-    ├── ml-kem-512.min.js
-    ├── classic-mceliece-348864.min.js
-    ├── ml-dsa-44.min.js
-    ├── falcon-512.min.js
-    ├── sphincs-sha2-128f-simple.min.js
-    └── ... (and others)
+├── bin/
+│   └── cli.js                    # CLI executable entry point
+├── tests/
+│   ├── kem.test.ts
+│   ├── sig.test.ts
+│   ├── cli.test.ts
+│   └── deno/                     # Deno-specific tests
+│       ├── kem.test.ts
+│       ├── sig.test.ts
+│       └── cli.test.ts
+├── algorithms.json               # Algorithm registry and metadata
+├── build.sh                      # WASM build script
+└── CDN (cdn.openforge.sh)        # WASM modules (97 × 2 = 194 files, ~100-500KB each)
+    └── {version}/                # Version-specific directory (e.g., 0.14.2/)
+        ├── ml-kem-512.min.js     # Node.js/Browser module
+        ├── ml-kem-512.deno.js    # Deno module
+        ├── falcon-512.min.js
+        ├── falcon-512.deno.js
+        └── ... (and 190 others)
 ```
 
 ## Architecture
@@ -378,14 +407,14 @@ WebAssembly modules allocate native memory outside the JavaScript heap. When you
 ```javascript
 // Pattern 1: Simple cleanup
 const kem = await createMLKEM768();
-const { publicKey, secretKey } = await kem.generateKeyPair();
+const { publicKey, secretKey } = kem.generateKeyPair();
 kem.destroy();
 
 // Pattern 2: Error-safe cleanup (recommended)
 const kem = await createMLKEM768();
 try {
-  const { publicKey, secretKey } = await kem.generateKeyPair();
-  const { ciphertext, sharedSecret } = await kem.encapsulate(publicKey);
+  const { publicKey, secretKey } = kem.generateKeyPair();
+  const { ciphertext, sharedSecret } = kem.encapsulate(publicKey);
   // ... use results ...
 } finally {
   kem.destroy(); // Always runs, even if errors occur
@@ -394,10 +423,10 @@ try {
 // Pattern 3: Multiple operations
 const sig = await createMLDSA65();
 try {
-  const { publicKey, secretKey } = await sig.generateKeyPair();
+  const { publicKey, secretKey } = sig.generateKeyPair();
   const message = new TextEncoder().encode('Hello!');
-  const signature = await sig.sign(message, secretKey);
-  const isValid = await sig.verify(message, signature, publicKey);
+  const signature = sig.sign(message, secretKey);
+  const isValid = sig.verify(message, signature, publicKey);
   return isValid;
 } finally {
   sig.destroy();

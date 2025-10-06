@@ -32,7 +32,7 @@ async function sigKeygen(algorithm, options) {
   const sig = await factory();
 
   try {
-    const { publicKey, secretKey } = await sig.generateKeyPair();
+    const { publicKey, secretKey } = sig.generateKeyPair();
 
     if (options.outputDir) {
       await mkdir(options.outputDir, { recursive: true });
@@ -83,7 +83,7 @@ async function sigVerify(algorithm, messageInput, signatureInput, publicKeyInput
     const signature = await readInput(signatureInput, options.inputFormat);
     const publicKey = await readInput(publicKeyInput, options.inputFormat);
 
-    const isValid = await sig.verify(message, signature, publicKey);
+    const isValid = sig.verify(message, signature, publicKey);
 
     if (isValid) {
       console.log('✓ Signature is valid');

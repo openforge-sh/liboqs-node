@@ -31,7 +31,7 @@ async function kemKeygen(algorithm, options) {
   const kem = await factory();
 
   try {
-    const { publicKey, secretKey } = await kem.generateKeyPair();
+    const { publicKey, secretKey } = kem.generateKeyPair();
 
     if (options.outputDir) {
       await mkdir(options.outputDir, { recursive: true });
@@ -59,7 +59,7 @@ async function kemEncapsulate(algorithm, publicKeyInput, options) {
 
   try {
     const publicKey = await readInput(publicKeyInput, options.inputFormat);
-    const { ciphertext, sharedSecret } = await kem.encapsulate(publicKey);
+    const { ciphertext, sharedSecret } = kem.encapsulate(publicKey);
 
     console.log('Ciphertext:');
     await writeOutput(ciphertext, options.format, options.output ? options.output + '.ct' : null);
@@ -81,7 +81,7 @@ async function kemDecapsulate(algorithm, ciphertextInput, secretKeyInput, option
   try {
     const ciphertext = await readInput(ciphertextInput, options.inputFormat);
     const secretKey = await readInput(secretKeyInput, options.inputFormat);
-    const sharedSecret = await kem.decapsulate(ciphertext, secretKey);
+    const sharedSecret = kem.decapsulate(ciphertext, secretKey);
 
     console.log('Shared Secret:');
     await writeOutput(sharedSecret, options.format, options.output);

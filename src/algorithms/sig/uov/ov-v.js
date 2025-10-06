@@ -16,13 +16,14 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
+import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? '../../../../dist/ov-v.deno.js'
-    : '../../../../dist/ov-v.min.js';
+    ? `https://cdn.openforge.sh/${VERSION}/ov-v.deno.js`
+    : `https://cdn.openforge.sh/${VERSION}/ov-v.min.js`;
 
   const module = await import(modulePath);
   return module.default;
@@ -68,7 +69,7 @@ export const OV_V_INFO = {
  * import { createOVV } from '@openforge-sh/liboqs';
  *
  * const sig = await createOVV();
- * const { publicKey, secretKey } = await sig.generateKeyPair();
+ * const { publicKey, secretKey } = sig.generateKeyPair();
  * sig.destroy();
  */
 export async function createOVV() {
@@ -108,14 +109,14 @@ export async function createOVV() {
  * const sig = await createOVV();
  *
  * // Generate keypair
- * const { publicKey, secretKey } = await sig.generateKeyPair();
+ * const { publicKey, secretKey } = sig.generateKeyPair();
  *
  * // Sign message
  * const message = new TextEncoder().encode('Hello, quantum world!');
- * const signature = await sig.sign(message, secretKey);
+ * const signature = sig.sign(message, secretKey);
  *
  * // Verify signature
- * const isValid = await sig.verify(message, signature, publicKey);
+ * const isValid = sig.verify(message, signature, publicKey);
  *
  * // Cleanup
  * sig.destroy();
@@ -140,16 +141,16 @@ export class OVV {
    * Generate a new OV-V keypair
    *
    * @async
-   * @returns {Promise<{publicKey: Uint8Array, secretKey: Uint8Array}>} Generated keypair
+   * @returns {{publicKey: Uint8Array, secretKey: Uint8Array}}
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSOperationError} If key generation fails
    *
    * @example
-   * const { publicKey, secretKey } = await sig.generateKeyPair();
+   * const { publicKey, secretKey } = sig.generateKeyPair();
    * console.log('Public key:', publicKey.length);  // 2869440 bytes
    * console.log('Secret key:', secretKey.length);  // 2436704 bytes
    */
-  async generateKeyPair() {
+  generateKeyPair() {
     this.#checkDestroyed();
 
     const publicKey = new Uint8Array(OV_V_INFO.keySize.publicKey);
@@ -181,17 +182,17 @@ export class OVV {
    * @async
    * @param {Uint8Array} message - Message to sign (arbitrary length)
    * @param {Uint8Array} secretKey - Secret key for signing (2436704 bytes)
-   * @returns {Promise<Uint8Array>} Digital signature (up to 260 bytes)
+   * @returns {Uint8Array} Digital signature (up to 260 bytes)
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If inputs are invalid
    * @throws {LibOQSOperationError} If signing fails
    *
    * @example
    * const message = new TextEncoder().encode('Hello!');
-   * const signature = await sig.sign(message, secretKey);
+   * const signature = sig.sign(message, secretKey);
    * console.log('Signature:', signature.length); // 260 bytes
    */
-  async sign(message, secretKey) {
+  sign(message, secretKey) {
     this.#checkDestroyed();
     this.#validateMessage(message);
     this.#validateSecretKey(secretKey);
@@ -240,17 +241,17 @@ export class OVV {
    * @param {Uint8Array} message - Original message that was signed
    * @param {Uint8Array} signature - Signature to verify
    * @param {Uint8Array} publicKey - Public key for verification (2869440 bytes)
-   * @returns {Promise<boolean>} True if signature is valid, false otherwise
+   * @returns {boolean} True if signature is valid, false otherwise
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If inputs are invalid
    *
    * @example
-   * const isValid = await sig.verify(message, signature, publicKey);
+   * const isValid = sig.verify(message, signature, publicKey);
    * if (isValid) {
    *   console.log('Signature is valid!');
    * }
    */
-  async verify(message, signature, publicKey) {
+  verify(message, signature, publicKey) {
     this.#checkDestroyed();
     this.#validateMessage(message);
     this.#validateSignature(signature);

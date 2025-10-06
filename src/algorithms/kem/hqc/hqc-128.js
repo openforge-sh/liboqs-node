@@ -16,13 +16,14 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
+import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? '../../../../dist/hqc-128.deno.js'
-    : '../../../../dist/hqc-128.min.js';
+    ? `https://cdn.openforge.sh/${VERSION}/hqc-128.deno.js`
+    : `https://cdn.openforge.sh/${VERSION}/hqc-128.min.js`;
 
   const module = await import(modulePath);
   return module.default;
@@ -70,7 +71,7 @@ export const HQC_128_INFO = {
  * import { createHQC128 } from '@openforge-sh/liboqs';
  *
  * const kem = await createHQC128();
- * const { publicKey, secretKey } = await kem.generateKeyPair();
+ * const { publicKey, secretKey } = kem.generateKeyPair();
  * kem.destroy();
  */
 export async function createHQC128() {
@@ -110,13 +111,13 @@ export async function createHQC128() {
  * const kem = await createHQC128();
  *
  * // Generate keypair
- * const { publicKey, secretKey } = await kem.generateKeyPair();
+ * const { publicKey, secretKey } = kem.generateKeyPair();
  *
  * // Encapsulate
- * const { ciphertext, sharedSecret } = await kem.encapsulate(publicKey);
+ * const { ciphertext, sharedSecret } = kem.encapsulate(publicKey);
  *
  * // Decapsulate
- * const recoveredSecret = await kem.decapsulate(ciphertext, secretKey);
+ * const recoveredSecret = kem.decapsulate(ciphertext, secretKey);
  *
  * // Cleanup
  * kem.destroy();
@@ -141,16 +142,16 @@ export class HQC128 {
    * Generate a new HQC-128 keypair
    *
    * @async
-   * @returns {Promise<{publicKey: Uint8Array, secretKey: Uint8Array}>} Generated keypair
+   * @returns {{publicKey: Uint8Array, secretKey: Uint8Array}}
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSOperationError} If key generation fails
    *
    * @example
-   * const { publicKey, secretKey } = await kem.generateKeyPair();
+   * const { publicKey, secretKey } = kem.generateKeyPair();
    * console.log('Public key:', publicKey.length);  // 2249 bytes
    * console.log('Secret key:', secretKey.length);  // 2305 bytes
    */
-  async generateKeyPair() {
+  generateKeyPair() {
     this.#checkDestroyed();
 
     const publicKey = new Uint8Array(HQC_128_INFO.keySize.publicKey);
@@ -181,17 +182,18 @@ export class HQC128 {
    *
    * @async
    * @param {Uint8Array} publicKey - Public key (2249 bytes)
-   * @returns {Promise<{ciphertext: Uint8Array, sharedSecret: Uint8Array}>} Ciphertext and shared secret
+   * @returns {{ciphertext: Uint8Array, sharedSecret: Uint8Array}}
+   * @returns {Uint8Array} returns.sharedSecret - Shared secret Ciphertext and shared secret
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If public key size is invalid
    * @throws {LibOQSOperationError} If encapsulation fails
    *
    * @example
-   * const { ciphertext, sharedSecret } = await kem.encapsulate(publicKey);
+   * const { ciphertext, sharedSecret } = kem.encapsulate(publicKey);
    * console.log('Ciphertext:', ciphertext.length);      // 4433 bytes
    * console.log('Shared secret:', sharedSecret.length); // 64 bytes
    */
-  async encapsulate(publicKey) {
+  encapsulate(publicKey) {
     this.#checkDestroyed();
     this.#validatePublicKey(publicKey);
 
@@ -233,16 +235,16 @@ export class HQC128 {
    * @async
    * @param {Uint8Array} ciphertext - Ciphertext (4433 bytes)
    * @param {Uint8Array} secretKey - Secret key (2305 bytes)
-   * @returns {Promise<Uint8Array>} Shared secret (64 bytes)
+   * @returns {Uint8Array} Shared secret (64 bytes)
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If ciphertext or secret key size is invalid
    * @throws {LibOQSOperationError} If decapsulation fails
    *
    * @example
-   * const sharedSecret = await kem.decapsulate(ciphertext, secretKey);
+   * const sharedSecret = kem.decapsulate(ciphertext, secretKey);
    * console.log('Recovered secret:', sharedSecret.length); // 64 bytes
    */
-  async decapsulate(ciphertext, secretKey) {
+  decapsulate(ciphertext, secretKey) {
     this.#checkDestroyed();
     this.#validateCiphertext(ciphertext);
     this.#validateSecretKey(secretKey);

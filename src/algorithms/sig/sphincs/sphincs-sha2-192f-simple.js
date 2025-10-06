@@ -17,13 +17,14 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
+import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? '../../../../dist/sphincs-sha2-192f-simple.deno.js'
-    : '../../../../dist/sphincs-sha2-192f-simple.min.js';
+    ? `https://cdn.openforge.sh/${VERSION}/sphincs-sha2-192f-simple.deno.js`
+    : `https://cdn.openforge.sh/${VERSION}/sphincs-sha2-192f-simple.min.js`;
 
   const module = await import(modulePath);
   return module.default;
@@ -69,7 +70,7 @@ export const SPHINCSPLUS_SHA2_192F_SIMPLE_INFO = {
  * import { createSphincsSha2192fSimple } from '@openforge-sh/liboqs';
  *
  * const sig = await createSphincsSha2192fSimple();
- * const { publicKey, secretKey } = await sig.generateKeyPair();
+ * const { publicKey, secretKey } = sig.generateKeyPair();
  * sig.destroy();
  */
 export async function createSphincsSha2192fSimple() {
@@ -109,14 +110,14 @@ export async function createSphincsSha2192fSimple() {
  * const sig = await createSphincsSha2192fSimple();
  *
  * // Generate keypair
- * const { publicKey, secretKey } = await sig.generateKeyPair();
+ * const { publicKey, secretKey } = sig.generateKeyPair();
  *
  * // Sign message
  * const message = new TextEncoder().encode('Hello, world!');
- * const signature = await sig.sign(message, secretKey);
+ * const signature = sig.sign(message, secretKey);
  *
  * // Verify signature
- * const isValid = await sig.verify(message, signature, publicKey);
+ * const isValid = sig.verify(message, signature, publicKey);
  *
  * // Cleanup
  * sig.destroy();
@@ -141,16 +142,16 @@ export class SphincsSha2192fSimple {
    * Generate a new SPHINCS+-sha2-192f-simple keypair
    *
    * @async
-   * @returns {Promise<{publicKey: Uint8Array, secretKey: Uint8Array}>} Generated keypair
+   * @returns {{publicKey: Uint8Array, secretKey: Uint8Array}}
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSOperationError} If key generation fails
    *
    * @example
-   * const { publicKey, secretKey } = await sig.generateKeyPair();
+   * const { publicKey, secretKey } = sig.generateKeyPair();
    * console.log('Public key:', publicKey.length);  // 48 bytes
    * console.log('Secret key:', secretKey.length);  // 96 bytes
    */
-  async generateKeyPair() {
+  generateKeyPair() {
     this.#checkDestroyed();
 
     const publicKey = new Uint8Array(SPHINCSPLUS_SHA2_192F_SIMPLE_INFO.keySize.publicKey);
@@ -182,17 +183,17 @@ export class SphincsSha2192fSimple {
    * @async
    * @param {Uint8Array} message - Message to sign (any length)
    * @param {Uint8Array} secretKey - Secret key (96 bytes)
-   * @returns {Promise<Uint8Array>} Signature (35664 bytes)
+   * @returns {Uint8Array} Signature (35664 bytes)
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If secret key size is invalid
    * @throws {LibOQSOperationError} If signing fails
    *
    * @example
    * const message = new TextEncoder().encode('Hello, world!');
-   * const signature = await sig.sign(message, secretKey);
+   * const signature = sig.sign(message, secretKey);
    * console.log('Signature:', signature.length);  // 35664 bytes
    */
-  async sign(message, secretKey) {
+  sign(message, secretKey) {
     this.#checkDestroyed();
     this.#validateSecretKey(secretKey);
 
@@ -240,15 +241,15 @@ export class SphincsSha2192fSimple {
    * @param {Uint8Array} message - Original message (any length)
    * @param {Uint8Array} signature - Signature to verify
    * @param {Uint8Array} publicKey - Public key (48 bytes)
-   * @returns {Promise<boolean>} True if signature is valid, false otherwise
+   * @returns {boolean} True if signature is valid, false otherwise
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If public key or signature size is invalid
    *
    * @example
-   * const isValid = await sig.verify(message, signature, publicKey);
+   * const isValid = sig.verify(message, signature, publicKey);
    * console.log('Signature valid:', isValid);
    */
-  async verify(message, signature, publicKey) {
+  verify(message, signature, publicKey) {
     this.#checkDestroyed();
     this.#validatePublicKey(publicKey);
     this.#validateSignature(signature);

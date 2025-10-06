@@ -1,6 +1,6 @@
 {
   "name": "@openforge-sh/liboqs",
-  "version": "0.14.1",
+  "version": "0.14.2",
   "description": "Post-quantum cryptography for Node.js and browsers via WebAssembly bindings to liboqs",
   "type": "module",
   "main": "src/index.js",

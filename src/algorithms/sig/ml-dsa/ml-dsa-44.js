@@ -17,13 +17,14 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
+import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? '../../../../dist/ml-dsa-44.deno.js'
-    : '../../../../dist/ml-dsa-44.min.js';
+    ? `https://cdn.openforge.sh/${VERSION}/ml-dsa-44.deno.js`
+    : `https://cdn.openforge.sh/${VERSION}/ml-dsa-44.min.js`;
 
   const module = await import(modulePath);
   return module.default;
@@ -94,12 +95,12 @@ export async function createMLDSA44() {
  * @class MLDSA44
  * @example
  * const sig = await createMLDSA44();
- * const { publicKey, secretKey } = await sig.generateKeyPair();
+ * const { publicKey, secretKey } = sig.generateKeyPair();
  *
  * const message = new TextEncoder().encode('Hello, quantum world!');
- * const signature = await sig.sign(message, secretKey);
+ * const signature = sig.sign(message, secretKey);
  *
- * const isValid = await sig.verify(message, signature, publicKey);
+ * const isValid = sig.verify(message, signature, publicKey);
  * console.log('Valid:', isValid); // true
  *
  * sig.destroy();
@@ -125,12 +126,12 @@ export class MLDSA44 {
    * Creates a new public/private keypair for digital signatures.
    * The secret key must be kept confidential.
    *
-   * @returns {Promise<{publicKey: Uint8Array, secretKey: Uint8Array}>} Generated keypair
+   * @returns {{publicKey: Uint8Array, secretKey: Uint8Array}}
    * @throws {LibOQSOperationError} If key generation fails
    * @example
-   * const { publicKey, secretKey } = await sig.generateKeyPair();
+   * const { publicKey, secretKey } = sig.generateKeyPair();
    */
-  async generateKeyPair() {
+  generateKeyPair() {
     this.#checkDestroyed();
 
     const publicKey = new Uint8Array(ML_DSA_44_INFO.keySize.publicKey);
@@ -164,14 +165,14 @@ export class MLDSA44 {
    *
    * @param {Uint8Array} message - Message to sign (arbitrary length)
    * @param {Uint8Array} secretKey - Secret key for signing (2560 bytes)
-   * @returns {Promise<Uint8Array>} Digital signature (up to 2420 bytes)
+   * @returns {Uint8Array} Digital signature (up to 2420 bytes)
    * @throws {LibOQSValidationError} If inputs are invalid
    * @throws {LibOQSOperationError} If signing fails
    * @example
    * const message = new TextEncoder().encode('Hello!');
-   * const signature = await sig.sign(message, secretKey);
+   * const signature = sig.sign(message, secretKey);
    */
-  async sign(message, secretKey) {
+  sign(message, secretKey) {
     this.#checkDestroyed();
     this.#validateMessage(message);
     this.#validateSecretKey(secretKey);
@@ -221,15 +222,15 @@ export class MLDSA44 {
    * @param {Uint8Array} message - Original message that was signed
    * @param {Uint8Array} signature - Signature to verify
    * @param {Uint8Array} publicKey - Public key for verification (1312 bytes)
-   * @returns {Promise<boolean>} True if signature is valid, false otherwise
+   * @returns {boolean} True if signature is valid, false otherwise
    * @throws {LibOQSValidationError} If inputs are invalid
    * @example
-   * const isValid = await sig.verify(message, signature, publicKey);
+   * const isValid = sig.verify(message, signature, publicKey);
    * if (isValid) {
    *   console.log('Signature is valid!');
    * }
    */
-  async verify(message, signature, publicKey) {
+  verify(message, signature, publicKey) {
     this.#checkDestroyed();
     this.#validateMessage(message);
     this.#validateSignature(signature);

@@ -277,7 +277,7 @@ describe('KEM Algorithms', () => {
     test('should generate valid keypair', async () => {
       const kem = await factory();
 
-      const { publicKey, secretKey } = await kem.generateKeyPair();
+      const { publicKey, secretKey } = kem.generateKeyPair();
 
       expect(publicKey).toBeInstanceOf(Uint8Array);
       expect(secretKey).toBeInstanceOf(Uint8Array);
@@ -290,8 +290,8 @@ describe('KEM Algorithms', () => {
     test('should encapsulate and produce ciphertext and shared secret', async () => {
       const kem = await factory();
 
-      const { publicKey } = await kem.generateKeyPair();
-      const { ciphertext, sharedSecret } = await kem.encapsulate(publicKey);
+      const { publicKey } = kem.generateKeyPair();
+      const { ciphertext, sharedSecret } = kem.encapsulate(publicKey);
 
       expect(ciphertext).toBeInstanceOf(Uint8Array);
       expect(sharedSecret).toBeInstanceOf(Uint8Array);
@@ -304,9 +304,9 @@ describe('KEM Algorithms', () => {
     test('should decapsulate and recover shared secret', async () => {
       const kem = await factory();
 
-      const { publicKey, secretKey } = await kem.generateKeyPair();
-      const { ciphertext, sharedSecret } = await kem.encapsulate(publicKey);
-      const recoveredSecret = await kem.decapsulate(ciphertext, secretKey);
+      const { publicKey, secretKey } = kem.generateKeyPair();
+      const { ciphertext, sharedSecret } = kem.encapsulate(publicKey);
+      const recoveredSecret = kem.decapsulate(ciphertext, secretKey);
 
       expect(recoveredSecret).toBeInstanceOf(Uint8Array);
       expect(recoveredSecret.length).toBe(info.keySize.sharedSecret);
@@ -320,8 +320,8 @@ describe('KEM Algorithms', () => {
     test('should produce different keypairs on each generation', async () => {
       const kem = await factory();
 
-      const keypair1 = await kem.generateKeyPair();
-      const keypair2 = await kem.generateKeyPair();
+      const keypair1 = kem.generateKeyPair();
+      const keypair2 = kem.generateKeyPair();
 
       // Public keys should differ
       expect(compareArrays(keypair1.publicKey, keypair2.publicKey)).not.toBe(0);
@@ -334,11 +334,11 @@ describe('KEM Algorithms', () => {
     test('should produce different shared secrets for different keypairs', async () => {
       const kem = await factory();
 
-      const keypair1 = await kem.generateKeyPair();
-      const keypair2 = await kem.generateKeyPair();
+      const keypair1 = kem.generateKeyPair();
+      const keypair2 = kem.generateKeyPair();
 
-      const { sharedSecret: secret1 } = await kem.encapsulate(keypair1.publicKey);
-      const { sharedSecret: secret2 } = await kem.encapsulate(keypair2.publicKey);
+      const { sharedSecret: secret1 } = kem.encapsulate(keypair1.publicKey);
+      const { sharedSecret: secret2 } = kem.encapsulate(keypair2.publicKey);
 
       expect(compareArrays(secret1, secret2)).not.toBe(0);
 
@@ -362,35 +362,35 @@ describe('KEM Algorithms', () => {
       const kem = await factory();
       kem.destroy();
 
-      await expect(kem.generateKeyPair()).rejects.toThrow(/destroyed/);
+      expect(() => kem.generateKeyPair()).toThrow(/destroyed/);
     });
 
     test('should throw error on invalid public key size', async () => {
       const kem = await factory();
       const invalidPublicKey = new Uint8Array(10); // Wrong size
 
-      await expect(kem.encapsulate(invalidPublicKey)).rejects.toThrow(/Invalid public key/);
+      expect(() => kem.encapsulate(invalidPublicKey)).toThrow(/Invalid public key/);
 
       kem.destroy();
     });
 
     test('should throw error on invalid secret key size', async () => {
       const kem = await factory();
-      const { publicKey } = await kem.generateKeyPair();
-      const { ciphertext } = await kem.encapsulate(publicKey);
+      const { publicKey } = kem.generateKeyPair();
+      const { ciphertext } = kem.encapsulate(publicKey);
       const invalidSecretKey = new Uint8Array(10); // Wrong size
 
-      await expect(kem.decapsulate(ciphertext, invalidSecretKey)).rejects.toThrow(/Invalid secret key/);
+      expect(() => kem.decapsulate(ciphertext, invalidSecretKey)).toThrow(/Invalid secret key/);
 
       kem.destroy();
     });
 
     test('should throw error on invalid ciphertext size', async () => {
       const kem = await factory();
-      const { secretKey } = await kem.generateKeyPair();
+      const { secretKey } = kem.generateKeyPair();
       const invalidCiphertext = new Uint8Array(10); // Wrong size
 
-      await expect(kem.decapsulate(invalidCiphertext, secretKey)).rejects.toThrow(/Invalid ciphertext/);
+      expect(() => kem.decapsulate(invalidCiphertext, secretKey)).toThrow(/Invalid ciphertext/);
 
       kem.destroy();
     });

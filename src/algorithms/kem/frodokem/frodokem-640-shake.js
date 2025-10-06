@@ -16,13 +16,14 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
+import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? '../../../../dist/frodokem-640-shake.deno.js'
-    : '../../../../dist/frodokem-640-shake.min.js';
+    ? `https://cdn.openforge.sh/${VERSION}/frodokem-640-shake.deno.js`
+    : `https://cdn.openforge.sh/${VERSION}/frodokem-640-shake.min.js`;
 
   const module = await import(modulePath);
   return module.default;
@@ -70,7 +71,7 @@ export const FRODOKEM_640_SHAKE_INFO = {
  * import { createFrodoKEM640SHAKE } from '@openforge-sh/liboqs';
  *
  * const kem = await createFrodoKEM640SHAKE();
- * const { publicKey, secretKey } = await kem.generateKeyPair();
+ * const { publicKey, secretKey } = kem.generateKeyPair();
  * kem.destroy();
  */
 export async function createFrodoKEM640SHAKE() {
@@ -110,13 +111,13 @@ export async function createFrodoKEM640SHAKE() {
  * const kem = await createFrodoKEM640SHAKE();
  *
  * // Generate keypair
- * const { publicKey, secretKey } = await kem.generateKeyPair();
+ * const { publicKey, secretKey } = kem.generateKeyPair();
  *
  * // Encapsulate
- * const { ciphertext, sharedSecret } = await kem.encapsulate(publicKey);
+ * const { ciphertext, sharedSecret } = kem.encapsulate(publicKey);
  *
  * // Decapsulate
- * const recoveredSecret = await kem.decapsulate(ciphertext, secretKey);
+ * const recoveredSecret = kem.decapsulate(ciphertext, secretKey);
  *
  * // Cleanup
  * kem.destroy();
@@ -141,16 +142,16 @@ export class FrodoKEM640SHAKE {
    * Generate a new FrodoKEM-640-SHAKE keypair
    *
    * @async
-   * @returns {Promise<{publicKey: Uint8Array, secretKey: Uint8Array}>} Generated keypair
+   * @returns {{publicKey: Uint8Array, secretKey: Uint8Array}}
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSOperationError} If key generation fails
    *
    * @example
-   * const { publicKey, secretKey } = await kem.generateKeyPair();
+   * const { publicKey, secretKey } = kem.generateKeyPair();
    * console.log('Public key:', publicKey.length);  // 9616 bytes
    * console.log('Secret key:', secretKey.length);  // 19888 bytes
    */
-  async generateKeyPair() {
+  generateKeyPair() {
     this.#checkDestroyed();
 
     const publicKey = new Uint8Array(FRODOKEM_640_SHAKE_INFO.keySize.publicKey);
@@ -181,17 +182,18 @@ export class FrodoKEM640SHAKE {
    *
    * @async
    * @param {Uint8Array} publicKey - Public key (9616 bytes)
-   * @returns {Promise<{ciphertext: Uint8Array, sharedSecret: Uint8Array}>} Ciphertext and shared secret
+   * @returns {{ciphertext: Uint8Array, sharedSecret: Uint8Array}}
+   * @returns {Uint8Array} returns.sharedSecret - Shared secret Ciphertext and shared secret
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If public key size is invalid
    * @throws {LibOQSOperationError} If encapsulation fails
    *
    * @example
-   * const { ciphertext, sharedSecret } = await kem.encapsulate(publicKey);
+   * const { ciphertext, sharedSecret } = kem.encapsulate(publicKey);
    * console.log('Ciphertext:', ciphertext.length);      // 9720 bytes
    * console.log('Shared secret:', sharedSecret.length); // 16 bytes
    */
-  async encapsulate(publicKey) {
+  encapsulate(publicKey) {
     this.#checkDestroyed();
     this.#validatePublicKey(publicKey);
 
@@ -233,16 +235,16 @@ export class FrodoKEM640SHAKE {
    * @async
    * @param {Uint8Array} ciphertext - Ciphertext (9720 bytes)
    * @param {Uint8Array} secretKey - Secret key (19888 bytes)
-   * @returns {Promise<Uint8Array>} Shared secret (16 bytes)
+   * @returns {Uint8Array} Shared secret (16 bytes)
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If ciphertext or secret key size is invalid
    * @throws {LibOQSOperationError} If decapsulation fails
    *
    * @example
-   * const sharedSecret = await kem.decapsulate(ciphertext, secretKey);
+   * const sharedSecret = kem.decapsulate(ciphertext, secretKey);
    * console.log('Recovered secret:', sharedSecret.length); // 16 bytes
    */
-  async decapsulate(ciphertext, secretKey) {
+  decapsulate(ciphertext, secretKey) {
     this.#checkDestroyed();
     this.#validateCiphertext(ciphertext);
     this.#validateSecretKey(secretKey);

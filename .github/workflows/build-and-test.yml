@@ -20,64 +20,95 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get LibOQS latest commit hash
+      - name: Get version
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Package version: $VERSION"
+
+      - name: Get LibOQS commit hash
         id: liboqs-hash
         run: |
           LIBOQS_REPO="https://github.com/open-quantum-safe/liboqs.git"
           LIBOQS_BRANCH="main"
           LIBOQS_HASH=$(git ls-remote $LIBOQS_REPO refs/heads/$LIBOQS_BRANCH | cut -f1)
           echo "hash=$LIBOQS_HASH" >> $GITHUB_OUTPUT
-          echo "LibOQS latest commit: $LIBOQS_HASH"
+          echo "LibOQS commit: $LIBOQS_HASH"
 
-      - name: Cache WASM modules
-        id: cache-wasm
-        uses: actions/cache@v4
+      - name: Compute build hash
+        id: build-hash
+        run: |
+          # Combine LibOQS hash + algorithms.json + build.sh into a single hash
+          BUILD_HASH=$(echo "${{ steps.liboqs-hash.outputs.hash }}-${{ hashFiles('algorithms.json', 'build.sh') }}" | sha256sum | cut -d' ' -f1)
+          echo "hash=$BUILD_HASH" >> $GITHUB_OUTPUT
+          echo "Build hash: $BUILD_HASH"
+
+      - name: Restore build hash cache
+        id: hash-cache
+        uses: actions/cache/restore@v4
         with:
-          path: dist/
-          key: wasm-modules-${{ steps.liboqs-hash.outputs.hash }}-${{ hashFiles('build.sh', 'algorithms.json') }}
-          restore-keys: |
-            wasm-modules-${{ steps.liboqs-hash.outputs.hash }}-
-            wasm-modules-
+          path: .build-hash
+          key: build-hash-${{ steps.build-hash.outputs.hash }}
+
+      - name: Check if rebuild needed
+        id: rebuild-check
+        run: |
+          if [ "${{ steps.hash-cache.outputs.cache-hit }}" = "true" ]; then
+            echo "needed=false" >> $GITHUB_OUTPUT
+            echo "✓ Build hash matches cache, no rebuild needed"
+          else
+            echo "needed=true" >> $GITHUB_OUTPUT
+            echo "⚠ Build hash changed, rebuild required"
+          fi
 
       - name: Install dependencies
         run: bun install
 
       - name: Build WASM modules
-        if: steps.cache-wasm.outputs.cache-hit != 'true'
+        if: steps.rebuild-check.outputs.needed == 'true'
         run: bun run build
         env:
           PARALLEL_JOBS: 8
 
-      - name: Save WASM modules to cache
-        if: steps.cache-wasm.outputs.cache-hit != 'true'
+      - name: Save build hash to cache
+        if: steps.rebuild-check.outputs.needed == 'true'
+        run: |
+          echo "${{ steps.build-hash.outputs.hash }}" > .build-hash
+
+      - name: Save build hash cache
+        if: steps.rebuild-check.outputs.needed == 'true'
         uses: actions/cache/save@v4
         with:
-          path: dist/
-          key: wasm-modules-${{ steps.liboqs-hash.outputs.hash }}-${{ hashFiles('build.sh', 'algorithms.json') }}
+          path: .build-hash
+          key: build-hash-${{ steps.build-hash.outputs.hash }}
 
       - name: Verify WASM modules completeness
         run: |
           set -euo pipefail
-          # 97 algorithms total (32 KEM + 65 SIG), each with Node.js and Deno builds
-          expected_count=97
+
+          # Count expected algorithms
+          ALGO_COUNT=$(jq '[.kem, .sig] | map(to_entries[].value) | map(to_entries[].value.slug) | length' algorithms.json)
+
+          # Count actual files
           node_count=$(find dist/ -name "*.min.js" -type f | wc -l)
           deno_count=$(find dist/ -name "*.deno.js" -type f | wc -l)
 
-          echo "Expected: $expected_count modules per runtime"
+          echo "Expected: $ALGO_COUNT modules per runtime"
           echo "Node.js modules: $node_count"
           echo "Deno modules: $deno_count"
 
-          if [ "$node_count" -ne "$expected_count" ]; then
-            echo "::error::Node.js module count mismatch. Expected $expected_count, got $node_count"
+          if [ "$node_count" -ne "$ALGO_COUNT" ]; then
+            echo "::error::Node.js module count mismatch. Expected $ALGO_COUNT, got $node_count"
             exit 1
           fi
 
-          if [ "$deno_count" -ne "$expected_count" ]; then
-            echo "::error::Deno module count mismatch. Expected $expected_count, got $deno_count"
+          if [ "$deno_count" -ne "$ALGO_COUNT" ]; then
+            echo "::error::Deno module count mismatch. Expected $ALGO_COUNT, got $deno_count"
             exit 1
           fi
 
-          echo "✅ All $expected_count Node.js and Deno modules verified"
+          echo "✅ All $ALGO_COUNT Node.js and Deno modules verified"
 
       - name: Run tests
         run: bun run test
@@ -88,12 +119,19 @@ jobs:
       - name: Generate documentation
         run: bun run docs
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
-          retention-days: 7
+      - name: Upload WASM modules to CDN
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.rebuild-check.outputs.needed == 'true'
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+
+          for file in dist/*; do
+            filename=$(basename "$file")
+
+            curl -X POST \
+              -H "X-API-Key: ${{ secrets.CDN_API_KEY }}" \
+              -F "file=@$file" \
+              "https://cdn.openforge.sh/$VERSION/$filename"
+          done
 
       - name: Upload documentation artifacts
         uses: actions/upload-artifact@v4
@@ -110,12 +148,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist/
 
       - name: Check if version already published
         id: check
@@ -150,12 +182,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist/
 
       - name: Publish to JSR
         run: npx jsr publish
