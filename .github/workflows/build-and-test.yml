@@ -84,6 +84,7 @@ jobs:
           key: build-hash-${{ steps.build-hash.outputs.hash }}
 
       - name: Verify WASM modules completeness
+        if: steps.rebuild-check.outputs.needed == 'true'
         run: |
           set -euo pipefail
 
@@ -110,17 +111,8 @@ jobs:
 
           echo "✅ All $ALGO_COUNT Node.js and Deno modules verified"
 
-      - name: Run tests
-        run: bun run test
-
-      - name: Run Deno tests
-        run: deno test --allow-read --allow-write --allow-run --allow-env --no-check tests/deno/
-
-      - name: Generate documentation
-        run: bun run docs
-
       - name: Upload WASM modules to CDN
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.rebuild-check.outputs.needed == 'true'
+        if: steps.rebuild-check.outputs.needed == 'true'
         run: |
           VERSION="${{ steps.version.outputs.version }}"
 
@@ -132,6 +124,15 @@ jobs:
               -F "file=@$file" \
               "https://cdn.openforge.sh/$VERSION/$filename"
           done
+
+      - name: Run tests
+        run: bun run test
+
+      - name: Run Deno tests
+        run: deno test --allow-read --allow-write --allow-run --allow-env --no-check tests/deno/
+
+      - name: Generate documentation
+        run: bun run docs
 
       - name: Upload documentation artifacts
         uses: actions/upload-artifact@v4
