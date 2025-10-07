@@ -16,32 +16,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/falcon-padded-1024.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/falcon-padded-1024.min.js`;
+    ? `../../../../dist/falcon-padded-1024.deno.js`
+    : `../../../../dist/falcon-padded-1024.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for Falcon-padded-1024
- * @constant {Object} FALCON_PADDED_1024_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (5 = 256-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (1793 bytes)
- * @property {number} keySize.secretKey - Secret key size (2305 bytes)
- * @property {number} keySize.signature - Constant signature size (1280 bytes)
+ * FALCON-PADDED-1024-INFO algorithm constants and metadata
+ * @type {{readonly name: 'Falcon-padded-1024', readonly identifier: 'Falcon-padded-1024', readonly type: 'sig', readonly securityLevel: 5, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 1793, readonly secretKey: 2305, readonly signature: 1280}}}
  */
 export const FALCON_PADDED_1024_INFO = {
   name: 'Falcon-padded-1024',
@@ -316,7 +305,7 @@ export class FalconPadded1024 {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof FALCON_PADDED_1024_INFO} Algorithm metadata
    *
    * @example
    * console.log(sig.info.name);           // 'Falcon-padded-1024'
@@ -324,7 +313,7 @@ export class FalconPadded1024 {
    * console.log(sig.info.keySize);        // { publicKey: 1793, secretKey: 2305, signature: 1280 }
    */
   get info() {
-    return { ...FALCON_PADDED_1024_INFO };
+    return FALCON_PADDED_1024_INFO;
   }
 
   /**

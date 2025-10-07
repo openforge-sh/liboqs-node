@@ -3,15 +3,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-22+-green.svg)](https://nodejs.org/)
 
-A JavaScript/TypeScript wrapper for [liboqs](https://github.com/open-quantum-safe/liboqs), providing access to post-quantum cryptographic algorithms for key encapsulation mechanisms (KEM) and digital signatures.
+A JavaScript/TypeScript wrapper for [LibOQS](https://github.com/open-quantum-safe/liboqs), providing access to post-quantum cryptographic algorithms for key encapsulation mechanisms (KEM) and digital signatures.
 
 ## Overview
 
-This library provides WebAssembly bindings to liboqs, part of the [Open Quantum Safe](https://openquantumsafe.org/) project. It includes:
+This library provides WebAssembly bindings to LibOQS, part of the [Open Quantum Safe](https://openquantumsafe.org/) project. It includes:
 
 - Individual WASM modules per algorithm for optimal bundle sizes
 - TypeScript definitions for complete type safety
-- Support for both Node.js and browser environments
+- Support for Node.js and browser environments
 - SIMD-optimized builds for maximum performance
 - Tree-shakable ES module exports to minimize bundle size
 - Automatic memory management and secure cleanup
@@ -20,7 +20,7 @@ This library provides WebAssembly bindings to liboqs, part of the [Open Quantum 
 
 ### ⚠️ Important Notice
 
-**This library is meant for research, prototyping, and experimentation.** While the underlying liboqs library is well-maintained by the Open Quantum Safe project, both projects carry important caveats:
+**This library is meant for research, prototyping, and experimentation.** While the underlying LibOQS library is well-maintained by the Open Quantum Safe project, both projects carry important caveats:
 
 - Most post-quantum algorithms have not received the same level of scrutiny as traditional cryptography
 - Algorithm support may change rapidly as research advances
@@ -36,11 +36,9 @@ For production deployments, follow guidance from NIST's [Post-Quantum Cryptograp
 The algorithms implementing NIST FIPS standards are:
 - **ML-KEM** (FIPS 203, formerly Kyber): ML-KEM-512, ML-KEM-768, ML-KEM-1024
 - **ML-DSA** (FIPS 204, formerly Dilithium): ML-DSA-44, ML-DSA-65, ML-DSA-87
-- **SLH-DSA** (FIPS 205, formerly SPHINCS+): Multiple variants - currently exposed as `SPHINCS+-*` (name migration pending in liboqs)
+- **SLH-DSA** (FIPS 205, formerly SPHINCS+): 12 variants (SHA2 and SHAKE, 128/192/256-bit security, f/s modes)
 
-These algorithm names are stable and will be maintained. If NIST updates implementation details, this library will track those changes.
-
-**Note**: liboqs currently uses legacy `SPHINCS+` names for SLH-DSA, and we follow their naming. When liboqs adds `SLH-DSA` aliases to match FIPS 205 nomenclature, this library will expose them.
+These algorithm names are stable and will be maintained. If NIST updates implementation details, this library will track those changes as closely as possible.
 
 ### Additional Algorithms
 
@@ -64,7 +62,7 @@ The library provides JavaScript wrappers for **97 algorithms** including experim
 <summary>Digital Signatures (65 algorithms)</summary>
 
 - **Falcon**: `Falcon-512`, `Falcon-1024`, `Falcon-padded-512`, `Falcon-padded-1024`
-- **SPHINCS+**: 12 variants (SHA2 and SHAKE, 128/192/256-bit security, f/s modes, simple variant only)
+- **SLH-DSA** (FIPS 205): 12 variants (SHA2 and SHAKE, 128/192/256-bit security, f/s modes)
 - **CROSS**: 18 variants (RSDP and RSDPG parameter sets with balanced/fast/small tradeoffs)
 - **MAYO**: `MAYO-1`, `MAYO-2`, `MAYO-3`, `MAYO-5`
 - **SNOVA**: 12 variants (various parameter sets)
@@ -91,7 +89,7 @@ pnpm add @openforge-sh/liboqs
 # yarn
 yarn add @openforge-sh/liboqs
 
-# deno (via JSR or npm: specifier - no install needed)
+# deno (via npm: specifier - no install needed)
 # See "Deno Usage" section below
 ```
 
@@ -99,12 +97,9 @@ This project uses **bun** by default for development, but all package managers a
 
 ### Deno Usage
 
-✅ **Fully Supported** - Available on both **JSR** (recommended) and **npm**:
+✅ **Fully Supported** - Available through **npm** only due to package size limitations on JSR:
 
 ```typescript
-// Recommended: Import from JSR
-import { createMLKEM768 } from "jsr:@openforge-sh/liboqs";
-
 // Alternative: Import from npm
 import { createMLKEM768 } from "npm:@openforge-sh/liboqs";
 
@@ -113,13 +108,13 @@ const { publicKey, secretKey } = kem.generateKeyPair();
 kem.destroy();
 ```
 
-**How it works:** The library automatically detects the Deno runtime and loads optimized WASM modules built specifically for web-standard environments (uses `ENVIRONMENT='web'` Emscripten build).
+**How it works:** The library automatically detects the Deno runtime and loads optimized WASM modules built for deno compatibility (`ENVIRONMENT='web'` Emscripten build).
 
 **Recommended Setup** - Create a `deno.json` for cleaner imports:
 ```json
 {
   "imports": {
-    "liboqs": "jsr:@openforge-sh/liboqs@^0.14.0"
+    "liboqs": "npm:@openforge-sh/liboqs@^0.14.0"
   }
 }
 ```
@@ -132,7 +127,7 @@ import { createMLKEM768 } from "liboqs";
 **Using the CLI with Deno:**
 ```bash
 # Run CLI directly (JSR)
-deno run --allow-read jsr:@openforge-sh/liboqs/cli kem keygen ml-kem-768
+deno run --allow-read npm:@openforge-sh/liboqs/cli kem keygen ml-kem-768
 
 # Or from npm
 deno run --allow-read npm:@openforge-sh/liboqs/cli kem keygen ml-kem-768
@@ -142,7 +137,7 @@ deno run --allow-read npm:@openforge-sh/liboqs/cli kem keygen ml-kem-768
 # Or add to deno.json tasks:
 {
   "tasks": {
-    "liboqs": "deno run --allow-read jsr:@openforge-sh/liboqs/cli"
+    "liboqs": "deno run --allow-read npm:@openforge-sh/liboqs/cli"
   }
 }
 ```
@@ -157,7 +152,7 @@ deno task liboqs list --kem
 deno run --allow-read your-script.ts
 
 # CLI usage (may need write for output files)
-deno run --allow-read --allow-write jsr:@openforge-sh/liboqs/cli kem keygen ml-kem-768 --output-dir ./keys
+deno run --allow-read --allow-write npm:@openforge-sh/liboqs/cli kem keygen ml-kem-768 --output-dir ./keys
 ```
 
 Deno automatically caches packages on first run - no separate install step needed.
@@ -166,12 +161,10 @@ Deno automatically caches packages on first run - no separate install step neede
 
 - **Node.js 22.0 or higher** (for WASM SIMD support)
 - **Package Managers**: Bun 1.0+, npm 10+, pnpm 8+, yarn 4+ (for Node.js)
-- **Deno 2.0+** (available on JSR and npm, no package manager needed)
-- **Modern browsers** with WebAssembly support (Chrome 91+, Firefox 89+, Safari 16.4+, Edge 91+)
+- **Deno 2.0+** (available only through npm)
+- **Modern browsers** with WebAssembly support (Chrome 91+, Firefox 89+, Edge 91+, Safari 16.4+ - Safari is untested)
 
 ## Quick Start
-
-For detailed examples and usage patterns, see the [API documentation](API_FINAL.md).
 
 ### Command Line Interface
 
@@ -262,6 +255,18 @@ signer.destroy();
 - **ML-DSA-44** - NIST Level 2 (128-bit quantum security) - `createMLDSA44()`
 - **ML-DSA-65** - NIST Level 3 (192-bit quantum security) - `createMLDSA65()`
 - **ML-DSA-87** - NIST Level 5 (256-bit quantum security) - `createMLDSA87()`
+- **SLH-DSA-SHA2-128f** - NIST Level 1 (128-bit quantum security, fast) - `createSLHDSASHA2128f()`
+- **SLH-DSA-SHA2-128s** - NIST Level 1 (128-bit quantum security, small) - `createSLHDSASHA2128s()`
+- **SLH-DSA-SHA2-192f** - NIST Level 3 (192-bit quantum security, fast) - `createSLHDSASHA2192f()`
+- **SLH-DSA-SHA2-192s** - NIST Level 3 (192-bit quantum security, small) - `createSLHDSASHA2192s()`
+- **SLH-DSA-SHA2-256f** - NIST Level 5 (256-bit quantum security, fast) - `createSLHDSASHA2256f()`
+- **SLH-DSA-SHA2-256s** - NIST Level 5 (256-bit quantum security, small) - `createSLHDSASHA2256s()`
+- **SLH-DSA-SHAKE-128f** - NIST Level 1 (128-bit quantum security, fast) - `createSLHDSASHAKE128f()`
+- **SLH-DSA-SHAKE-128s** - NIST Level 1 (128-bit quantum security, small) - `createSLHDSASHAKE128s()`
+- **SLH-DSA-SHAKE-192f** - NIST Level 3 (192-bit quantum security, fast) - `createSLHDSASHAKE192f()`
+- **SLH-DSA-SHAKE-192s** - NIST Level 3 (192-bit quantum security, small) - `createSLHDSASHAKE192s()`
+- **SLH-DSA-SHAKE-256f** - NIST Level 5 (256-bit quantum security, fast) - `createSLHDSASHAKE256f()`
+- **SLH-DSA-SHAKE-256s** - NIST Level 5 (256-bit quantum security, small) - `createSLHDSASHAKE256s()`
 
 ### Algorithm Details
 
@@ -273,6 +278,18 @@ signer.destroy();
 | ML-DSA-44 | Level 2 (128-bit) | 1,312 B | 2,560 B | ~2,420 B |
 | ML-DSA-65 | Level 3 (192-bit) | 1,952 B | 4,032 B | ~3,309 B |
 | ML-DSA-87 | Level 5 (256-bit) | 2,592 B | 4,896 B | ~4,627 B |
+| SLH-DSA-SHA2-128f | Level 1 (128-bit) | 32 B | 64 B | 17,088 B |
+| SLH-DSA-SHA2-128s | Level 1 (128-bit) | 32 B | 64 B | 7,856 B |
+| SLH-DSA-SHA2-192f | Level 3 (192-bit) | 48 B | 96 B | 35,664 B |
+| SLH-DSA-SHA2-192s | Level 3 (192-bit) | 48 B | 96 B | 16,224 B |
+| SLH-DSA-SHA2-256f | Level 5 (256-bit) | 64 B | 128 B | 49,856 B |
+| SLH-DSA-SHA2-256s | Level 5 (256-bit) | 64 B | 128 B | 29,792 B |
+| SLH-DSA-SHAKE-128f | Level 1 (128-bit) | 32 B | 64 B | 17,088 B |
+| SLH-DSA-SHAKE-128s | Level 1 (128-bit) | 32 B | 64 B | 7,856 B |
+| SLH-DSA-SHAKE-192f | Level 3 (192-bit) | 48 B | 96 B | 35,664 B |
+| SLH-DSA-SHAKE-192s | Level 3 (192-bit) | 48 B | 96 B | 16,224 B |
+| SLH-DSA-SHAKE-256f | Level 5 (256-bit) | 64 B | 128 B | 49,856 B |
+| SLH-DSA-SHAKE-256s | Level 5 (256-bit) | 64 B | 128 B | 29,792 B |
 
 ## Bundle Size Optimization
 
@@ -289,7 +306,7 @@ const kem = await createMLKEM768();
 const sig = await createMLDSA65();
 ```
 
-Tree-shaking ensures unused algorithms are never included in your bundle. WASM modules are lazy-loaded when you call the factory function.
+Tree-shaking ensures unused algorithms are never included in your bundle. Each algorithm's WASM is embedded in its module and loaded when you import the factory function.
 
 ## Package Structure
 
@@ -333,7 +350,7 @@ import { LibOQSError, LibOQSInitError } from '@openforge-sh/liboqs/errors';
 │   │   └── sig/
 │   │       ├── ml-dsa/           # ML-DSA (3 variants)
 │   │       ├── falcon/           # Falcon (4 variants)
-│   │       ├── sphincs/          # SPHINCS+ (12 variants)
+│   │       ├── slh-dsa/          # SLH-DSA (12 variants)
 │   │       ├── cross/            # CROSS (18 variants)
 │   │       ├── mayo/             # MAYO (4 variants)
 │   │       ├── snova/            # SNOVA (12 variants)
@@ -368,22 +385,21 @@ import { LibOQSError, LibOQSInitError } from '@openforge-sh/liboqs/errors';
 │       ├── kem.test.ts
 │       ├── sig.test.ts
 │       └── cli.test.ts
+├── dist/                         # WASM modules (97 × 2 = 194 files, ~100-500KB each)
+│   ├── ml-kem-512.min.js         # Node.js/Browser module
+│   ├── ml-kem-512.deno.js        # Deno module
+│   ├── falcon-512.min.js
+│   ├── falcon-512.deno.js
+│   └── ... (and 190 others)
 ├── algorithms.json               # Algorithm registry and metadata
-├── build.sh                      # WASM build script
-└── CDN (cdn.openforge.sh)        # WASM modules (97 × 2 = 194 files, ~100-500KB each)
-    └── {version}/                # Version-specific directory (e.g., 0.14.2/)
-        ├── ml-kem-512.min.js     # Node.js/Browser module
-        ├── ml-kem-512.deno.js    # Deno module
-        ├── falcon-512.min.js
-        ├── falcon-512.deno.js
-        └── ... (and 190 others)
+└── build.sh                      # WASM build script
 ```
 
 ## Architecture
 
 The library is organized in layers:
 
-1. **WASM Modules**: Emscripten-compiled liboqs binaries (one per algorithm)
+1. **WASM Modules**: Emscripten-compiled LibOQS binaries (one per algorithm)
 2. **Low-level Bindings**: Direct WASM function calls (`_OQS_KEM_*`, `_OQS_SIG_*`)
 3. **High-level Wrappers**: User-friendly classes (`MLKEM768`, `MLDSA65`)
 4. **Public API**: Factory functions and exports
@@ -394,7 +410,7 @@ The library is organized in layers:
 
 #### Why This Matters
 
-WebAssembly modules allocate native memory outside the JavaScript heap. When you create an algorithm instance, liboqs allocates C structures that JavaScript's garbage collector cannot reclaim. Without calling `destroy()`, this memory leaks permanently.
+WebAssembly modules allocate native memory outside the JavaScript heap. When you create an algorithm instance, LibOQS allocates C structures that JavaScript's garbage collector cannot reclaim. Without calling `destroy()`, this memory leaks permanently.
 
 **Long-running applications** (servers, single-page apps, daemons) that don't call `destroy()` will experience:
 - Increasing memory usage over time
@@ -448,7 +464,7 @@ try {
 
 ## Security Considerations
 
-1. **Use NIST Standardized Algorithms**: ML-KEM and ML-DSA are recommended for production
+1. **Use NIST Standardized Algorithms**: ML-KEM, ML-DSA, and SLH-DSA are recommended for production
 2. **Hybrid Cryptography**: We, as well as OQS, strongly recommend combining with traditional algorithms (X25519/Ed25519) during transition
 3. **Key Storage**: Store secret keys securely, never in plain text or localStorage
 4. **Stay Updated**: Monitor NIST guidance and update regularly
@@ -457,7 +473,7 @@ try {
 
 ### Reporting Security Issues
 
-See [SECURITY.md](SECURITY.md) for our vulnerability disclosure policy. Issues specific to the liboqs C library should be reported to the [liboqs project](https://github.com/open-quantum-safe/liboqs/security).
+See [SECURITY.md](SECURITY.md) for our vulnerability disclosure policy. Issues specific to the LibOQS C library should be reported to the [LibOQS project](https://github.com/open-quantum-safe/liboqs/security).
 
 ## Building from Source
 
@@ -519,10 +535,93 @@ The `build.sh` script:
 
 ### Adding New Algorithms
 
-1. Add algorithm to `algorithms.json`
-2. Run `./build.sh <algorithm-slug>`
-3. Optionally create JavaScript wrapper following existing patterns
-4. Export from `src/index.js` if wrapper was created
+The library provides an **automated template generator** that creates algorithm wrapper files from `algorithms.json`:
+
+#### Quick Start
+
+```bash
+# 1. Add algorithm metadata to algorithms.json
+# 2. Fetch key sizes from existing file (if updating)
+node scripts/fetch-key-sizes.js
+
+# 3. Generate algorithm wrapper
+node scripts/generate-algorithm.js <algorithm-slug>
+
+# Or generate multiple algorithms at once
+node scripts/generate-algorithm.js --all    # All algorithms
+node scripts/generate-algorithm.js --kem    # All KEM algorithms
+node scripts/generate-algorithm.js --sig    # All signature algorithms
+
+# 4. Build WASM module
+./build.sh <algorithm-slug>
+
+# 5. Export from src/index.js, src/kem.js, or src/sig.js
+```
+
+#### Template System
+
+All algorithm wrapper files follow a consistent pattern defined by the template generator (`scripts/generate-algorithm.js`). The templates automatically generate:
+
+- **Documentation**: JSDoc comments with algorithm details, security levels, key sizes
+- **Module loading**: Cross-runtime compatibility (Node.js, Deno, browsers)
+- **Class structure**: Factory functions, wrapper classes, memory management
+- **Validation**: Input validation for keys, ciphertexts, signatures
+- **Type definitions**: Full TypeScript support via JSDoc
+
+**Example**: Adding a new algorithm to `algorithms.json`:
+
+```json
+{
+  "sig": {
+    "slh-dsa": {
+      "SLH-DSA-SHA2-128f": {
+        "slug": "slh-dsa-sha2-128f",
+        "cmake_var": "SLH_DSA_PURE_SHA2_128F",
+        "security": 1,
+        "standardized": true,
+        "keySize": {
+          "publicKey": 32,
+          "secretKey": 64,
+          "signature": 17088
+        }
+      }
+    }
+  }
+}
+```
+
+Then generate the wrapper:
+
+```bash
+node scripts/generate-algorithm.js slh-dsa-sha2-128f
+# ✓ Generated: src/algorithms/sig/slh-dsa/slh-dsa-sha2-128f.js
+```
+
+#### Key Size Management
+
+The `fetch-key-sizes.js` script extracts key sizes from existing algorithm files and updates `algorithms.json`:
+
+```bash
+node scripts/fetch-key-sizes.js
+# Scans src/algorithms/**/*.js for keySize data
+# Updates algorithms.json with found key sizes
+```
+
+This is useful when:
+- Updating key sizes after LibOQS version changes
+- Ensuring consistency across the codebase
+- Adding new algorithms
+
+#### Manual Steps Required
+
+After generating wrappers:
+
+1. **Export in index files**: Add to `src/index.js`, `src/kem.js`, or `src/sig.js`
+2. **Add tests**: Follow patterns in `tests/kem.test.ts` or `tests/sig.test.ts`
+3. **Update TypeScript definitions**: If needed, update `src/types/algorithms.d.ts`
+4. **Add additional algorithm information**: The script leaves a TODO section in JSDoc, for algorithm-specific information that's difficult to automate
+
+The template system ensures all 97 algorithms maintain consistent APIs, documentation, and error handling patterns.
 
 ## Testing
 
@@ -530,12 +629,15 @@ The library includes comprehensive test coverage using Vitest:
 
 ```bash
 # Run all tests (1295+ tests across 97 algorithms)
-npm test
+bun test
 
 # Or use your preferred package manager
-bun test
+npm test
 pnpm test
 yarn test
+
+# Or with Deno:
+deno test --allow-read --allow-write --allow-run --allow-env --no-check tests/deno/
 ```
 
 Test coverage includes:
@@ -551,13 +653,13 @@ Test coverage includes:
 
 Contributions are welcome! Please:
 
-- **Tests must pass**: Run `bun run test` (or `npm run test`) before submitting
-- **Follow existing code style**: Use ESM, async/await, JSDoc comments
-- **Document public APIs**: Add comprehensive JSDoc for all exported functions and classes
+- **Tests must pass**: Run `bun run test` (or `npm run test`) and `deno test --allow-read --allow-write --allow-run --allow-env --no-check tests/deno/` before submitting
+- **Follow existing code style**: Use ESM, async/await, JSDoc comments (if not using the generator script)
+- **Document public APIs**: Add comprehensive JSDoc for all exported functions and classes (if not using the generator script)
 - **Security first**: Consider security implications, especially for cryptographic operations
-- **Consistency matters**: Follow established patterns in existing wrappers
+- **Consistency matters**: Follow established patterns in existing wrappers (if not using the generator script)
 
-For larger changes or new algorithms, open an issue first to discuss the approach.
+For larger changes, open an issue first to discuss the approach.
 
 ### Development Workflow
 
@@ -598,7 +700,7 @@ Contributions that add new algorithm wrappers, improve documentation, add tests,
 ## Documentation
 
 - **[Security Policy](SECURITY.md)** - Vulnerability reporting and security guidance
-- **[liboqs Documentation](https://github.com/open-quantum-safe/liboqs)** - Underlying C library
+- **[LibOQS Documentation](https://github.com/open-quantum-safe/liboqs)** - Underlying C library
 
 ## License
 
@@ -606,18 +708,18 @@ MIT License - see [LICENSE.md](LICENSE.md) for details.
 
 ## Acknowledgments
 
-- [Open Quantum Safe](https://openquantumsafe.org/) project for liboqs
+- [Open Quantum Safe](https://openquantumsafe.org/) project for LibOQS
 - [NIST Post-Quantum Cryptography Standardization](https://csrc.nist.gov/Projects/post-quantum-cryptography)
 - The cryptographic research community
 - Emscripten team for excellent WASM tooling
 
 ## Versioning
 
-This library's version tracks the bundled liboqs version:
-- `@openforge-sh/liboqs 0.14.0` includes `liboqs 0.14.0`
+This library's version tracks the bundled LibOQS version:
+- `@openforge-sh/liboqs 0.14.0` includes `LibOQS 0.14.0`
 
 ## Disclaimer
 
 This library provides access to cryptographic algorithms believed to be quantum-resistant based on current research. The field of post-quantum cryptography is evolving. Algorithm support may change as research advances. Always consult with cryptographic experts for production deployments and follow NIST recommendations.
 
-The liboqs project states: **"WE DO NOT CURRENTLY RECOMMEND RELYING ON THIS LIBRARY IN A PRODUCTION ENVIRONMENT OR TO PROTECT ANY SENSITIVE DATA."** This guidance applies to this JavaScript/WebAssembly wrapper as well.
+The LibOQS project states: **"WE DO NOT CURRENTLY RECOMMEND RELYING ON THIS LIBRARY IN A PRODUCTION ENVIRONMENT OR TO PROTECT ANY SENSITIVE DATA."** This guidance applies to this JavaScript/WebAssembly wrapper as well.

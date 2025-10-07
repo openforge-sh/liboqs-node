@@ -8,16 +8,16 @@ export interface BaseWASMModule {
   // Core lifecycle
   _OQS_init(): void;
   _OQS_destroy(): void;
-  
+
   // Memory management
   _malloc(size: number): number;
   _free(ptr: number): void;
   _OQS_MEM_malloc(size: number): number;
   _OQS_MEM_secure_free(ptr: number, size: number): void;
-  
+
   // Random number generation (requires setup in embedded build)
   _OQS_randombytes(ptr: number, len: number): void;
-  
+
   // Emscripten runtime methods
   UTF8ToString(ptr: number, maxLength?: number): string;
   stringToUTF8(str: string, ptr: number, maxLength: number): number;
@@ -48,127 +48,127 @@ export interface SIGModule extends BaseWASMModule {
 }
 
 // ML-KEM specific modules
-export interface MLKEM512Module extends KEMModule {}
-export interface MLKEM768Module extends KEMModule {}
-export interface MLKEM1024Module extends KEMModule {}
+export interface MLKEM512Module extends KEMModule { }
+export interface MLKEM768Module extends KEMModule { }
+export interface MLKEM1024Module extends KEMModule { }
 
 // Kyber specific modules (deprecated)
-export interface Kyber512Module extends KEMModule {}
-export interface Kyber768Module extends KEMModule {}
-export interface Kyber1024Module extends KEMModule {}
+export interface Kyber512Module extends KEMModule { }
+export interface Kyber768Module extends KEMModule { }
+export interface Kyber1024Module extends KEMModule { }
 
 // FrodoKEM specific modules
-export interface FrodoKEM640AESModule extends KEMModule {}
-export interface FrodoKEM640SHAKEModule extends KEMModule {}
-export interface FrodoKEM976AESModule extends KEMModule {}
-export interface FrodoKEM976SHAKEModule extends KEMModule {}
-export interface FrodoKEM1344AESModule extends KEMModule {}
-export interface FrodoKEM1344SHAKEModule extends KEMModule {}
+export interface FrodoKEM640AESModule extends KEMModule { }
+export interface FrodoKEM640SHAKEModule extends KEMModule { }
+export interface FrodoKEM976AESModule extends KEMModule { }
+export interface FrodoKEM976SHAKEModule extends KEMModule { }
+export interface FrodoKEM1344AESModule extends KEMModule { }
+export interface FrodoKEM1344SHAKEModule extends KEMModule { }
 
 // HQC specific modules
-export interface HQC128Module extends KEMModule {}
-export interface HQC192Module extends KEMModule {}
-export interface HQC256Module extends KEMModule {}
+export interface HQC128Module extends KEMModule { }
+export interface HQC192Module extends KEMModule { }
+export interface HQC256Module extends KEMModule { }
 
 // Classic McEliece specific modules
-export interface ClassicMcEliece348864Module extends KEMModule {}
-export interface ClassicMcEliece348864fModule extends KEMModule {}
-export interface ClassicMcEliece460896Module extends KEMModule {}
-export interface ClassicMcEliece460896fModule extends KEMModule {}
-export interface ClassicMcEliece6688128Module extends KEMModule {}
-export interface ClassicMcEliece6688128fModule extends KEMModule {}
-export interface ClassicMcEliece6960119Module extends KEMModule {}
-export interface ClassicMcEliece6960119fModule extends KEMModule {}
-export interface ClassicMcEliece8192128Module extends KEMModule {}
-export interface ClassicMcEliece8192128fModule extends KEMModule {}
+export interface ClassicMcEliece348864Module extends KEMModule { }
+export interface ClassicMcEliece348864fModule extends KEMModule { }
+export interface ClassicMcEliece460896Module extends KEMModule { }
+export interface ClassicMcEliece460896fModule extends KEMModule { }
+export interface ClassicMcEliece6688128Module extends KEMModule { }
+export interface ClassicMcEliece6688128fModule extends KEMModule { }
+export interface ClassicMcEliece6960119Module extends KEMModule { }
+export interface ClassicMcEliece6960119fModule extends KEMModule { }
+export interface ClassicMcEliece8192128Module extends KEMModule { }
+export interface ClassicMcEliece8192128fModule extends KEMModule { }
 
 // NTRU specific modules
-export interface NTRUHps2048509Module extends KEMModule {}
-export interface NTRUHps2048677Module extends KEMModule {}
-export interface NTRUHps4096821Module extends KEMModule {}
-export interface NTRUHps40961229Module extends KEMModule {}
-export interface NTRUHrss701Module extends KEMModule {}
-export interface NTRUHrss1373Module extends KEMModule {}
-export interface Sntrup761Module extends KEMModule {}
+export interface NTRUHps2048509Module extends KEMModule { }
+export interface NTRUHps2048677Module extends KEMModule { }
+export interface NTRUHps4096821Module extends KEMModule { }
+export interface NTRUHps40961229Module extends KEMModule { }
+export interface NTRUHrss701Module extends KEMModule { }
+export interface NTRUHrss1373Module extends KEMModule { }
+export interface Sntrup761Module extends KEMModule { }
 
 // ML-DSA specific modules
-export interface MLDSA44Module extends SIGModule {}
-export interface MLDSA65Module extends SIGModule {}
-export interface MLDSA87Module extends SIGModule {}
+export interface MLDSA44Module extends SIGModule { }
+export interface MLDSA65Module extends SIGModule { }
+export interface MLDSA87Module extends SIGModule { }
 
 // Falcon specific modules
-export interface Falcon512Module extends SIGModule {}
-export interface Falcon1024Module extends SIGModule {}
-export interface FalconPadded512Module extends SIGModule {}
-export interface FalconPadded1024Module extends SIGModule {}
+export interface Falcon512Module extends SIGModule { }
+export interface Falcon1024Module extends SIGModule { }
+export interface FalconPadded512Module extends SIGModule { }
+export interface FalconPadded1024Module extends SIGModule { }
 
 // MAYO specific modules
-export interface MAYO1Module extends SIGModule {}
-export interface MAYO2Module extends SIGModule {}
-export interface MAYO3Module extends SIGModule {}
-export interface MAYO5Module extends SIGModule {}
+export interface MAYO1Module extends SIGModule { }
+export interface MAYO2Module extends SIGModule { }
+export interface MAYO3Module extends SIGModule { }
+export interface MAYO5Module extends SIGModule { }
 
 // UOV specific modules
-export interface OVIpModule extends SIGModule {}
-export interface OVIpPkcModule extends SIGModule {}
-export interface OVIpPkcSkcModule extends SIGModule {}
-export interface OVIsModule extends SIGModule {}
-export interface OVIsPkcModule extends SIGModule {}
-export interface OVIsPkcSkcModule extends SIGModule {}
-export interface OVIIIModule extends SIGModule {}
-export interface OVIIIPkcModule extends SIGModule {}
-export interface OVIIIPkcSkcModule extends SIGModule {}
-export interface OVVModule extends SIGModule {}
-export interface OVVPkcModule extends SIGModule {}
-export interface OVVPkcSkcModule extends SIGModule {}
+export interface OVIpModule extends SIGModule { }
+export interface OVIpPkcModule extends SIGModule { }
+export interface OVIpPkcSkcModule extends SIGModule { }
+export interface OVIsModule extends SIGModule { }
+export interface OVIsPkcModule extends SIGModule { }
+export interface OVIsPkcSkcModule extends SIGModule { }
+export interface OVIIIModule extends SIGModule { }
+export interface OVIIIPkcModule extends SIGModule { }
+export interface OVIIIPkcSkcModule extends SIGModule { }
+export interface OVVModule extends SIGModule { }
+export interface OVVPkcModule extends SIGModule { }
+export interface OVVPkcSkcModule extends SIGModule { }
 
 // CROSS specific modules
-export interface CrossRsdp128BalancedModule extends SIGModule {}
-export interface CrossRsdp128FastModule extends SIGModule {}
-export interface CrossRsdp128SmallModule extends SIGModule {}
-export interface CrossRsdp192BalancedModule extends SIGModule {}
-export interface CrossRsdp192FastModule extends SIGModule {}
-export interface CrossRsdp192SmallModule extends SIGModule {}
-export interface CrossRsdp256BalancedModule extends SIGModule {}
-export interface CrossRsdp256FastModule extends SIGModule {}
-export interface CrossRsdp256SmallModule extends SIGModule {}
-export interface CrossRsdpg128BalancedModule extends SIGModule {}
-export interface CrossRsdpg128FastModule extends SIGModule {}
-export interface CrossRsdpg128SmallModule extends SIGModule {}
-export interface CrossRsdpg192BalancedModule extends SIGModule {}
-export interface CrossRsdpg192FastModule extends SIGModule {}
-export interface CrossRsdpg192SmallModule extends SIGModule {}
-export interface CrossRsdpg256BalancedModule extends SIGModule {}
-export interface CrossRsdpg256FastModule extends SIGModule {}
-export interface CrossRsdpg256SmallModule extends SIGModule {}
+export interface CrossRsdp128BalancedModule extends SIGModule { }
+export interface CrossRsdp128FastModule extends SIGModule { }
+export interface CrossRsdp128SmallModule extends SIGModule { }
+export interface CrossRsdp192BalancedModule extends SIGModule { }
+export interface CrossRsdp192FastModule extends SIGModule { }
+export interface CrossRsdp192SmallModule extends SIGModule { }
+export interface CrossRsdp256BalancedModule extends SIGModule { }
+export interface CrossRsdp256FastModule extends SIGModule { }
+export interface CrossRsdp256SmallModule extends SIGModule { }
+export interface CrossRsdpg128BalancedModule extends SIGModule { }
+export interface CrossRsdpg128FastModule extends SIGModule { }
+export interface CrossRsdpg128SmallModule extends SIGModule { }
+export interface CrossRsdpg192BalancedModule extends SIGModule { }
+export interface CrossRsdpg192FastModule extends SIGModule { }
+export interface CrossRsdpg192SmallModule extends SIGModule { }
+export interface CrossRsdpg256BalancedModule extends SIGModule { }
+export interface CrossRsdpg256FastModule extends SIGModule { }
+export interface CrossRsdpg256SmallModule extends SIGModule { }
 
-// SPHINCS+ specific modules
-export interface SphincsSha2128fSimpleModule extends SIGModule {}
-export interface SphincsSha2128sSimpleModule extends SIGModule {}
-export interface SphincsSha2192fSimpleModule extends SIGModule {}
-export interface SphincsSha2192sSimpleModule extends SIGModule {}
-export interface SphincsSha2256fSimpleModule extends SIGModule {}
-export interface SphincsSha2256sSimpleModule extends SIGModule {}
-export interface SphincsShake128fSimpleModule extends SIGModule {}
-export interface SphincsShake128sSimpleModule extends SIGModule {}
-export interface SphincsShake192fSimpleModule extends SIGModule {}
-export interface SphincsShake192sSimpleModule extends SIGModule {}
-export interface SphincsShake256fSimpleModule extends SIGModule {}
-export interface SphincsShake256sSimpleModule extends SIGModule {}
+// SLH-DSA specific modules (FIPS 205)
+export interface SlhDsaSha2128fModule extends SIGModule { }
+export interface SlhDsaSha2128sModule extends SIGModule { }
+export interface SlhDsaSha2192fModule extends SIGModule { }
+export interface SlhDsaSha2192sModule extends SIGModule { }
+export interface SlhDsaSha2256fModule extends SIGModule { }
+export interface SlhDsaSha2256sModule extends SIGModule { }
+export interface SlhDsaShake128fModule extends SIGModule { }
+export interface SlhDsaShake128sModule extends SIGModule { }
+export interface SlhDsaShake192fModule extends SIGModule { }
+export interface SlhDsaShake192sModule extends SIGModule { }
+export interface SlhDsaShake256fModule extends SIGModule { }
+export interface SlhDsaShake256sModule extends SIGModule { }
 
 // SNOVA specific modules
-export interface Snova2454Module extends SIGModule {}
-export interface Snova2454EskModule extends SIGModule {}
-export interface Snova2454ShakeModule extends SIGModule {}
-export interface Snova2454ShakeEskModule extends SIGModule {}
-export interface Snova2455Module extends SIGModule {}
-export interface Snova2583Module extends SIGModule {}
-export interface Snova2965Module extends SIGModule {}
-export interface Snova37172Module extends SIGModule {}
-export interface Snova3784Module extends SIGModule {}
-export interface Snova49113Module extends SIGModule {}
-export interface Snova56252Module extends SIGModule {}
-export interface Snova60104Module extends SIGModule {}
+export interface Snova2454Module extends SIGModule { }
+export interface Snova2454EskModule extends SIGModule { }
+export interface Snova2454ShakeModule extends SIGModule { }
+export interface Snova2454ShakeEskModule extends SIGModule { }
+export interface Snova2455Module extends SIGModule { }
+export interface Snova2583Module extends SIGModule { }
+export interface Snova2965Module extends SIGModule { }
+export interface Snova37172Module extends SIGModule { }
+export interface Snova3784Module extends SIGModule { }
+export interface Snova49113Module extends SIGModule { }
+export interface Snova56252Module extends SIGModule { }
+export interface Snova60104Module extends SIGModule { }
 
 // Module factory type
 export type WASMModuleFactory<T = BaseWASMModule> = (moduleOverrides?: Record<string, unknown>) => Promise<T>;
@@ -191,7 +191,7 @@ export type SIGAlgorithm = 'ml-dsa-44' | 'ml-dsa-65' | 'ml-dsa-87' | 'falcon-512
   | 'mayo-1' | 'mayo-2' | 'mayo-3' | 'mayo-5'
   | 'ov-ip' | 'ov-ip-pkc' | 'ov-ip-pkc-skc' | 'ov-is' | 'ov-is-pkc' | 'ov-is-pkc-skc' | 'ov-iii' | 'ov-iii-pkc' | 'ov-iii-pkc-skc' | 'ov-v' | 'ov-v-pkc' | 'ov-v-pkc-skc'
   | 'cross-rsdp-128-balanced' | 'cross-rsdp-128-fast' | 'cross-rsdp-128-small' | 'cross-rsdp-192-balanced' | 'cross-rsdp-192-fast' | 'cross-rsdp-192-small' | 'cross-rsdp-256-balanced' | 'cross-rsdp-256-fast' | 'cross-rsdp-256-small' | 'cross-rsdpg-128-balanced' | 'cross-rsdpg-128-fast' | 'cross-rsdpg-128-small' | 'cross-rsdpg-192-balanced' | 'cross-rsdpg-192-fast' | 'cross-rsdpg-192-small' | 'cross-rsdpg-256-balanced' | 'cross-rsdpg-256-fast' | 'cross-rsdpg-256-small'
-  | 'sphincs-sha2-128f-simple' | 'sphincs-sha2-128s-simple' | 'sphincs-sha2-192f-simple' | 'sphincs-sha2-192s-simple' | 'sphincs-sha2-256f-simple' | 'sphincs-sha2-256s-simple' | 'sphincs-shake-128f-simple' | 'sphincs-shake-128s-simple' | 'sphincs-shake-192f-simple' | 'sphincs-shake-192s-simple' | 'sphincs-shake-256f-simple' | 'sphincs-shake-256s-simple'
+  | 'slh-dsa-sha2-128f' | 'slh-dsa-sha2-128s' | 'slh-dsa-sha2-192f' | 'slh-dsa-sha2-192s' | 'slh-dsa-sha2-256f' | 'slh-dsa-sha2-256s' | 'slh-dsa-shake-128f' | 'slh-dsa-shake-128s' | 'slh-dsa-shake-192f' | 'slh-dsa-shake-192s' | 'slh-dsa-shake-256f' | 'slh-dsa-shake-256s'
   | 'snova-24-5-4' | 'snova-24-5-4-esk' | 'snova-24-5-4-shake' | 'snova-24-5-4-shake-esk' | 'snova-24-5-5' | 'snova-25-8-3'
   | 'snova-29-6-5' | 'snova-37-17-2' | 'snova-37-8-4'
   | 'snova-49-11-3' | 'snova-56-25-2' | 'snova-60-10-4';
@@ -231,890 +231,911 @@ export interface SIGResult {
   secretKey: Uint8Array;
 }
 
+// Generic instance interfaces for all KEM and SIG algorithms
+export interface KEMInstance {
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  destroy(): void;
+  readonly info: Readonly<AlgorithmInfo>;
+}
+
+export interface SIGInstance {
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
+  destroy(): void;
+  readonly info: Readonly<AlgorithmInfo>;
+}
+
+// Factory function types
+export type KEMFactory<T extends KEMInstance = KEMInstance> = () => Promise<T>;
+export type SIGFactory<T extends SIGInstance = SIGInstance> = () => Promise<T>;
+
 // ML-KEM wrapper classes
 export declare class MLKEM512 {
   constructor(wasmModule: MLKEM512Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class MLKEM768 {
   constructor(wasmModule: MLKEM768Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class MLKEM1024 {
   constructor(wasmModule: MLKEM1024Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 // Kyber wrapper classes (deprecated)
 export declare class Kyber512 {
   constructor(wasmModule: Kyber512Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Kyber768 {
   constructor(wasmModule: Kyber768Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Kyber1024 {
   constructor(wasmModule: Kyber1024Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 // FrodoKEM wrapper classes
 export declare class FrodoKEM640AES {
   constructor(wasmModule: FrodoKEM640AESModule, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class FrodoKEM640SHAKE {
   constructor(wasmModule: FrodoKEM640SHAKEModule, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class FrodoKEM976AES {
   constructor(wasmModule: FrodoKEM976AESModule, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class FrodoKEM976SHAKE {
   constructor(wasmModule: FrodoKEM976SHAKEModule, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class FrodoKEM1344AES {
   constructor(wasmModule: FrodoKEM1344AESModule, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class FrodoKEM1344SHAKE {
   constructor(wasmModule: FrodoKEM1344SHAKEModule, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 // HQC wrapper classes
 export declare class HQC128 {
   constructor(wasmModule: HQC128Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class HQC192 {
   constructor(wasmModule: HQC192Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class HQC256 {
   constructor(wasmModule: HQC256Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 // Classic McEliece wrapper classes
 export declare class ClassicMcEliece348864 {
   constructor(wasmModule: ClassicMcEliece348864Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class ClassicMcEliece348864f {
   constructor(wasmModule: ClassicMcEliece348864fModule, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class ClassicMcEliece460896 {
   constructor(wasmModule: ClassicMcEliece460896Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class ClassicMcEliece460896f {
   constructor(wasmModule: ClassicMcEliece460896fModule, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class ClassicMcEliece6688128 {
   constructor(wasmModule: ClassicMcEliece6688128Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class ClassicMcEliece6688128f {
   constructor(wasmModule: ClassicMcEliece6688128fModule, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class ClassicMcEliece6960119 {
   constructor(wasmModule: ClassicMcEliece6960119Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class ClassicMcEliece6960119f {
   constructor(wasmModule: ClassicMcEliece6960119fModule, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class ClassicMcEliece8192128 {
   constructor(wasmModule: ClassicMcEliece8192128Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class ClassicMcEliece8192128f {
   constructor(wasmModule: ClassicMcEliece8192128fModule, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 // NTRU wrapper classes
 export declare class NTRUHps2048509 {
   constructor(wasmModule: NTRUHps2048509Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class NTRUHps2048677 {
   constructor(wasmModule: NTRUHps2048677Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class NTRUHps4096821 {
   constructor(wasmModule: NTRUHps4096821Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class NTRUHps40961229 {
   constructor(wasmModule: NTRUHps40961229Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class NTRUHrss701 {
   constructor(wasmModule: NTRUHrss701Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class NTRUHrss1373 {
   constructor(wasmModule: NTRUHrss1373Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Sntrup761 {
   constructor(wasmModule: Sntrup761Module, kemPtr: number);
-  generateKeyPair(): Promise<KEMResult>;
-  encapsulate(publicKey: Uint8Array): Promise<EncapsResult>;
-  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
+  generateKeyPair(): KEMResult;
+  encapsulate(publicKey: Uint8Array): EncapsResult;
+  decapsulate(ciphertext: Uint8Array, secretKey: Uint8Array): Uint8Array;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 // ML-DSA wrapper classes
 export declare class MLDSA44 {
   constructor(wasmModule: MLDSA44Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class MLDSA65 {
   constructor(wasmModule: MLDSA65Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class MLDSA87 {
   constructor(wasmModule: MLDSA87Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 // Falcon wrapper classes
 export declare class Falcon512 {
   constructor(wasmModule: Falcon512Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Falcon1024 {
   constructor(wasmModule: Falcon1024Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class FalconPadded512 {
   constructor(wasmModule: FalconPadded512Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class FalconPadded1024 {
   constructor(wasmModule: FalconPadded1024Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 // MAYO wrapper classes
 export declare class MAYO1 {
   constructor(wasmModule: MAYO1Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class MAYO2 {
   constructor(wasmModule: MAYO2Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class MAYO3 {
   constructor(wasmModule: MAYO3Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class MAYO5 {
   constructor(wasmModule: MAYO5Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 // UOV wrapper classes
 export declare class OVIp {
   constructor(wasmModule: OVIpModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class OVIpPkc {
   constructor(wasmModule: OVIpPkcModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class OVIpPkcSkc {
   constructor(wasmModule: OVIpPkcSkcModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class OVIs {
   constructor(wasmModule: OVIsModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class OVIsPkc {
   constructor(wasmModule: OVIsPkcModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class OVIsPkcSkc {
   constructor(wasmModule: OVIsPkcSkcModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class OVIII {
   constructor(wasmModule: OVIIIModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class OVIIIPkc {
   constructor(wasmModule: OVIIIPkcModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class OVIIIPkcSkc {
   constructor(wasmModule: OVIIIPkcSkcModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class OVV {
   constructor(wasmModule: OVVModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class OVVPkc {
   constructor(wasmModule: OVVPkcModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class OVVPkcSkc {
   constructor(wasmModule: OVVPkcSkcModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 // CROSS wrapper classes
 export declare class CrossRsdp128Balanced {
   constructor(wasmModule: CrossRsdp128BalancedModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdp128Fast {
   constructor(wasmModule: CrossRsdp128FastModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdp128Small {
   constructor(wasmModule: CrossRsdp128SmallModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdp192Balanced {
   constructor(wasmModule: CrossRsdp192BalancedModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdp192Fast {
   constructor(wasmModule: CrossRsdp192FastModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdp192Small {
   constructor(wasmModule: CrossRsdp192SmallModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdp256Balanced {
   constructor(wasmModule: CrossRsdp256BalancedModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdp256Fast {
   constructor(wasmModule: CrossRsdp256FastModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdp256Small {
   constructor(wasmModule: CrossRsdp256SmallModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdpg128Balanced {
   constructor(wasmModule: CrossRsdpg128BalancedModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdpg128Fast {
   constructor(wasmModule: CrossRsdpg128FastModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdpg128Small {
   constructor(wasmModule: CrossRsdpg128SmallModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdpg192Balanced {
   constructor(wasmModule: CrossRsdpg192BalancedModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdpg192Fast {
   constructor(wasmModule: CrossRsdpg192FastModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdpg192Small {
   constructor(wasmModule: CrossRsdpg192SmallModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdpg256Balanced {
   constructor(wasmModule: CrossRsdpg256BalancedModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdpg256Fast {
   constructor(wasmModule: CrossRsdpg256FastModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class CrossRsdpg256Small {
   constructor(wasmModule: CrossRsdpg256SmallModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
-// SPHINCS+ wrapper classes
-export declare class SphincsSha2128fSimple {
-  constructor(wasmModule: SphincsSha2128fSimpleModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+// SLH-DSA wrapper classes (FIPS 205)
+export declare class SlhDsaSha2128f {
+  constructor(wasmModule: SlhDsaSha2128fModule, sigPtr: number);
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
-export declare class SphincsSha2128sSimple {
-  constructor(wasmModule: SphincsSha2128sSimpleModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+export declare class SlhDsaSha2128s {
+  constructor(wasmModule: SlhDsaSha2128sModule, sigPtr: number);
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
-export declare class SphincsSha2192fSimple {
-  constructor(wasmModule: SphincsSha2192fSimpleModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+export declare class SlhDsaSha2192f {
+  constructor(wasmModule: SlhDsaSha2192fModule, sigPtr: number);
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
-export declare class SphincsSha2192sSimple {
-  constructor(wasmModule: SphincsSha2192sSimpleModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+export declare class SlhDsaSha2192s {
+  constructor(wasmModule: SlhDsaSha2192sModule, sigPtr: number);
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
-export declare class SphincsSha2256fSimple {
-  constructor(wasmModule: SphincsSha2256fSimpleModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+export declare class SlhDsaSha2256f {
+  constructor(wasmModule: SlhDsaSha2256fModule, sigPtr: number);
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
-export declare class SphincsSha2256sSimple {
-  constructor(wasmModule: SphincsSha2256sSimpleModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+export declare class SlhDsaSha2256s {
+  constructor(wasmModule: SlhDsaSha2256sModule, sigPtr: number);
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
-export declare class SphincsShake128fSimple {
-  constructor(wasmModule: SphincsShake128fSimpleModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+export declare class SlhDsaShake128f {
+  constructor(wasmModule: SlhDsaShake128fModule, sigPtr: number);
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
-export declare class SphincsShake128sSimple {
-  constructor(wasmModule: SphincsShake128sSimpleModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+export declare class SlhDsaShake128s {
+  constructor(wasmModule: SlhDsaShake128sModule, sigPtr: number);
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
-export declare class SphincsShake192fSimple {
-  constructor(wasmModule: SphincsShake192fSimpleModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+export declare class SlhDsaShake192f {
+  constructor(wasmModule: SlhDsaShake192fModule, sigPtr: number);
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
-export declare class SphincsShake192sSimple {
-  constructor(wasmModule: SphincsShake192sSimpleModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+export declare class SlhDsaShake192s {
+  constructor(wasmModule: SlhDsaShake192sModule, sigPtr: number);
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
-export declare class SphincsShake256fSimple {
-  constructor(wasmModule: SphincsShake256fSimpleModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+export declare class SlhDsaShake256f {
+  constructor(wasmModule: SlhDsaShake256fModule, sigPtr: number);
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
-export declare class SphincsShake256sSimple {
-  constructor(wasmModule: SphincsShake256sSimpleModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+export declare class SlhDsaShake256s {
+  constructor(wasmModule: SlhDsaShake256sModule, sigPtr: number);
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 // SNOVA wrapper classes
 export declare class Snova2454 {
   constructor(wasmModule: Snova2454Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Snova2454Esk {
   constructor(wasmModule: Snova2454EskModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Snova2454Shake {
   constructor(wasmModule: Snova2454ShakeModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Snova2454ShakeEsk {
   constructor(wasmModule: Snova2454ShakeEskModule, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Snova2455 {
   constructor(wasmModule: Snova2455Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Snova2583 {
   constructor(wasmModule: Snova2583Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Snova2965 {
   constructor(wasmModule: Snova2965Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Snova37172 {
   constructor(wasmModule: Snova37172Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Snova3784 {
   constructor(wasmModule: Snova3784Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Snova49113 {
   constructor(wasmModule: Snova49113Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Snova56252 {
   constructor(wasmModule: Snova56252Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 export declare class Snova60104 {
   constructor(wasmModule: Snova60104Module, sigPtr: number);
-  generateKeyPair(): Promise<SIGResult>;
-  sign(message: Uint8Array, secretKey: Uint8Array): Promise<Uint8Array>;
-  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): Promise<boolean>;
+  generateKeyPair(): SIGResult;
+  sign(message: Uint8Array, secretKey: Uint8Array): Uint8Array;
+  verify(message: Uint8Array, signature: Uint8Array, publicKey: Uint8Array): boolean;
   destroy(): void;
-  readonly info: AlgorithmInfo;
+  readonly info: Readonly<AlgorithmInfo>;
 }
 
 // Factory functions
@@ -1202,18 +1223,18 @@ export declare function createCrossRsdpg256Balanced(): Promise<CrossRsdpg256Bala
 export declare function createCrossRsdpg256Fast(): Promise<CrossRsdpg256Fast>;
 export declare function createCrossRsdpg256Small(): Promise<CrossRsdpg256Small>;
 
-export declare function createSphincsSha2128fSimple(): Promise<SphincsSha2128fSimple>;
-export declare function createSphincsSha2128sSimple(): Promise<SphincsSha2128sSimple>;
-export declare function createSphincsSha2192fSimple(): Promise<SphincsSha2192fSimple>;
-export declare function createSphincsSha2192sSimple(): Promise<SphincsSha2192sSimple>;
-export declare function createSphincsSha2256fSimple(): Promise<SphincsSha2256fSimple>;
-export declare function createSphincsSha2256sSimple(): Promise<SphincsSha2256sSimple>;
-export declare function createSphincsShake128fSimple(): Promise<SphincsShake128fSimple>;
-export declare function createSphincsShake128sSimple(): Promise<SphincsShake128sSimple>;
-export declare function createSphincsShake192fSimple(): Promise<SphincsShake192fSimple>;
-export declare function createSphincsShake192sSimple(): Promise<SphincsShake192sSimple>;
-export declare function createSphincsShake256fSimple(): Promise<SphincsShake256fSimple>;
-export declare function createSphincsShake256sSimple(): Promise<SphincsShake256sSimple>;
+export declare function createSlhDsaSha2128f(): Promise<SlhDsaSha2128f>;
+export declare function createSlhDsaSha2128s(): Promise<SlhDsaSha2128s>;
+export declare function createSlhDsaSha2192f(): Promise<SlhDsaSha2192f>;
+export declare function createSlhDsaSha2192s(): Promise<SlhDsaSha2192s>;
+export declare function createSlhDsaSha2256f(): Promise<SlhDsaSha2256f>;
+export declare function createSlhDsaSha2256s(): Promise<SlhDsaSha2256s>;
+export declare function createSlhDsaShake128f(): Promise<SlhDsaShake128f>;
+export declare function createSlhDsaShake128s(): Promise<SlhDsaShake128s>;
+export declare function createSlhDsaShake192f(): Promise<SlhDsaShake192f>;
+export declare function createSlhDsaShake192s(): Promise<SlhDsaShake192s>;
+export declare function createSlhDsaShake256f(): Promise<SlhDsaShake256f>;
+export declare function createSlhDsaShake256s(): Promise<SlhDsaShake256s>;
 
 export declare function createSnova2454(): Promise<Snova2454>;
 export declare function createSnova2454Esk(): Promise<Snova2454Esk>;
@@ -1229,112 +1250,112 @@ export declare function createSnova56252(): Promise<Snova56252>;
 export declare function createSnova60104(): Promise<Snova60104>;
 
 // Algorithm info constants
-export declare const ML_KEM_512_INFO: AlgorithmInfo;
-export declare const ML_KEM_768_INFO: AlgorithmInfo;
-export declare const ML_KEM_1024_INFO: AlgorithmInfo;
+export declare const ML_KEM_512_INFO: Readonly<AlgorithmInfo>;
+export declare const ML_KEM_768_INFO: Readonly<AlgorithmInfo>;
+export declare const ML_KEM_1024_INFO: Readonly<AlgorithmInfo>;
 
-export declare const KYBER512_INFO: AlgorithmInfo;
-export declare const KYBER768_INFO: AlgorithmInfo;
-export declare const KYBER1024_INFO: AlgorithmInfo;
+export declare const KYBER512_INFO: Readonly<AlgorithmInfo>;
+export declare const KYBER768_INFO: Readonly<AlgorithmInfo>;
+export declare const KYBER1024_INFO: Readonly<AlgorithmInfo>;
 
-export declare const FRODOKEM_640_AES_INFO: AlgorithmInfo;
-export declare const FRODOKEM_640_SHAKE_INFO: AlgorithmInfo;
-export declare const FRODOKEM_976_AES_INFO: AlgorithmInfo;
-export declare const FRODOKEM_976_SHAKE_INFO: AlgorithmInfo;
-export declare const FRODOKEM_1344_AES_INFO: AlgorithmInfo;
-export declare const FRODOKEM_1344_SHAKE_INFO: AlgorithmInfo;
+export declare const FRODOKEM_640_AES_INFO: Readonly<AlgorithmInfo>;
+export declare const FRODOKEM_640_SHAKE_INFO: Readonly<AlgorithmInfo>;
+export declare const FRODOKEM_976_AES_INFO: Readonly<AlgorithmInfo>;
+export declare const FRODOKEM_976_SHAKE_INFO: Readonly<AlgorithmInfo>;
+export declare const FRODOKEM_1344_AES_INFO: Readonly<AlgorithmInfo>;
+export declare const FRODOKEM_1344_SHAKE_INFO: Readonly<AlgorithmInfo>;
 
-export declare const HQC_128_INFO: AlgorithmInfo;
-export declare const HQC_192_INFO: AlgorithmInfo;
-export declare const HQC_256_INFO: AlgorithmInfo;
+export declare const HQC_128_INFO: Readonly<AlgorithmInfo>;
+export declare const HQC_192_INFO: Readonly<AlgorithmInfo>;
+export declare const HQC_256_INFO: Readonly<AlgorithmInfo>;
 
-export declare const CLASSIC_MCELIECE_348864_INFO: AlgorithmInfo;
-export declare const CLASSIC_MCELIECE_348864F_INFO: AlgorithmInfo;
-export declare const CLASSIC_MCELIECE_460896_INFO: AlgorithmInfo;
-export declare const CLASSIC_MCELIECE_460896F_INFO: AlgorithmInfo;
-export declare const CLASSIC_MCELIECE_6688128_INFO: AlgorithmInfo;
-export declare const CLASSIC_MCELIECE_6688128F_INFO: AlgorithmInfo;
-export declare const CLASSIC_MCELIECE_6960119_INFO: AlgorithmInfo;
-export declare const CLASSIC_MCELIECE_6960119F_INFO: AlgorithmInfo;
-export declare const CLASSIC_MCELIECE_8192128_INFO: AlgorithmInfo;
-export declare const CLASSIC_MCELIECE_8192128F_INFO: AlgorithmInfo;
+export declare const CLASSIC_MCELIECE_348864_INFO: Readonly<AlgorithmInfo>;
+export declare const CLASSIC_MCELIECE_348864F_INFO: Readonly<AlgorithmInfo>;
+export declare const CLASSIC_MCELIECE_460896_INFO: Readonly<AlgorithmInfo>;
+export declare const CLASSIC_MCELIECE_460896F_INFO: Readonly<AlgorithmInfo>;
+export declare const CLASSIC_MCELIECE_6688128_INFO: Readonly<AlgorithmInfo>;
+export declare const CLASSIC_MCELIECE_6688128F_INFO: Readonly<AlgorithmInfo>;
+export declare const CLASSIC_MCELIECE_6960119_INFO: Readonly<AlgorithmInfo>;
+export declare const CLASSIC_MCELIECE_6960119F_INFO: Readonly<AlgorithmInfo>;
+export declare const CLASSIC_MCELIECE_8192128_INFO: Readonly<AlgorithmInfo>;
+export declare const CLASSIC_MCELIECE_8192128F_INFO: Readonly<AlgorithmInfo>;
 
-export declare const NTRU_HPS_2048_509_INFO: AlgorithmInfo;
-export declare const NTRU_HPS_2048_677_INFO: AlgorithmInfo;
-export declare const NTRU_HPS_4096_821_INFO: AlgorithmInfo;
-export declare const NTRU_HPS_4096_1229_INFO: AlgorithmInfo;
-export declare const NTRU_HRSS_701_INFO: AlgorithmInfo;
-export declare const NTRU_HRSS_1373_INFO: AlgorithmInfo;
-export declare const SNTRUP761_INFO: AlgorithmInfo;
+export declare const NTRU_HPS_2048_509_INFO: Readonly<AlgorithmInfo>;
+export declare const NTRU_HPS_2048_677_INFO: Readonly<AlgorithmInfo>;
+export declare const NTRU_HPS_4096_821_INFO: Readonly<AlgorithmInfo>;
+export declare const NTRU_HPS_4096_1229_INFO: Readonly<AlgorithmInfo>;
+export declare const NTRU_HRSS_701_INFO: Readonly<AlgorithmInfo>;
+export declare const NTRU_HRSS_1373_INFO: Readonly<AlgorithmInfo>;
+export declare const SNTRUP761_INFO: Readonly<AlgorithmInfo>;
 
-export declare const ML_DSA_44_INFO: AlgorithmInfo;
-export declare const ML_DSA_65_INFO: AlgorithmInfo;
-export declare const ML_DSA_87_INFO: AlgorithmInfo;
+export declare const ML_DSA_44_INFO: Readonly<AlgorithmInfo>;
+export declare const ML_DSA_65_INFO: Readonly<AlgorithmInfo>;
+export declare const ML_DSA_87_INFO: Readonly<AlgorithmInfo>;
 
-export declare const FALCON_512_INFO: AlgorithmInfo;
-export declare const FALCON_1024_INFO: AlgorithmInfo;
-export declare const FALCON_PADDED_512_INFO: AlgorithmInfo;
-export declare const FALCON_PADDED_1024_INFO: AlgorithmInfo;
+export declare const FALCON_512_INFO: Readonly<AlgorithmInfo>;
+export declare const FALCON_1024_INFO: Readonly<AlgorithmInfo>;
+export declare const FALCON_PADDED_512_INFO: Readonly<AlgorithmInfo>;
+export declare const FALCON_PADDED_1024_INFO: Readonly<AlgorithmInfo>;
 
-export declare const MAYO_1_INFO: AlgorithmInfo;
-export declare const MAYO_2_INFO: AlgorithmInfo;
-export declare const MAYO_3_INFO: AlgorithmInfo;
-export declare const MAYO_5_INFO: AlgorithmInfo;
+export declare const MAYO_1_INFO: Readonly<AlgorithmInfo>;
+export declare const MAYO_2_INFO: Readonly<AlgorithmInfo>;
+export declare const MAYO_3_INFO: Readonly<AlgorithmInfo>;
+export declare const MAYO_5_INFO: Readonly<AlgorithmInfo>;
 
-export declare const OV_IP_INFO: AlgorithmInfo;
-export declare const OV_IP_PKC_INFO: AlgorithmInfo;
-export declare const OV_IP_PKC_SKC_INFO: AlgorithmInfo;
-export declare const OV_IS_INFO: AlgorithmInfo;
-export declare const OV_IS_PKC_INFO: AlgorithmInfo;
-export declare const OV_IS_PKC_SKC_INFO: AlgorithmInfo;
-export declare const OV_III_INFO: AlgorithmInfo;
-export declare const OV_III_PKC_INFO: AlgorithmInfo;
-export declare const OV_III_PKC_SKC_INFO: AlgorithmInfo;
-export declare const OV_V_INFO: AlgorithmInfo;
-export declare const OV_V_PKC_INFO: AlgorithmInfo;
-export declare const OV_V_PKC_SKC_INFO: AlgorithmInfo;
+export declare const OV_IP_INFO: Readonly<AlgorithmInfo>;
+export declare const OV_IP_PKC_INFO: Readonly<AlgorithmInfo>;
+export declare const OV_IP_PKC_SKC_INFO: Readonly<AlgorithmInfo>;
+export declare const OV_IS_INFO: Readonly<AlgorithmInfo>;
+export declare const OV_IS_PKC_INFO: Readonly<AlgorithmInfo>;
+export declare const OV_IS_PKC_SKC_INFO: Readonly<AlgorithmInfo>;
+export declare const OV_III_INFO: Readonly<AlgorithmInfo>;
+export declare const OV_III_PKC_INFO: Readonly<AlgorithmInfo>;
+export declare const OV_III_PKC_SKC_INFO: Readonly<AlgorithmInfo>;
+export declare const OV_V_INFO: Readonly<AlgorithmInfo>;
+export declare const OV_V_PKC_INFO: Readonly<AlgorithmInfo>;
+export declare const OV_V_PKC_SKC_INFO: Readonly<AlgorithmInfo>;
 
-export declare const CROSS_RSDP_128_BALANCED_INFO: AlgorithmInfo;
-export declare const CROSS_RSDP_128_FAST_INFO: AlgorithmInfo;
-export declare const CROSS_RSDP_128_SMALL_INFO: AlgorithmInfo;
-export declare const CROSS_RSDP_192_BALANCED_INFO: AlgorithmInfo;
-export declare const CROSS_RSDP_192_FAST_INFO: AlgorithmInfo;
-export declare const CROSS_RSDP_192_SMALL_INFO: AlgorithmInfo;
-export declare const CROSS_RSDP_256_BALANCED_INFO: AlgorithmInfo;
-export declare const CROSS_RSDP_256_FAST_INFO: AlgorithmInfo;
-export declare const CROSS_RSDP_256_SMALL_INFO: AlgorithmInfo;
-export declare const CROSS_RSDPG_128_BALANCED_INFO: AlgorithmInfo;
-export declare const CROSS_RSDPG_128_FAST_INFO: AlgorithmInfo;
-export declare const CROSS_RSDPG_128_SMALL_INFO: AlgorithmInfo;
-export declare const CROSS_RSDPG_192_BALANCED_INFO: AlgorithmInfo;
-export declare const CROSS_RSDPG_192_FAST_INFO: AlgorithmInfo;
-export declare const CROSS_RSDPG_192_SMALL_INFO: AlgorithmInfo;
-export declare const CROSS_RSDPG_256_BALANCED_INFO: AlgorithmInfo;
-export declare const CROSS_RSDPG_256_FAST_INFO: AlgorithmInfo;
-export declare const CROSS_RSDPG_256_SMALL_INFO: AlgorithmInfo;
+export declare const CROSS_RSDP_128_BALANCED_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDP_128_FAST_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDP_128_SMALL_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDP_192_BALANCED_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDP_192_FAST_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDP_192_SMALL_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDP_256_BALANCED_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDP_256_FAST_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDP_256_SMALL_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDPG_128_BALANCED_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDPG_128_FAST_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDPG_128_SMALL_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDPG_192_BALANCED_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDPG_192_FAST_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDPG_192_SMALL_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDPG_256_BALANCED_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDPG_256_FAST_INFO: Readonly<AlgorithmInfo>;
+export declare const CROSS_RSDPG_256_SMALL_INFO: Readonly<AlgorithmInfo>;
 
-export declare const SPHINCSPLUS_SHA2_128F_SIMPLE_INFO: AlgorithmInfo;
-export declare const SPHINCSPLUS_SHA2_128S_SIMPLE_INFO: AlgorithmInfo;
-export declare const SPHINCSPLUS_SHA2_192F_SIMPLE_INFO: AlgorithmInfo;
-export declare const SPHINCSPLUS_SHA2_192S_SIMPLE_INFO: AlgorithmInfo;
-export declare const SPHINCSPLUS_SHA2_256F_SIMPLE_INFO: AlgorithmInfo;
-export declare const SPHINCSPLUS_SHA2_256S_SIMPLE_INFO: AlgorithmInfo;
-export declare const SPHINCSPLUS_SHAKE_128F_SIMPLE_INFO: AlgorithmInfo;
-export declare const SPHINCSPLUS_SHAKE_128S_SIMPLE_INFO: AlgorithmInfo;
-export declare const SPHINCSPLUS_SHAKE_192F_SIMPLE_INFO: AlgorithmInfo;
-export declare const SPHINCSPLUS_SHAKE_192S_SIMPLE_INFO: AlgorithmInfo;
-export declare const SPHINCSPLUS_SHAKE_256F_SIMPLE_INFO: AlgorithmInfo;
-export declare const SPHINCSPLUS_SHAKE_256S_SIMPLE_INFO: AlgorithmInfo;
+export declare const SLH_DSA_SHA2_128F_INFO: Readonly<AlgorithmInfo>;
+export declare const SLH_DSA_SHA2_128S_INFO: Readonly<AlgorithmInfo>;
+export declare const SLH_DSA_SHA2_192F_INFO: Readonly<AlgorithmInfo>;
+export declare const SLH_DSA_SHA2_192S_INFO: Readonly<AlgorithmInfo>;
+export declare const SLH_DSA_SHA2_256F_INFO: Readonly<AlgorithmInfo>;
+export declare const SLH_DSA_SHA2_256S_INFO: Readonly<AlgorithmInfo>;
+export declare const SLH_DSA_SHAKE_128F_INFO: Readonly<AlgorithmInfo>;
+export declare const SLH_DSA_SHAKE_128S_INFO: Readonly<AlgorithmInfo>;
+export declare const SLH_DSA_SHAKE_192F_INFO: Readonly<AlgorithmInfo>;
+export declare const SLH_DSA_SHAKE_192S_INFO: Readonly<AlgorithmInfo>;
+export declare const SLH_DSA_SHAKE_256F_INFO: Readonly<AlgorithmInfo>;
+export declare const SLH_DSA_SHAKE_256S_INFO: Readonly<AlgorithmInfo>;
 
-export declare const SNOVA_24_5_4_INFO: AlgorithmInfo;
-export declare const SNOVA_24_5_4_ESK_INFO: AlgorithmInfo;
-export declare const SNOVA_24_5_4_SHAKE_INFO: AlgorithmInfo;
-export declare const SNOVA_24_5_4_SHAKE_ESK_INFO: AlgorithmInfo;
-export declare const SNOVA_24_5_5_INFO: AlgorithmInfo;
-export declare const SNOVA_25_8_3_INFO: AlgorithmInfo;
-export declare const SNOVA_29_6_5_INFO: AlgorithmInfo;
-export declare const SNOVA_37_17_2_INFO: AlgorithmInfo;
-export declare const SNOVA_37_8_4_INFO: AlgorithmInfo;
-export declare const SNOVA_49_11_3_INFO: AlgorithmInfo;
-export declare const SNOVA_56_25_2_INFO: AlgorithmInfo;
-export declare const SNOVA_60_10_4_INFO: AlgorithmInfo;
+export declare const SNOVA_24_5_4_INFO: Readonly<AlgorithmInfo>;
+export declare const SNOVA_24_5_4_ESK_INFO: Readonly<AlgorithmInfo>;
+export declare const SNOVA_24_5_4_SHAKE_INFO: Readonly<AlgorithmInfo>;
+export declare const SNOVA_24_5_4_SHAKE_ESK_INFO: Readonly<AlgorithmInfo>;
+export declare const SNOVA_24_5_5_INFO: Readonly<AlgorithmInfo>;
+export declare const SNOVA_25_8_3_INFO: Readonly<AlgorithmInfo>;
+export declare const SNOVA_29_6_5_INFO: Readonly<AlgorithmInfo>;
+export declare const SNOVA_37_17_2_INFO: Readonly<AlgorithmInfo>;
+export declare const SNOVA_37_8_4_INFO: Readonly<AlgorithmInfo>;
+export declare const SNOVA_49_11_3_INFO: Readonly<AlgorithmInfo>;
+export declare const SNOVA_56_25_2_INFO: Readonly<AlgorithmInfo>;
+export declare const SNOVA_60_10_4_INFO: Readonly<AlgorithmInfo>;

@@ -4,9 +4,15 @@ export default defineConfig({
   test: {
     // Test file patterns
     include: ['tests/**/*.test.{js,ts}'],
-    exclude: ['**/node_modules/**', '**/dist/**', 'tests/deno/**'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      'tests/deno/**',
+      // Exclude CLI tests in browser mode
+      ...(process.env.TEST_ENV === 'browser' ? ['tests/cli.test.ts'] : [])
+    ],
 
-    // Timeout for each test (10 seconds)
+    // Timeout for each test
     testTimeout: 30000,
 
     // Global test utilities
@@ -29,8 +35,13 @@ export default defineConfig({
     fileParallelism: true,
     maxConcurrency: 8,  // Max concurrent tests per file
 
-    // Run tests in both Node.js and browser environments
-    // Default to Node.js, but can be overridden with --environment flag
-    environment: process.env.TEST_ENV || 'node'
+    // Browser mode configuration for real browser testing
+    browser: {
+      enabled: process.env.TEST_ENV === 'browser',
+      name: 'chromium',
+      provider: 'playwright',
+      headless: true,
+      screenshotOnFailure: false
+    }
   }
 });

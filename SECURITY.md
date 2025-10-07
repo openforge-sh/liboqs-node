@@ -128,7 +128,7 @@ The following are **outside our threat model** (deferred to LibOQS or browser ve
 - ❌ Browser vulnerabilities (V8 bugs, WebAssembly VM vulnerabilities)
 - ❌ Operating system vulnerabilities
 - ❌ Attacks requiring same-origin access in browsers
-- ❌ Supply chain attacks on upstream dependencies (npm, Emscripten, liboqs)
+- ❌ Supply chain attacks on upstream dependencies (npm, Emscripten, LibOQS)
 
 For issues outside our scope, please refer to:
 - [LibOQS threat model](https://github.com/open-quantum-safe/liboqs/blob/main/SECURITY.md#threat-model)
@@ -185,7 +185,7 @@ We employ:
 ### WASM Module Integrity
 
 All WASM modules are:
-- **Built from source**: Compiled from verified liboqs sources using Emscripten
+- **Built from source**: Compiled from verified LibOQS sources using Emscripten
 - **Single-algorithm**: Each module contains only one algorithm (attack surface reduction)
 - **Closure-optimized**: Minified and optimized to prevent tampering detection
 
@@ -206,7 +206,7 @@ This library relies on platform-provided entropy:
 **Security Notes:**
 - No custom RNG implementation (reduces attack surface)
 - Emscripten's `getentropy()` polyfill handles platform differences
-- liboqs `OQS_randombytes_system` calls into Emscripten's entropy
+- LibOQS `OQS_randombytes_system` calls into Emscripten's entropy
 
 If you suspect RNG issues, report them to OpenForge (if JavaScript-side) or Node.js/browser vendors (if platform-side).
 
@@ -228,4 +228,4 @@ For security concerns, always use the reporting channels described above.
 
 ---
 
-**Remember**: This library is for research and experimentation. Follow the liboqs project's guidance: **"WE DO NOT CURRENTLY RECOMMEND RELYING ON THIS LIBRARY IN A PRODUCTION ENVIRONMENT OR TO PROTECT ANY SENSITIVE DATA."**
+**Remember**: This library is for research and experimentation. Follow the LibOQS project's guidance: **"WE DO NOT CURRENTLY RECOMMEND RELYING ON THIS LIBRARY IN A PRODUCTION ENVIRONMENT OR TO PROTECT ANY SENSITIVE DATA."**

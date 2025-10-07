@@ -17,33 +17,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/classic-mceliece-460896.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/classic-mceliece-460896.min.js`;
+    ? `../../../../dist/classic-mceliece-460896.deno.js`
+    : `../../../../dist/classic-mceliece-460896.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Classic-McEliece-460896 algorithm constants and metadata
- * @constant {Object} CLASSIC_MCELIECE_460896_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('kem')
- * @property {number} securityLevel - NIST security level (3 = 192-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and ciphertext sizes in bytes
- * @property {number} keySize.publicKey - Public key size (524160 bytes)
- * @property {number} keySize.secretKey - Secret key size (13608 bytes)
- * @property {number} keySize.ciphertext - Ciphertext size (156 bytes)
- * @property {number} keySize.sharedSecret - Shared secret size (32 bytes)
+ * CLASSIC-MCELIECE-460896-INFO algorithm constants and metadata
+ * @type {{readonly name: 'Classic-McEliece-460896', readonly identifier: 'Classic-McEliece-460896', readonly type: 'kem', readonly securityLevel: 3, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 524160, readonly secretKey: 13608, readonly ciphertext: 156, readonly sharedSecret: 32}}}
  */
 export const CLASSIC_MCELIECE_460896_INFO = {
   name: 'Classic-McEliece-460896',
@@ -294,13 +282,13 @@ export class ClassicMcEliece460896 {
 
   /**
    * Get algorithm information and constants
-   * @returns {Object} Algorithm metadata (copy of CLASSIC_MCELIECE_460896_INFO)
+   * @returns {typeof CLASSIC_MCELIECE_460896_INFO} Algorithm metadata (copy of CLASSIC_MCELIECE_460896_INFO)
    * @example
    * const info = kem.info;
    * console.log(info.keySize.publicKey); // 524160
    */
   get info() {
-    return { ...CLASSIC_MCELIECE_460896_INFO };
+    return CLASSIC_MCELIECE_460896_INFO;
   }
 
   #checkDestroyed() {

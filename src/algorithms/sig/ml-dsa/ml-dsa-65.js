@@ -17,32 +17,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/ml-dsa-65.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/ml-dsa-65.min.js`;
+    ? `../../../../dist/ml-dsa-65.deno.js`
+    : `../../../../dist/ml-dsa-65.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for ML-DSA-65
- * @constant {Object} ML_DSA_65_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (3 = 192-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (1952 bytes)
- * @property {number} keySize.secretKey - Secret key size (4032 bytes)
- * @property {number} keySize.signature - Maximum signature size (3309 bytes)
+ * ML-DSA-65-INFO algorithm constants and metadata
+ * @type {{readonly name: 'ML-DSA-65', readonly identifier: 'ML-DSA-65', readonly type: 'sig', readonly securityLevel: 3, readonly standardized: true, readonly description: string, readonly keySize: {readonly publicKey: 1952, readonly secretKey: 4032, readonly signature: 3309}}}
  */
 export const ML_DSA_65_INFO = {
   name: 'ML-DSA-65',
@@ -282,10 +271,10 @@ export class MLDSA65 {
 
   /**
    * Get algorithm information
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof ML_DSA_65_INFO} Algorithm metadata
    */
   get info() {
-    return { ...ML_DSA_65_INFO };
+    return ML_DSA_65_INFO;
   }
 
   #checkDestroyed() {

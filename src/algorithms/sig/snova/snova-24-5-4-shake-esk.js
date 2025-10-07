@@ -17,32 +17,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/snova-24-5-4-shake-esk.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/snova-24-5-4-shake-esk.min.js`;
+    ? `../../../../dist/snova-24-5-4-shake-esk.deno.js`
+    : `../../../../dist/snova-24-5-4-shake-esk.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for SNOVA-24-5-4-SHAKE-esk
- * @constant {Object} SNOVA_24_5_4_SHAKE_ESK_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (1 = 128-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (1016 bytes)
- * @property {number} keySize.secretKey - Secret key size (36848 bytes)
- * @property {number} keySize.signature - Maximum signature size (248 bytes)
+ * SNOVA-24-5-4-SHAKE-ESK-INFO algorithm constants and metadata
+ * @type {{readonly name: 'SNOVA-24-5-4-SHAKE-esk', readonly identifier: 'SNOVA_24_5_4_SHAKE_esk', readonly type: 'sig', readonly securityLevel: 1, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 1016, readonly secretKey: 36848, readonly signature: 248}}}
  */
 export const SNOVA_24_5_4_SHAKE_ESK_INFO = {
   name: 'SNOVA-24-5-4-SHAKE-esk',
@@ -307,7 +296,7 @@ export class Snova2454ShakeEsk {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof SNOVA_24_5_4_SHAKE_ESK_INFO} Algorithm metadata
    *
    * @example
    * console.log(sig.info.name);           // 'SNOVA-24-5-4-SHAKE-esk'
@@ -315,7 +304,7 @@ export class Snova2454ShakeEsk {
    * console.log(sig.info.keySize);        // { publicKey: 1016, secretKey: 36848, signature: 248 }
    */
   get info() {
-    return { ...SNOVA_24_5_4_SHAKE_ESK_INFO };
+    return SNOVA_24_5_4_SHAKE_ESK_INFO;
   }
 
   /**

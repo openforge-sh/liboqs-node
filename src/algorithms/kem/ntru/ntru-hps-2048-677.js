@@ -16,33 +16,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/ntru-hps-2048-677.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/ntru-hps-2048-677.min.js`;
+    ? `../../../../dist/ntru-hps-2048-677.deno.js`
+    : `../../../../dist/ntru-hps-2048-677.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for NTRU-HPS-2048-677
- * @constant {Object} NTRU_HPS_2048_677_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('kem')
- * @property {number} securityLevel - NIST security level (3 = 192-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and ciphertext sizes in bytes
- * @property {number} keySize.publicKey - Public key size (930 bytes)
- * @property {number} keySize.secretKey - Secret key size (1234 bytes)
- * @property {number} keySize.ciphertext - Ciphertext size (930 bytes)
- * @property {number} keySize.sharedSecret - Shared secret size (32 bytes)
+ * NTRU-HPS-2048-677-INFO algorithm constants and metadata
+ * @type {{readonly name: 'NTRU-HPS-2048-677', readonly identifier: 'NTRU-HPS-2048-677', readonly type: 'kem', readonly securityLevel: 3, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 930, readonly secretKey: 1234, readonly ciphertext: 930, readonly sharedSecret: 32}}}
  */
 export const NTRU_HPS_2048_677_INFO = {
   name: 'NTRU-HPS-2048-677',
@@ -303,7 +291,7 @@ export class NTRUHps2048677 {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof NTRU_HPS_2048_677_INFO} Algorithm metadata
    *
    * @example
    * console.log(kem.info.name);           // 'NTRU-HPS-2048-677'
@@ -311,7 +299,7 @@ export class NTRUHps2048677 {
    * console.log(kem.info.keySize);        // { publicKey: 930, secretKey: 1234, ciphertext: 930, sharedSecret: 32 }
    */
   get info() {
-    return { ...NTRU_HPS_2048_677_INFO };
+    return NTRU_HPS_2048_677_INFO;
   }
 
   /**

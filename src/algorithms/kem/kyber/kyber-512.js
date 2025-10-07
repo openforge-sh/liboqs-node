@@ -18,33 +18,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/kyber-512.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/kyber-512.min.js`;
+    ? `../../../../dist/kyber-512.deno.js`
+    : `../../../../dist/kyber-512.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Kyber512 algorithm constants and metadata
- * @constant {Object} KYBER512_INFO
- * @property {string} name - Human-readable algorithm name
- * @property {string} identifier - LibOQS algorithm identifier
- * @property {string} type - Algorithm type ('kem')
- * @property {number} securityLevel - NIST security level (1 = 128-bit quantum security)
- * @property {boolean} standardized - Whether algorithm is false
- * @property {string} description - Brief description
- * @property {Object} keySize - Size constants in bytes
- * @property {number} keySize.publicKey - Public key size (800 bytes)
- * @property {number} keySize.secretKey - Secret key size (1632 bytes)
- * @property {number} keySize.ciphertext - Ciphertext size (768 bytes)
- * @property {number} keySize.sharedSecret - Shared secret size (32 bytes)
+ * KYBER512-INFO algorithm constants and metadata
+ * @type {{readonly name: 'Kyber512', readonly identifier: 'Kyber512', readonly type: 'kem', readonly securityLevel: 1, readonly standardized: false, readonly deprecated: true, readonly description: string, readonly keySize: {readonly publicKey: 800, readonly secretKey: 1632, readonly ciphertext: 768, readonly sharedSecret: 32}}}
  */
 export const KYBER512_INFO = {
   name: 'Kyber512',
@@ -304,13 +292,13 @@ export class Kyber512 {
 
   /**
    * Get algorithm information and constants
-   * @returns {Object} Algorithm metadata (copy of KYBER512_INFO)
+   * @returns {typeof KYBER512_INFO} Algorithm metadata (copy of KYBER512_INFO)
    * @example
    * const info = kem.info;
    * console.log(info.keySize.publicKey); // 800
    */
   get info() {
-    return { ...KYBER512_INFO };
+    return KYBER512_INFO;
   }
 
   #checkDestroyed() {

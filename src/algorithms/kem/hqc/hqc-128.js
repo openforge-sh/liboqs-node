@@ -16,33 +16,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/hqc-128.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/hqc-128.min.js`;
+    ? `../../../../dist/hqc-128.deno.js`
+    : `../../../../dist/hqc-128.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for HQC-128
- * @constant {Object} HQC_128_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('kem')
- * @property {number} securityLevel - NIST security level (1 = 128-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and ciphertext sizes in bytes
- * @property {number} keySize.publicKey - Public key size (2249 bytes)
- * @property {number} keySize.secretKey - Secret key size (2305 bytes)
- * @property {number} keySize.ciphertext - Ciphertext size (4433 bytes)
- * @property {number} keySize.sharedSecret - Shared secret size (64 bytes)
+ * HQC-128-INFO algorithm constants and metadata
+ * @type {{readonly name: 'HQC-128', readonly identifier: 'HQC-128', readonly type: 'kem', readonly securityLevel: 1, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 2249, readonly secretKey: 2305, readonly ciphertext: 4433, readonly sharedSecret: 64}}}
  */
 export const HQC_128_INFO = {
   name: 'HQC-128',
@@ -303,7 +291,7 @@ export class HQC128 {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof HQC_128_INFO} Algorithm metadata
    *
    * @example
    * console.log(kem.info.name);           // 'HQC-128'
@@ -311,7 +299,7 @@ export class HQC128 {
    * console.log(kem.info.keySize);        // { publicKey: 2249, secretKey: 2305, ciphertext: 4433, sharedSecret: 64 }
    */
   get info() {
-    return { ...HQC_128_INFO };
+    return HQC_128_INFO;
   }
 
   /**

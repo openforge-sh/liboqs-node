@@ -16,32 +16,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/ov-iii.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/ov-iii.min.js`;
+    ? `../../../../dist/ov-iii.deno.js`
+    : `../../../../dist/ov-iii.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for OV-III
- * @constant {Object} OV_III_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (3 = 192-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (1225440 bytes)
- * @property {number} keySize.secretKey - Secret key size (1044320 bytes)
- * @property {number} keySize.signature - Maximum signature size (200 bytes)
+ * OV-III-INFO algorithm constants and metadata
+ * @type {{readonly name: 'OV-III', readonly identifier: 'OV-III', readonly type: 'sig', readonly securityLevel: 3, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 1225440, readonly secretKey: 1044320, readonly signature: 200}}}
  */
 export const OV_III_INFO = {
   name: 'OV-III',
@@ -306,7 +295,7 @@ export class OVIII {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof OV_III_INFO} Algorithm metadata
    *
    * @example
    * console.log(sig.info.name);           // 'OV-III'
@@ -314,7 +303,7 @@ export class OVIII {
    * console.log(sig.info.keySize);        // { publicKey: 1225440, secretKey: 1044320, signature: 200 }
    */
   get info() {
-    return { ...OV_III_INFO };
+    return OV_III_INFO;
   }
 
   /**

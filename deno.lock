@@ -41,7 +41,8 @@
     "packageJson": {
       "dependencies": [
         "npm:@types/node@22",
-        "npm:jsdom@27",
+        "npm:@vitest/browser@^3.2.4",
+        "npm:playwright@^1.55.1",
         "npm:typedoc@~0.28.13",
         "npm:typescript@^5.9.3",
         "npm:vitest@^3.2.4"

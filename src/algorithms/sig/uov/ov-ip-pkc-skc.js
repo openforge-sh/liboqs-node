@@ -16,32 +16,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/ov-ip-pkc-skc.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/ov-ip-pkc-skc.min.js`;
+    ? `../../../../dist/ov-ip-pkc-skc.deno.js`
+    : `../../../../dist/ov-ip-pkc-skc.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for OV-Ip-pkc-skc
- * @constant {Object} OV_IP_PKC_SKC_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (1 = 128-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (43576 bytes)
- * @property {number} keySize.secretKey - Secret key size (32 bytes)
- * @property {number} keySize.signature - Maximum signature size (128 bytes)
+ * OV-IP-PKC-SKC-INFO algorithm constants and metadata
+ * @type {{readonly name: 'OV-Ip-pkc-skc', readonly identifier: 'OV-Ip-pkc-skc', readonly type: 'sig', readonly securityLevel: 1, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 43576, readonly secretKey: 32, readonly signature: 128}}}
  */
 export const OV_IP_PKC_SKC_INFO = {
   name: 'OV-Ip-pkc-skc',
@@ -306,7 +295,7 @@ export class OVIpPkcSkc {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof OV_IP_PKC_SKC_INFO} Algorithm metadata
    *
    * @example
    * console.log(sig.info.name);           // 'OV-Ip-pkc-skc'
@@ -314,7 +303,7 @@ export class OVIpPkcSkc {
    * console.log(sig.info.keySize);        // { publicKey: 43576, secretKey: 32, signature: 128 }
    */
   get info() {
-    return { ...OV_IP_PKC_SKC_INFO };
+    return OV_IP_PKC_SKC_INFO;
   }
 
   /**

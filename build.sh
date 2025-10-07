@@ -199,10 +199,10 @@ get_algorithm_cmake_flags() {
             families_to_disable="$families_to_disable SPHINCS MAYO CROSS UOV SNOVA ML_DSA SLH_DSA"
             flags="$flags -DOQS_ENABLE_SIG_FALCON=ON"
             ;;
-        sphincs-*)
+        slh-dsa-*)
             families_to_disable="BIKE FRODOKEM NTRUPRIME NTRU CLASSIC_MCELIECE HQC KYBER ML_KEM"
-            families_to_disable="$families_to_disable FALCON MAYO CROSS UOV SNOVA ML_DSA SLH_DSA"
-            flags="$flags -DOQS_ENABLE_SIG_SPHINCS=ON"
+            families_to_disable="$families_to_disable FALCON SPHINCS MAYO CROSS UOV SNOVA ML_DSA"
+            flags="$flags -DOQS_ENABLE_SIG_SLH_DSA=ON"
             ;;
         mayo-*)
             families_to_disable="BIKE FRODOKEM NTRUPRIME NTRU CLASSIC_MCELIECE HQC KYBER ML_KEM"

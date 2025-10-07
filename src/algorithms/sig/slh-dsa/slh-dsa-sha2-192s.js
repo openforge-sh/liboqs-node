@@ -1,8 +1,8 @@
 /**
- * @fileoverview SPHINCS+-sha2-192s-simple signature algorithm implementation
- * @module algorithms/sig/sphincs/sphincs-sha2-192s-simple
+ * @fileoverview SLH-DSA-SHA2-192s signature algorithm implementation
+ * @module algorithms/sig/sphincs/slh-dsa-sha2-192s
  * @description
- * SPHINCS+-sha2-192s-simple is a stateless hash-based signature scheme providing NIST security level 3.
+ * SLH-DSA-SHA2-192s is a stateless hash-based signature scheme providing NIST security level 3.
  * This variant uses SHA2 for hashing, is optimized for signature size, and uses simple mode.
  *
  * Key features:
@@ -10,47 +10,36 @@
  * - Security Level 3 (192-bit classical, quantum-resistant)
  * - SHA2 hash function
  * - Small signature size
- * - Simple mode (faster)
+ * - FIPS 205 standardized
  *
- * @see {@link https://sphincs.org/} - SPHINCS+ specification
+ * @see {@link https://csrc.nist.gov/pubs/fips/205/final} - FIPS 205: SLH-DSA specification - SPHINCS+ specification
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/sphincs-sha2-192s-simple.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/sphincs-sha2-192s-simple.min.js`;
+    ? `../../../../dist/slh-dsa-sha2-192s.deno.js`
+    : `../../../../dist/slh-dsa-sha2-192s.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for SPHINCS+-sha2-192s-simple
- * @constant {Object} SPHINCSPLUS_SHA2_192S_SIMPLE_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (3 = 192-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (48 bytes)
- * @property {number} keySize.secretKey - Secret key size (96 bytes)
- * @property {number} keySize.signature - Signature size (16224 bytes)
+ * SLH-DSA-SHA2-192S-INFO algorithm constants and metadata
+ * @type {{readonly name: 'SLH-DSA-SHA2-192s', readonly identifier: 'SLH_DSA_PURE_SHA2_192S', readonly type: 'sig', readonly securityLevel: 3, readonly standardized: true, readonly description: string, readonly keySize: {readonly publicKey: 48, readonly secretKey: 96, readonly signature: 16224}}}
  */
-export const SPHINCSPLUS_SHA2_192S_SIMPLE_INFO = {
-  name: 'SPHINCS+-SHA2-192s-simple',
-  identifier: 'SPHINCS+-SHA2-192s-simple',
+export const SLH_DSA_SHA2_192S_INFO = {
+  name: 'SLH-DSA-SHA2-192s',
+  identifier: 'SLH_DSA_PURE_SHA2_192S',
   type: 'sig',
   securityLevel: 3,
-  standardized: false,
-  description: 'SPHINCS+-sha2-192s-simple hash-based signature (NIST Level 3, 192-bit quantum security, SHA2, small, simple)',
+  standardized: true,
+  description: 'SLH-DSA-SHA2-192s hash-based signature (NIST Level 3, 192-bit quantum security, SHA2, small, simple)',
   keySize: {
     publicKey: 48,
     secretKey: 96,
@@ -59,26 +48,26 @@ export const SPHINCSPLUS_SHA2_192S_SIMPLE_INFO = {
 };
 
 /**
- * Factory function to create a SPHINCS+-sha2-192s-simple signature instance
+ * Factory function to create a SLH-DSA-SHA2-192s signature instance
  *
  * @async
- * @function createSphincsSha2192sSimple
- * @returns {Promise<SphincsSha2192sSimple>} Initialized SPHINCS+-sha2-192s-simple instance
+ * @function createSlhDsaSha2192s
+ * @returns {Promise<SlhDsaSha2192s>} Initialized SLH-DSA-SHA2-192s instance
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createSphincsSha2192sSimple } from '@openforge-sh/liboqs';
+ * import { createSlhDsaSha2192s } from '@openforge-sh/liboqs';
  *
- * const sig = await createSphincsSha2192sSimple();
+ * const sig = await createSlhDsaSha2192s();
  * const { publicKey, secretKey } = sig.generateKeyPair();
  * sig.destroy();
  */
-export async function createSphincsSha2192sSimple() {
+export async function createSlhDsaSha2192s() {
   const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 
-  const algoName = SPHINCSPLUS_SHA2_192S_SIMPLE_INFO.identifier;
+  const algoName = SLH_DSA_SHA2_192S_INFO.identifier;
   const nameLen = wasmModule.lengthBytesUTF8(algoName);
   const namePtr = wasmModule._malloc(nameLen + 1);
   wasmModule.stringToUTF8(algoName, namePtr, nameLen + 1);
@@ -87,18 +76,18 @@ export async function createSphincsSha2192sSimple() {
   wasmModule._free(namePtr);
 
   if (!sigPtr) {
-    throw new LibOQSInitError('SPHINCS+-sha2-192s-simple', 'Failed to create SIG instance');
+    throw new LibOQSInitError('SLH-DSA-SHA2-192s', 'Failed to create SIG instance');
   }
 
-  return new SphincsSha2192sSimple(wasmModule, sigPtr);
+  return new SlhDsaSha2192s(wasmModule, sigPtr);
 }
 
 /**
- * SPHINCS+-sha2-192s-simple signature scheme wrapper class
+ * SLH-DSA-SHA2-192s signature scheme wrapper class
  *
- * @class SphincsSha2192sSimple
+ * @class SlhDsaSha2192s
  * @description
- * High-level wrapper for SPHINCS+-sha2-192s-simple signature operations. Provides secure key generation,
+ * High-level wrapper for SLH-DSA-SHA2-192s signature operations. Provides secure key generation,
  * signing, and verification with automatic memory management.
  *
  * Memory Management:
@@ -107,7 +96,7 @@ export async function createSphincsSha2192sSimple() {
  * - Do not use instance after calling destroy()
  *
  * @example
- * const sig = await createSphincsSha2192sSimple();
+ * const sig = await createSlhDsaSha2192s();
  *
  * // Generate keypair
  * const { publicKey, secretKey } = sig.generateKeyPair();
@@ -122,7 +111,7 @@ export async function createSphincsSha2192sSimple() {
  * // Cleanup
  * sig.destroy();
  */
-export class SphincsSha2192sSimple {
+export class SlhDsaSha2192s {
   /** @type {Object} @private */ #wasmModule;
   /** @type {number} @private */ #sigPtr;
   /** @type {boolean} @private */ #destroyed = false;
@@ -139,7 +128,7 @@ export class SphincsSha2192sSimple {
   }
 
   /**
-   * Generate a new SPHINCS+-sha2-192s-simple keypair
+   * Generate a new SLH-DSA-SHA2-192s keypair
    *
    * @async
    * @returns {{publicKey: Uint8Array, secretKey: Uint8Array}}
@@ -154,8 +143,8 @@ export class SphincsSha2192sSimple {
   generateKeyPair() {
     this.#checkDestroyed();
 
-    const publicKey = new Uint8Array(SPHINCSPLUS_SHA2_192S_SIMPLE_INFO.keySize.publicKey);
-    const secretKey = new Uint8Array(SPHINCSPLUS_SHA2_192S_SIMPLE_INFO.keySize.secretKey);
+    const publicKey = new Uint8Array(SLH_DSA_SHA2_192S_INFO.keySize.publicKey);
+    const secretKey = new Uint8Array(SLH_DSA_SHA2_192S_INFO.keySize.secretKey);
 
     const publicKeyPtr = this.#wasmModule._malloc(publicKey.length);
     const secretKeyPtr = this.#wasmModule._malloc(secretKey.length);
@@ -164,7 +153,7 @@ export class SphincsSha2192sSimple {
       const result = this.#wasmModule._OQS_SIG_keypair(this.#sigPtr, publicKeyPtr, secretKeyPtr);
 
       if (result !== 0) {
-        throw new LibOQSOperationError('generateKeyPair', 'SPHINCS+-sha2-192s-simple', 'Key generation failed');
+        throw new LibOQSOperationError('generateKeyPair', 'SLH-DSA-SHA2-192s', 'Key generation failed');
       }
 
       publicKey.set(this.#wasmModule.HEAPU8.subarray(publicKeyPtr, publicKeyPtr + publicKey.length));
@@ -197,7 +186,7 @@ export class SphincsSha2192sSimple {
     this.#checkDestroyed();
     this.#validateSecretKey(secretKey);
 
-    const signatureMaxLen = SPHINCSPLUS_SHA2_192S_SIMPLE_INFO.keySize.signature;
+    const signatureMaxLen = SLH_DSA_SHA2_192S_INFO.keySize.signature;
     const signature = new Uint8Array(signatureMaxLen);
 
     const messagePtr = this.#wasmModule._malloc(message.length);
@@ -219,7 +208,7 @@ export class SphincsSha2192sSimple {
       );
 
       if (result !== 0) {
-        throw new LibOQSOperationError('sign', 'SPHINCS+-sha2-192s-simple', 'Signing failed');
+        throw new LibOQSOperationError('sign', 'SLH-DSA-SHA2-192s', 'Signing failed');
       }
 
       const actualSignatureLen = this.#wasmModule.getValue(signatureLenPtr, 'i32');
@@ -303,15 +292,15 @@ export class SphincsSha2192sSimple {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof SLH_DSA_SHA2_192S_INFO} Algorithm metadata
    *
    * @example
-   * console.log(sig.info.name);           // 'SPHINCS+-sha2-192s-simple'
+   * console.log(sig.info.name);           // 'SLH-DSA-SHA2-192s'
    * console.log(sig.info.securityLevel);  // 3
    * console.log(sig.info.keySize);        // { publicKey: 48, secretKey: 96, signature: 16224 }
    */
   get info() {
-    return { ...SPHINCSPLUS_SHA2_192S_SIMPLE_INFO };
+    return SLH_DSA_SHA2_192S_INFO;
   }
 
   /**
@@ -320,7 +309,7 @@ export class SphincsSha2192sSimple {
    */
   #checkDestroyed() {
     if (this.#destroyed) {
-      throw new LibOQSError('Instance has been destroyed', 'SPHINCS+-sha2-192s-simple');
+      throw new LibOQSError('Instance has been destroyed', 'SLH-DSA-SHA2-192s');
     }
   }
 
@@ -330,10 +319,10 @@ export class SphincsSha2192sSimple {
    * @throws {LibOQSValidationError} If public key size is invalid
    */
   #validatePublicKey(publicKey) {
-    if (!isUint8Array(publicKey) || publicKey.length !== SPHINCSPLUS_SHA2_192S_SIMPLE_INFO.keySize.publicKey) {
+    if (!isUint8Array(publicKey) || publicKey.length !== SLH_DSA_SHA2_192S_INFO.keySize.publicKey) {
       throw new LibOQSValidationError(
-        `Invalid public key: expected ${SPHINCSPLUS_SHA2_192S_SIMPLE_INFO.keySize.publicKey} bytes, got ${publicKey?.length ?? 'null'}`,
-        'SPHINCS+-sha2-192s-simple'
+        `Invalid public key: expected ${SLH_DSA_SHA2_192S_INFO.keySize.publicKey} bytes, got ${publicKey?.length ?? 'null'}`,
+        'SLH-DSA-SHA2-192s'
       );
     }
   }
@@ -344,10 +333,10 @@ export class SphincsSha2192sSimple {
    * @throws {LibOQSValidationError} If secret key size is invalid
    */
   #validateSecretKey(secretKey) {
-    if (!isUint8Array(secretKey) || secretKey.length !== SPHINCSPLUS_SHA2_192S_SIMPLE_INFO.keySize.secretKey) {
+    if (!isUint8Array(secretKey) || secretKey.length !== SLH_DSA_SHA2_192S_INFO.keySize.secretKey) {
       throw new LibOQSValidationError(
-        `Invalid secret key: expected ${SPHINCSPLUS_SHA2_192S_SIMPLE_INFO.keySize.secretKey} bytes, got ${secretKey?.length ?? 'null'}`,
-        'SPHINCS+-sha2-192s-simple'
+        `Invalid secret key: expected ${SLH_DSA_SHA2_192S_INFO.keySize.secretKey} bytes, got ${secretKey?.length ?? 'null'}`,
+        'SLH-DSA-SHA2-192s'
       );
     }
   }
@@ -358,10 +347,10 @@ export class SphincsSha2192sSimple {
    * @throws {LibOQSValidationError} If signature size is invalid
    */
   #validateSignature(signature) {
-    if (!isUint8Array(signature) || signature.length === 0 || signature.length > SPHINCSPLUS_SHA2_192S_SIMPLE_INFO.keySize.signature) {
+    if (!isUint8Array(signature) || signature.length === 0 || signature.length > SLH_DSA_SHA2_192S_INFO.keySize.signature) {
       throw new LibOQSValidationError(
-        `Invalid signature: expected 0 < length <= ${SPHINCSPLUS_SHA2_192S_SIMPLE_INFO.keySize.signature} bytes, got ${signature?.length ?? 'null'}`,
-        'SPHINCS+-sha2-192s-simple'
+        `Invalid signature: expected 0 < length <= ${SLH_DSA_SHA2_192S_INFO.keySize.signature} bytes, got ${signature?.length ?? 'null'}`,
+        'SLH-DSA-SHA2-192s'
       );
     }
   }

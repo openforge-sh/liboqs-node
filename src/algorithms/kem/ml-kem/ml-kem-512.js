@@ -1,6 +1,4 @@
 /**
-import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
  * @fileoverview ML-KEM-512 KEM algorithm implementation
  * @module algorithms/kem/ml-kem/ml-kem-512
  * @description
@@ -19,14 +17,13 @@ import { VERSION } from '../../../index.js';
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/ml-kem-512.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/ml-kem-512.min.js`;
+    ? `../../../../dist/ml-kem-512.deno.js`
+    : `../../../../dist/ml-kem-512.min.js`;
 
   const module = await import(modulePath);
   return module.default;
@@ -34,20 +31,9 @@ async function loadModule() {
 
 /**
  * ML-KEM-512 algorithm constants and metadata
- * @constant {Object} ML_KEM_512_INFO
- * @property {string} name - Human-readable algorithm name
- * @property {string} identifier - LibOQS algorithm identifier
- * @property {string} type - Algorithm type ('kem')
- * @property {number} securityLevel - NIST security level (1 = 128-bit quantum security)
- * @property {boolean} standardized - Whether algorithm is NIST-standardized
- * @property {string} description - Brief description
- * @property {Object} keySize - Size constants in bytes
- * @property {number} keySize.publicKey - Public key size (800 bytes)
- * @property {number} keySize.secretKey - Secret key size (1632 bytes)
- * @property {number} keySize.ciphertext - Ciphertext size (768 bytes)
- * @property {number} keySize.sharedSecret - Shared secret size (32 bytes)
+ * @constant {Readonly<{name: 'ML-KEM-512', identifier: 'ML-KEM-512', type: 'kem', securityLevel: 1, standardized: true, description: string, keySize: {publicKey: 800, secretKey: 1632, ciphertext: 768, sharedSecret: 32}}>} ML_KEM_512_INFO
  */
-export const ML_KEM_512_INFO = {
+export const ML_KEM_512_INFO = /** @type {const} */ ({
   name: 'ML-KEM-512',
   identifier: 'ML-KEM-512',
   type: 'kem',
@@ -60,7 +46,7 @@ export const ML_KEM_512_INFO = {
     ciphertext: 768,
     sharedSecret: 32
   }
-};
+});
 
 /**
  * Factory function to create an ML-KEM-512 KEM instance
@@ -304,13 +290,13 @@ export class MLKEM512 {
 
   /**
    * Get algorithm information and constants
-   * @returns {Object} Algorithm metadata (copy of ML_KEM_512_INFO)
+   * @returns {typeof ML_KEM_512_INFO} Algorithm metadata
    * @example
    * const info = kem.info;
    * console.log(info.keySize.publicKey); // 800
    */
   get info() {
-    return { ...ML_KEM_512_INFO };
+    return ML_KEM_512_INFO;
   }
 
   #checkDestroyed() {

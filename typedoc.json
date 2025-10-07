@@ -1,5 +1,7 @@
 {
-  "entryPoints": ["src/index.js"],
+  "entryPoints": [
+    "src/index.js"
+  ],
   "out": "docs",
   "name": "@openforge-sh/liboqs",
   "readme": "README.md",
@@ -9,10 +11,12 @@
   "excludeExternals": true,
   "hideGenerator": true,
   "includeVersion": true,
-  "sort": ["source-order"],
+  "sort": [
+    "source-order"
+  ],
   "kindSortOrder": [
     "Document",
-    "Project", 
+    "Project",
     "Module",
     "Namespace",
     "Enum",

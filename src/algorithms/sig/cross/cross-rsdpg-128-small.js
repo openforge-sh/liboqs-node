@@ -15,34 +15,22 @@
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
-import moduleFactory from `https://cdn.openforge.sh/${VERSION}/cross-rsdpg-128-small.min.js`;
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/cross-rsdp-128-small.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/cross-rsdp-128-small.min.js`;
+    ? `../../../../dist/cross-rsdp-128-small.deno.js`
+    : `../../../../dist/cross-rsdp-128-small.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for CROSS-rsdpg-128-small
- * @constant {Object} CROSS_RSDPG_128_SMALL_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (1 = 128-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (54 bytes)
- * @property {number} keySize.secretKey - Secret key size (32 bytes)
- * @property {number} keySize.signature - Maximum signature size (8960 bytes)
+ * CROSS-RSDPG-128-SMALL-INFO algorithm constants and metadata
+ * @type {{readonly name: 'CROSS-rsdpg-128-small', readonly identifier: 'CROSS-rsdpg-128-small', readonly type: 'sig', readonly securityLevel: 1, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 54, readonly secretKey: 32, readonly signature: 8960}}}
  */
 export const CROSS_RSDPG_128_SMALL_INFO = {
   name: 'CROSS-rsdpg-128-small',
@@ -308,7 +296,7 @@ export class CrossRsdpg128Small {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof CROSS_RSDPG_128_SMALL_INFO} Algorithm metadata
    *
    * @example
    * console.log(sig.info.name);           // 'CROSS-rsdpg-128-small'
@@ -316,7 +304,7 @@ export class CrossRsdpg128Small {
    * console.log(sig.info.keySize);        // { publicKey: 54, secretKey: 32, signature: 8640 }
    */
   get info() {
-    return { ...CROSS_RSDPG_128_SMALL_INFO };
+    return CROSS_RSDPG_128_SMALL_INFO;
   }
 
   /**

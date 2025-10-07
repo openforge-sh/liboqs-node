@@ -1,29 +1,9 @@
 {
-  "name": "@openforge-sh/liboqs",
-  "version": "0.14.2",
-  "exports": {
-    ".": "./src/index.js",
-    "./kem": "./src/kem.js",
-    "./sig": "./src/sig.js",
-    "./errors": "./src/core/errors.js",
-    "./cli": "./bin/cli.js"
-  },
-  "publish": {
-    "include": [
-      "src/",
-      "bin/",
-      "README.md",
-      "LICENSE.md"
-    ],
-    "exclude": [
-      "**/*.test.js",
-      "**/*.spec.js",
-      "**/*.test.ts",
-      "**/*.spec.ts"
-    ]
-  },
   "compilerOptions": {
-    "lib": ["deno.ns", "deno.window"],
+    "lib": [
+      "deno.ns",
+      "deno.window"
+    ],
     "strict": true
   },
   "imports": {

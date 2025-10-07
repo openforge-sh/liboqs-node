@@ -20,33 +20,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/kyber-768.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/kyber-768.min.js`;
+    ? `../../../../dist/kyber-768.deno.js`
+    : `../../../../dist/kyber-768.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Kyber768 algorithm constants and metadata
- * @constant {Object} KYBER768_INFO
- * @property {string} name - Human-readable algorithm name
- * @property {string} identifier - LibOQS algorithm identifier
- * @property {string} type - Algorithm type ('kem')
- * @property {number} securityLevel - NIST security level (3 = 192-bit quantum security)
- * @property {boolean} standardized - Whether algorithm is false
- * @property {string} description - Brief description
- * @property {Object} keySize - Size constants in bytes
- * @property {number} keySize.publicKey - Public key size (1184 bytes)
- * @property {number} keySize.secretKey - Secret key size (2400 bytes)
- * @property {number} keySize.ciphertext - Ciphertext size (1088 bytes)
- * @property {number} keySize.sharedSecret - Shared secret size (32 bytes)
+ * KYBER768-INFO algorithm constants and metadata
+ * @type {{readonly name: 'Kyber768', readonly identifier: 'Kyber768', readonly type: 'kem', readonly securityLevel: 3, readonly standardized: false, readonly deprecated: true, readonly description: string, readonly keySize: {readonly publicKey: 1184, readonly secretKey: 2400, readonly ciphertext: 1088, readonly sharedSecret: 32}}}
  */
 export const KYBER768_INFO = {
   name: 'Kyber768',
@@ -132,7 +120,7 @@ export class Kyber768 {
     this.#wasmModule = wasmModule;
     this.#kemPtr = kemPtr;
   }
-  
+
   /**
    * Generate a new keypair for Kyber768
    *
@@ -149,31 +137,31 @@ export class Kyber768 {
    */
   generateKeyPair() {
     this.#checkDestroyed();
-    
+
     const publicKeyPtr = this.#wasmModule._malloc(KYBER768_INFO.keySize.publicKey);
     const secretKeyPtr = this.#wasmModule._malloc(KYBER768_INFO.keySize.secretKey);
-    
+
     try {
       const result = this.#wasmModule._OQS_KEM_keypair(this.#kemPtr, publicKeyPtr, secretKeyPtr);
-      
+
       if (result !== 0) {
         throw new LibOQSOperationError('keypair', 'Kyber768', `Error code: ${result}`);
       }
-      
+
       const publicKey = new Uint8Array(KYBER768_INFO.keySize.publicKey);
       const secretKey = new Uint8Array(KYBER768_INFO.keySize.secretKey);
-      
+
       publicKey.set(this.#wasmModule.HEAPU8.subarray(publicKeyPtr, publicKeyPtr + KYBER768_INFO.keySize.publicKey));
       secretKey.set(this.#wasmModule.HEAPU8.subarray(secretKeyPtr, secretKeyPtr + KYBER768_INFO.keySize.secretKey));
-      
+
       return { publicKey, secretKey };
-      
+
     } finally {
       this.#wasmModule._free(publicKeyPtr);
       this.#wasmModule._free(secretKeyPtr);
     }
   }
-  
+
   /**
    * Encapsulate a shared secret using a public key
    *
@@ -194,40 +182,40 @@ export class Kyber768 {
   encapsulate(publicKey) {
     this.#checkDestroyed();
     this.#validatePublicKey(publicKey);
-    
+
     const publicKeyPtr = this.#wasmModule._malloc(KYBER768_INFO.keySize.publicKey);
     const ciphertextPtr = this.#wasmModule._malloc(KYBER768_INFO.keySize.ciphertext);
     const sharedSecretPtr = this.#wasmModule._malloc(KYBER768_INFO.keySize.sharedSecret);
-    
+
     try {
       this.#wasmModule.HEAPU8.set(publicKey, publicKeyPtr);
-      
+
       const result = this.#wasmModule._OQS_KEM_encaps(
-        this.#kemPtr, 
-        ciphertextPtr, 
-        sharedSecretPtr, 
+        this.#kemPtr,
+        ciphertextPtr,
+        sharedSecretPtr,
         publicKeyPtr
       );
-      
+
       if (result !== 0) {
         throw new LibOQSOperationError('encaps', 'Kyber768', `Error code: ${result}`);
       }
-      
+
       const ciphertext = new Uint8Array(KYBER768_INFO.keySize.ciphertext);
       const sharedSecret = new Uint8Array(KYBER768_INFO.keySize.sharedSecret);
-      
+
       ciphertext.set(this.#wasmModule.HEAPU8.subarray(ciphertextPtr, ciphertextPtr + KYBER768_INFO.keySize.ciphertext));
       sharedSecret.set(this.#wasmModule.HEAPU8.subarray(sharedSecretPtr, sharedSecretPtr + KYBER768_INFO.keySize.sharedSecret));
-      
+
       return { ciphertext, sharedSecret };
-      
+
     } finally {
       this.#wasmModule._free(publicKeyPtr);
       this.#wasmModule._free(ciphertextPtr);
       this.#wasmModule._free(sharedSecretPtr);
     }
   }
-  
+
   /**
    * Decapsulate a shared secret using a secret key
    *
@@ -249,38 +237,38 @@ export class Kyber768 {
     this.#checkDestroyed();
     this.#validateCiphertext(ciphertext);
     this.#validateSecretKey(secretKey);
-    
+
     const ciphertextPtr = this.#wasmModule._malloc(KYBER768_INFO.keySize.ciphertext);
     const secretKeyPtr = this.#wasmModule._malloc(KYBER768_INFO.keySize.secretKey);
     const sharedSecretPtr = this.#wasmModule._malloc(KYBER768_INFO.keySize.sharedSecret);
-    
+
     try {
       this.#wasmModule.HEAPU8.set(ciphertext, ciphertextPtr);
       this.#wasmModule.HEAPU8.set(secretKey, secretKeyPtr);
-      
+
       const result = this.#wasmModule._OQS_KEM_decaps(
         this.#kemPtr,
         sharedSecretPtr,
-        ciphertextPtr, 
+        ciphertextPtr,
         secretKeyPtr
       );
-      
+
       if (result !== 0) {
         throw new LibOQSOperationError('decaps', 'Kyber768', `Error code: ${result}`);
       }
-      
+
       const sharedSecret = new Uint8Array(KYBER768_INFO.keySize.sharedSecret);
       sharedSecret.set(this.#wasmModule.HEAPU8.subarray(sharedSecretPtr, sharedSecretPtr + KYBER768_INFO.keySize.sharedSecret));
-      
+
       return sharedSecret;
-      
+
     } finally {
       this.#wasmModule._free(ciphertextPtr);
       this.#wasmModule._free(secretKeyPtr);
       this.#wasmModule._free(sharedSecretPtr);
     }
   }
-  
+
   /**
    * Clean up resources and free WASM memory
    *
@@ -305,21 +293,21 @@ export class Kyber768 {
 
   /**
    * Get algorithm information and constants
-   * @returns {Object} Algorithm metadata (copy of KYBER768_INFO)
+   * @returns {typeof KYBER768_INFO} Algorithm metadata (copy of KYBER768_INFO)
    * @example
    * const info = kem.info;
    * console.log(info.keySize.publicKey); // 1184
    */
   get info() {
-    return { ...KYBER768_INFO };
+    return KYBER768_INFO;
   }
-  
+
   #checkDestroyed() {
     if (this.#destroyed) {
       throw new LibOQSError('Instance has been destroyed', 'Kyber768');
     }
   }
-  
+
   #validatePublicKey(publicKey) {
     if (!isUint8Array(publicKey) || publicKey.length !== KYBER768_INFO.keySize.publicKey) {
       throw new LibOQSValidationError(

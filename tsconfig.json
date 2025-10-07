@@ -3,7 +3,10 @@
     "target": "ES2023",
     "module": "ESNext",
     "moduleResolution": "node",
-    "lib": ["ES2023", "DOM"],
+    "lib": [
+      "ES2023",
+      "DOM"
+    ],
     "allowJs": true,
     "checkJs": false,
     "noEmit": true,

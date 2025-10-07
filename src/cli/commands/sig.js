@@ -2,8 +2,8 @@
  * @fileoverview Signature command handlers
  */
 
-import { mkdir } from 'fs/promises';
-import { join } from 'path';
+import { mkdir } from 'node:fs/promises';
+import { join } from 'node:path';
 import { getSigFactory } from '../algorithms.js';
 import { readInput, writeOutput } from '../io.js';
 import process from "node:process";

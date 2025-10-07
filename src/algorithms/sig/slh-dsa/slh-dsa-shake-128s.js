@@ -1,84 +1,73 @@
 /**
- * @fileoverview SPHINCS+-sha2-128f-simple signature algorithm implementation
- * @module algorithms/sig/sphincs/sphincs-sha2-128f-simple
+ * @fileoverview SLH-DSA-SHAKE-128s signature algorithm implementation
+ * @module algorithms/sig/sphincs/slh-dsa-shake-128s
  * @description
- * SPHINCS+-sha2-128f-simple is a stateless hash-based signature scheme providing NIST security level 1.
- * This variant uses SHA2 for hashing, is optimized for speed, and uses simple mode.
+ * SLH-DSA-SHAKE-128s is a stateless hash-based signature scheme providing NIST security level 1.
+ * This variant uses SHAKE for hashing, is optimized for signature size, and uses simple mode.
  *
  * Key features:
  * - Stateless hash-based signatures
  * - Security Level 1 (128-bit classical, quantum-resistant)
- * - SHA2 hash function
- * - Fast signing/verification
- * - Simple mode (faster)
+ * - SHAKE hash function
+ * - Small signature size
+ * - FIPS 205 standardized
  *
- * @see {@link https://sphincs.org/} - SPHINCS+ specification
+ * @see {@link https://csrc.nist.gov/pubs/fips/205/final} - FIPS 205: SLH-DSA specification - SPHINCS+ specification
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/sphincs-sha2-128f-simple.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/sphincs-sha2-128f-simple.min.js`;
+    ? `../../../../dist/slh-dsa-shake-128s.deno.js`
+    : `../../../../dist/slh-dsa-shake-128s.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for SPHINCS+-sha2-128f-simple
- * @constant {Object} SPHINCSPLUS_SHA2_128F_SIMPLE_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (1 = 128-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (32 bytes)
- * @property {number} keySize.secretKey - Secret key size (64 bytes)
- * @property {number} keySize.signature - Signature size (17088 bytes)
+ * SLH-DSA-SHAKE-128S-INFO algorithm constants and metadata
+ * @type {{readonly name: 'SLH-DSA-SHAKE-128s', readonly identifier: 'SLH_DSA_PURE_SHAKE_128S', readonly type: 'sig', readonly securityLevel: 1, readonly standardized: true, readonly description: string, readonly keySize: {readonly publicKey: 32, readonly secretKey: 64, readonly signature: 7856}}}
  */
-export const SPHINCSPLUS_SHA2_128F_SIMPLE_INFO = {
-  name: 'SPHINCS+-SHA2-128f-simple',
-  identifier: 'SPHINCS+-SHA2-128f-simple',
+export const SLH_DSA_SHAKE_128S_INFO = {
+  name: 'SLH-DSA-SHAKE-128s',
+  identifier: 'SLH_DSA_PURE_SHAKE_128S',
   type: 'sig',
   securityLevel: 1,
-  standardized: false,
-  description: 'SPHINCS+-sha2-128f-simple hash-based signature (NIST Level 1, 128-bit quantum security, SHA2, fast, simple)',
+  standardized: true,
+  description: 'SLH-DSA-SHAKE-128s hash-based signature (NIST Level 1, 128-bit quantum security, SHAKE, small, simple)',
   keySize: {
     publicKey: 32,
     secretKey: 64,
-    signature: 17088
+    signature: 7856
   }
 };
 
 /**
- * Factory function to create a SPHINCS+-sha2-128f-simple signature instance
+ * Factory function to create a SLH-DSA-SHAKE-128s signature instance
  *
  * @async
- * @function createSphincsSha2128fSimple
- * @returns {Promise<SphincsSha2128fSimple>} Initialized SPHINCS+-sha2-128f-simple instance
+ * @function createSlhDsaShake128s
+ * @returns {Promise<SlhDsaShake128s>} Initialized SLH-DSA-SHAKE-128s instance
  * @throws {LibOQSInitError} If module initialization fails
  *
  * @example
- * import { createSphincsSha2128fSimple } from '@openforge-sh/liboqs';
+ * import { createSlhDsaShake128s } from '@openforge-sh/liboqs';
  *
- * const sig = await createSphincsSha2128fSimple();
+ * const sig = await createSlhDsaShake128s();
  * const { publicKey, secretKey } = sig.generateKeyPair();
  * sig.destroy();
  */
-export async function createSphincsSha2128fSimple() {
+export async function createSlhDsaShake128s() {
   const moduleFactory = await loadModule();
   const wasmModule = await moduleFactory();
   wasmModule._OQS_init();
 
-  const algoName = SPHINCSPLUS_SHA2_128F_SIMPLE_INFO.identifier;
+  const algoName = SLH_DSA_SHAKE_128S_INFO.identifier;
   const nameLen = wasmModule.lengthBytesUTF8(algoName);
   const namePtr = wasmModule._malloc(nameLen + 1);
   wasmModule.stringToUTF8(algoName, namePtr, nameLen + 1);
@@ -87,18 +76,18 @@ export async function createSphincsSha2128fSimple() {
   wasmModule._free(namePtr);
 
   if (!sigPtr) {
-    throw new LibOQSInitError('SPHINCS+-sha2-128f-simple', 'Failed to create SIG instance');
+    throw new LibOQSInitError('SLH-DSA-SHAKE-128s', 'Failed to create SIG instance');
   }
 
-  return new SphincsSha2128fSimple(wasmModule, sigPtr);
+  return new SlhDsaShake128s(wasmModule, sigPtr);
 }
 
 /**
- * SPHINCS+-sha2-128f-simple signature scheme wrapper class
+ * SLH-DSA-SHAKE-128s signature scheme wrapper class
  *
- * @class SphincsSha2128fSimple
+ * @class SlhDsaShake128s
  * @description
- * High-level wrapper for SPHINCS+-sha2-128f-simple signature operations. Provides secure key generation,
+ * High-level wrapper for SLH-DSA-SHAKE-128s signature operations. Provides secure key generation,
  * signing, and verification with automatic memory management.
  *
  * Memory Management:
@@ -107,7 +96,7 @@ export async function createSphincsSha2128fSimple() {
  * - Do not use instance after calling destroy()
  *
  * @example
- * const sig = await createSphincsSha2128fSimple();
+ * const sig = await createSlhDsaShake128s();
  *
  * // Generate keypair
  * const { publicKey, secretKey } = sig.generateKeyPair();
@@ -122,7 +111,7 @@ export async function createSphincsSha2128fSimple() {
  * // Cleanup
  * sig.destroy();
  */
-export class SphincsSha2128fSimple {
+export class SlhDsaShake128s {
   /** @type {Object} @private */ #wasmModule;
   /** @type {number} @private */ #sigPtr;
   /** @type {boolean} @private */ #destroyed = false;
@@ -139,7 +128,7 @@ export class SphincsSha2128fSimple {
   }
 
   /**
-   * Generate a new SPHINCS+-sha2-128f-simple keypair
+   * Generate a new SLH-DSA-SHAKE-128s keypair
    *
    * @async
    * @returns {{publicKey: Uint8Array, secretKey: Uint8Array}}
@@ -154,8 +143,8 @@ export class SphincsSha2128fSimple {
   generateKeyPair() {
     this.#checkDestroyed();
 
-    const publicKey = new Uint8Array(SPHINCSPLUS_SHA2_128F_SIMPLE_INFO.keySize.publicKey);
-    const secretKey = new Uint8Array(SPHINCSPLUS_SHA2_128F_SIMPLE_INFO.keySize.secretKey);
+    const publicKey = new Uint8Array(SLH_DSA_SHAKE_128S_INFO.keySize.publicKey);
+    const secretKey = new Uint8Array(SLH_DSA_SHAKE_128S_INFO.keySize.secretKey);
 
     const publicKeyPtr = this.#wasmModule._malloc(publicKey.length);
     const secretKeyPtr = this.#wasmModule._malloc(secretKey.length);
@@ -164,7 +153,7 @@ export class SphincsSha2128fSimple {
       const result = this.#wasmModule._OQS_SIG_keypair(this.#sigPtr, publicKeyPtr, secretKeyPtr);
 
       if (result !== 0) {
-        throw new LibOQSOperationError('generateKeyPair', 'SPHINCS+-sha2-128f-simple', 'Key generation failed');
+        throw new LibOQSOperationError('generateKeyPair', 'SLH-DSA-SHAKE-128s', 'Key generation failed');
       }
 
       publicKey.set(this.#wasmModule.HEAPU8.subarray(publicKeyPtr, publicKeyPtr + publicKey.length));
@@ -183,7 +172,7 @@ export class SphincsSha2128fSimple {
    * @async
    * @param {Uint8Array} message - Message to sign (any length)
    * @param {Uint8Array} secretKey - Secret key (64 bytes)
-   * @returns {Uint8Array} Signature (17088 bytes)
+   * @returns {Uint8Array} Signature (7856 bytes)
    * @throws {LibOQSError} If instance is destroyed
    * @throws {LibOQSValidationError} If secret key size is invalid
    * @throws {LibOQSOperationError} If signing fails
@@ -191,13 +180,13 @@ export class SphincsSha2128fSimple {
    * @example
    * const message = new TextEncoder().encode('Hello, world!');
    * const signature = sig.sign(message, secretKey);
-   * console.log('Signature:', signature.length);  // 17088 bytes
+   * console.log('Signature:', signature.length);  // 7856 bytes
    */
   sign(message, secretKey) {
     this.#checkDestroyed();
     this.#validateSecretKey(secretKey);
 
-    const signatureMaxLen = SPHINCSPLUS_SHA2_128F_SIMPLE_INFO.keySize.signature;
+    const signatureMaxLen = SLH_DSA_SHAKE_128S_INFO.keySize.signature;
     const signature = new Uint8Array(signatureMaxLen);
 
     const messagePtr = this.#wasmModule._malloc(message.length);
@@ -219,7 +208,7 @@ export class SphincsSha2128fSimple {
       );
 
       if (result !== 0) {
-        throw new LibOQSOperationError('sign', 'SPHINCS+-sha2-128f-simple', 'Signing failed');
+        throw new LibOQSOperationError('sign', 'SLH-DSA-SHAKE-128s', 'Signing failed');
       }
 
       const actualSignatureLen = this.#wasmModule.getValue(signatureLenPtr, 'i32');
@@ -303,15 +292,15 @@ export class SphincsSha2128fSimple {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof SLH_DSA_SHAKE_128S_INFO} Algorithm metadata
    *
    * @example
-   * console.log(sig.info.name);           // 'SPHINCS+-sha2-128f-simple'
+   * console.log(sig.info.name);           // 'SLH-DSA-SHAKE-128s'
    * console.log(sig.info.securityLevel);  // 1
-   * console.log(sig.info.keySize);        // { publicKey: 32, secretKey: 64, signature: 17088 }
+   * console.log(sig.info.keySize);        // { publicKey: 32, secretKey: 64, signature: 7856 }
    */
   get info() {
-    return { ...SPHINCSPLUS_SHA2_128F_SIMPLE_INFO };
+    return SLH_DSA_SHAKE_128S_INFO;
   }
 
   /**
@@ -320,7 +309,7 @@ export class SphincsSha2128fSimple {
    */
   #checkDestroyed() {
     if (this.#destroyed) {
-      throw new LibOQSError('Instance has been destroyed', 'SPHINCS+-sha2-128f-simple');
+      throw new LibOQSError('Instance has been destroyed', 'SLH-DSA-SHAKE-128s');
     }
   }
 
@@ -330,10 +319,10 @@ export class SphincsSha2128fSimple {
    * @throws {LibOQSValidationError} If public key size is invalid
    */
   #validatePublicKey(publicKey) {
-    if (!isUint8Array(publicKey) || publicKey.length !== SPHINCSPLUS_SHA2_128F_SIMPLE_INFO.keySize.publicKey) {
+    if (!isUint8Array(publicKey) || publicKey.length !== SLH_DSA_SHAKE_128S_INFO.keySize.publicKey) {
       throw new LibOQSValidationError(
-        `Invalid public key: expected ${SPHINCSPLUS_SHA2_128F_SIMPLE_INFO.keySize.publicKey} bytes, got ${publicKey?.length ?? 'null'}`,
-        'SPHINCS+-sha2-128f-simple'
+        `Invalid public key: expected ${SLH_DSA_SHAKE_128S_INFO.keySize.publicKey} bytes, got ${publicKey?.length ?? 'null'}`,
+        'SLH-DSA-SHAKE-128s'
       );
     }
   }
@@ -344,10 +333,10 @@ export class SphincsSha2128fSimple {
    * @throws {LibOQSValidationError} If secret key size is invalid
    */
   #validateSecretKey(secretKey) {
-    if (!isUint8Array(secretKey) || secretKey.length !== SPHINCSPLUS_SHA2_128F_SIMPLE_INFO.keySize.secretKey) {
+    if (!isUint8Array(secretKey) || secretKey.length !== SLH_DSA_SHAKE_128S_INFO.keySize.secretKey) {
       throw new LibOQSValidationError(
-        `Invalid secret key: expected ${SPHINCSPLUS_SHA2_128F_SIMPLE_INFO.keySize.secretKey} bytes, got ${secretKey?.length ?? 'null'}`,
-        'SPHINCS+-sha2-128f-simple'
+        `Invalid secret key: expected ${SLH_DSA_SHAKE_128S_INFO.keySize.secretKey} bytes, got ${secretKey?.length ?? 'null'}`,
+        'SLH-DSA-SHAKE-128s'
       );
     }
   }
@@ -358,10 +347,10 @@ export class SphincsSha2128fSimple {
    * @throws {LibOQSValidationError} If signature size is invalid
    */
   #validateSignature(signature) {
-    if (!isUint8Array(signature) || signature.length === 0 || signature.length > SPHINCSPLUS_SHA2_128F_SIMPLE_INFO.keySize.signature) {
+    if (!isUint8Array(signature) || signature.length === 0 || signature.length > SLH_DSA_SHAKE_128S_INFO.keySize.signature) {
       throw new LibOQSValidationError(
-        `Invalid signature: expected 0 < length <= ${SPHINCSPLUS_SHA2_128F_SIMPLE_INFO.keySize.signature} bytes, got ${signature?.length ?? 'null'}`,
-        'SPHINCS+-sha2-128f-simple'
+        `Invalid signature: expected 0 < length <= ${SLH_DSA_SHAKE_128S_INFO.keySize.signature} bytes, got ${signature?.length ?? 'null'}`,
+        'SLH-DSA-SHAKE-128s'
       );
     }
   }

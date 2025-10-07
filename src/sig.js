@@ -55,19 +55,19 @@ export { createCrossRsdpg256Balanced, CrossRsdpg256Balanced, CROSS_RSDPG_256_BAL
 export { createCrossRsdpg256Fast, CrossRsdpg256Fast, CROSS_RSDPG_256_FAST_INFO } from './algorithms/sig/cross/cross-rsdpg-256-fast.js';
 export { createCrossRsdpg256Small, CrossRsdpg256Small, CROSS_RSDPG_256_SMALL_INFO } from './algorithms/sig/cross/cross-rsdpg-256-small.js';
 
-// Export all SPHINCS+ algorithms
-export { createSphincsSha2128fSimple, SphincsSha2128fSimple, SPHINCSPLUS_SHA2_128F_SIMPLE_INFO } from './algorithms/sig/sphincs/sphincs-sha2-128f-simple.js';
-export { createSphincsSha2128sSimple, SphincsSha2128sSimple, SPHINCSPLUS_SHA2_128S_SIMPLE_INFO } from './algorithms/sig/sphincs/sphincs-sha2-128s-simple.js';
-export { createSphincsSha2192fSimple, SphincsSha2192fSimple, SPHINCSPLUS_SHA2_192F_SIMPLE_INFO } from './algorithms/sig/sphincs/sphincs-sha2-192f-simple.js';
-export { createSphincsSha2192sSimple, SphincsSha2192sSimple, SPHINCSPLUS_SHA2_192S_SIMPLE_INFO } from './algorithms/sig/sphincs/sphincs-sha2-192s-simple.js';
-export { createSphincsSha2256fSimple, SphincsSha2256fSimple, SPHINCSPLUS_SHA2_256F_SIMPLE_INFO } from './algorithms/sig/sphincs/sphincs-sha2-256f-simple.js';
-export { createSphincsSha2256sSimple, SphincsSha2256sSimple, SPHINCSPLUS_SHA2_256S_SIMPLE_INFO } from './algorithms/sig/sphincs/sphincs-sha2-256s-simple.js';
-export { createSphincsShake128fSimple, SphincsShake128fSimple, SPHINCSPLUS_SHAKE_128F_SIMPLE_INFO } from './algorithms/sig/sphincs/sphincs-shake-128f-simple.js';
-export { createSphincsShake128sSimple, SphincsShake128sSimple, SPHINCSPLUS_SHAKE_128S_SIMPLE_INFO } from './algorithms/sig/sphincs/sphincs-shake-128s-simple.js';
-export { createSphincsShake192fSimple, SphincsShake192fSimple, SPHINCSPLUS_SHAKE_192F_SIMPLE_INFO } from './algorithms/sig/sphincs/sphincs-shake-192f-simple.js';
-export { createSphincsShake192sSimple, SphincsShake192sSimple, SPHINCSPLUS_SHAKE_192S_SIMPLE_INFO } from './algorithms/sig/sphincs/sphincs-shake-192s-simple.js';
-export { createSphincsShake256fSimple, SphincsShake256fSimple, SPHINCSPLUS_SHAKE_256F_SIMPLE_INFO } from './algorithms/sig/sphincs/sphincs-shake-256f-simple.js';
-export { createSphincsShake256sSimple, SphincsShake256sSimple, SPHINCSPLUS_SHAKE_256S_SIMPLE_INFO } from './algorithms/sig/sphincs/sphincs-shake-256s-simple.js';
+// Export all SLH-DSA algorithms
+export { createSlhDsaSha2128f, SlhDsaSha2128f, SLH_DSA_SHA2_128F_INFO } from './algorithms/sig/slh-dsa/slh-dsa-sha2-128f.js';
+export { createSlhDsaSha2128s, SlhDsaSha2128s, SLH_DSA_SHA2_128S_INFO } from './algorithms/sig/slh-dsa/slh-dsa-sha2-128s.js';
+export { createSlhDsaSha2192f, SlhDsaSha2192f, SLH_DSA_SHA2_192F_INFO } from './algorithms/sig/slh-dsa/slh-dsa-sha2-192f.js';
+export { createSlhDsaSha2192s, SlhDsaSha2192s, SLH_DSA_SHA2_192S_INFO } from './algorithms/sig/slh-dsa/slh-dsa-sha2-192s.js';
+export { createSlhDsaSha2256f, SlhDsaSha2256f, SLH_DSA_SHA2_256F_INFO } from './algorithms/sig/slh-dsa/slh-dsa-sha2-256f.js';
+export { createSlhDsaSha2256s, SlhDsaSha2256s, SLH_DSA_SHA2_256S_INFO } from './algorithms/sig/slh-dsa/slh-dsa-sha2-256s.js';
+export { createSlhDsaShake128f, SlhDsaShake128f, SLH_DSA_SHAKE_128F_INFO } from './algorithms/sig/slh-dsa/slh-dsa-shake-128f.js';
+export { createSlhDsaShake128s, SlhDsaShake128s, SLH_DSA_SHAKE_128S_INFO } from './algorithms/sig/slh-dsa/slh-dsa-shake-128s.js';
+export { createSlhDsaShake192f, SlhDsaShake192f, SLH_DSA_SHAKE_192F_INFO } from './algorithms/sig/slh-dsa/slh-dsa-shake-192f.js';
+export { createSlhDsaShake192s, SlhDsaShake192s, SLH_DSA_SHAKE_192S_INFO } from './algorithms/sig/slh-dsa/slh-dsa-shake-192s.js';
+export { createSlhDsaShake256f, SlhDsaShake256f, SLH_DSA_SHAKE_256F_INFO } from './algorithms/sig/slh-dsa/slh-dsa-shake-256f.js';
+export { createSlhDsaShake256s, SlhDsaShake256s, SLH_DSA_SHAKE_256S_INFO } from './algorithms/sig/slh-dsa/slh-dsa-shake-256s.js';
 
 // Export all SNOVA algorithms
 export { createSnova2454, Snova2454, SNOVA_24_5_4_INFO } from './algorithms/sig/snova/snova-24-5-4.js';

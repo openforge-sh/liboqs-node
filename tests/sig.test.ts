@@ -103,30 +103,30 @@ import {
   CROSS_RSDPG_256_BALANCED_INFO,
   CROSS_RSDPG_256_FAST_INFO,
   CROSS_RSDPG_256_SMALL_INFO,
-  createSphincsSha2128fSimple,
-  createSphincsSha2128sSimple,
-  createSphincsSha2192fSimple,
-  createSphincsSha2192sSimple,
-  createSphincsSha2256fSimple,
-  createSphincsSha2256sSimple,
-  createSphincsShake128fSimple,
-  createSphincsShake128sSimple,
-  createSphincsShake192fSimple,
-  createSphincsShake192sSimple,
-  createSphincsShake256fSimple,
-  createSphincsShake256sSimple,
-  SPHINCSPLUS_SHA2_128F_SIMPLE_INFO,
-  SPHINCSPLUS_SHA2_128S_SIMPLE_INFO,
-  SPHINCSPLUS_SHA2_192F_SIMPLE_INFO,
-  SPHINCSPLUS_SHA2_192S_SIMPLE_INFO,
-  SPHINCSPLUS_SHA2_256F_SIMPLE_INFO,
-  SPHINCSPLUS_SHA2_256S_SIMPLE_INFO,
-  SPHINCSPLUS_SHAKE_128F_SIMPLE_INFO,
-  SPHINCSPLUS_SHAKE_128S_SIMPLE_INFO,
-  SPHINCSPLUS_SHAKE_192F_SIMPLE_INFO,
-  SPHINCSPLUS_SHAKE_192S_SIMPLE_INFO,
-  SPHINCSPLUS_SHAKE_256F_SIMPLE_INFO,
-  SPHINCSPLUS_SHAKE_256S_SIMPLE_INFO,
+  createSlhDsaSha2128f,
+  createSlhDsaSha2128s,
+  createSlhDsaSha2192f,
+  createSlhDsaSha2192s,
+  createSlhDsaSha2256f,
+  createSlhDsaSha2256s,
+  createSlhDsaShake128f,
+  createSlhDsaShake128s,
+  createSlhDsaShake192f,
+  createSlhDsaShake192s,
+  createSlhDsaShake256f,
+  createSlhDsaShake256s,
+  SLH_DSA_SHA2_128F_INFO,
+  SLH_DSA_SHA2_128S_INFO,
+  SLH_DSA_SHA2_192F_INFO,
+  SLH_DSA_SHA2_192S_INFO,
+  SLH_DSA_SHA2_256F_INFO,
+  SLH_DSA_SHA2_256S_INFO,
+  SLH_DSA_SHAKE_128F_INFO,
+  SLH_DSA_SHAKE_128S_INFO,
+  SLH_DSA_SHAKE_192F_INFO,
+  SLH_DSA_SHAKE_192S_INFO,
+  SLH_DSA_SHAKE_256F_INFO,
+  SLH_DSA_SHAKE_256S_INFO,
   createSnova2454,
   createSnova2454Esk,
   createSnova2454Shake,
@@ -152,6 +152,7 @@ import {
   SNOVA_56_25_2_INFO,
   SNOVA_60_10_4_INFO
 } from '../src/index.js';
+import type { SIGInstance, AlgorithmInfo } from "../src/types/algorithms.d.ts";
 
 // Import WASM modules
 
@@ -161,345 +162,75 @@ import {
  */
 const sigAlgorithms: Array<{
   name: string;
-  factory: () => Promise<any>;
-  info: Readonly<Record<string, any>>;
+  factory: () => Promise<SIGInstance>;
+  info: AlgorithmInfo;
 }> = [
-  {
-    name: 'ML-DSA-44',
-    factory: createMLDSA44,
-    
-    info: ML_DSA_44_INFO
-  },
-  {
-    name: 'ML-DSA-65',
-    factory: createMLDSA65,
-    
-    info: ML_DSA_65_INFO
-  },
-  {
-    name: 'ML-DSA-87',
-    factory: createMLDSA87,
-    
-    info: ML_DSA_87_INFO
-  },
-  {
-    name: 'Falcon-512',
-    factory: createFalcon512,
-    
-    info: FALCON_512_INFO
-  },
-  {
-    name: 'Falcon-1024',
-    factory: createFalcon1024,
-    
-    info: FALCON_1024_INFO
-  },
-  {
-    name: 'Falcon-padded-512',
-    factory: createFalconPadded512,
-    
-    info: FALCON_PADDED_512_INFO
-  },
-  {
-    name: 'Falcon-padded-1024',
-    factory: createFalconPadded1024,
-
-    info: FALCON_PADDED_1024_INFO
-  },
-  {
-    name: 'MAYO-1',
-    factory: createMAYO1,
-    info: MAYO_1_INFO
-  },
-  {
-    name: 'MAYO-2',
-    factory: createMAYO2,
-    info: MAYO_2_INFO
-  },
-  {
-    name: 'MAYO-3',
-    factory: createMAYO3,
-    info: MAYO_3_INFO
-  },
-  {
-    name: 'MAYO-5',
-    factory: createMAYO5,
-    info: MAYO_5_INFO
-  },
-  {
-    name: 'OV-Ip',
-    factory: createOVIp,
-    info: OV_IP_INFO
-  },
-  {
-    name: 'OV-Ip-pkc',
-    factory: createOVIpPkc,
-    info: OV_IP_PKC_INFO
-  },
-  {
-    name: 'OV-Ip-pkc-skc',
-    factory: createOVIpPkcSkc,
-    info: OV_IP_PKC_SKC_INFO
-  },
-  {
-    name: 'OV-Is',
-    factory: createOVIs,
-    info: OV_IS_INFO
-  },
-  {
-    name: 'OV-Is-pkc',
-    factory: createOVIsPkc,
-    info: OV_IS_PKC_INFO
-  },
-  {
-    name: 'OV-Is-pkc-skc',
-    factory: createOVIsPkcSkc,
-    info: OV_IS_PKC_SKC_INFO
-  },
-  {
-    name: 'OV-III',
-    factory: createOVIII,
-    info: OV_III_INFO
-  },
-  {
-    name: 'OV-III-pkc',
-    factory: createOVIIIPkc,
-    info: OV_III_PKC_INFO
-  },
-  {
-    name: 'OV-III-pkc-skc',
-    factory: createOVIIIPkcSkc,
-    info: OV_III_PKC_SKC_INFO
-  },
-  {
-    name: 'OV-V',
-    factory: createOVV,
-    info: OV_V_INFO
-  },
-  {
-    name: 'OV-V-pkc',
-    factory: createOVVPkc,
-    info: OV_V_PKC_INFO
-  },
-  {
-    name: 'OV-V-pkc-skc',
-    factory: createOVVPkcSkc,
-    info: OV_V_PKC_SKC_INFO
-  },
-  {
-    name: 'CROSS-rsdp-128-balanced',
-    factory: createCrossRsdp128Balanced,
-
-    info: CROSS_RSDP_128_BALANCED_INFO
-  },
-  {
-    name: 'CROSS-rsdp-128-fast',
-    factory: createCrossRsdp128Fast,
-    
-    info: CROSS_RSDP_128_FAST_INFO
-  },
-  {
-    name: 'CROSS-rsdp-128-small',
-    factory: createCrossRsdp128Small,
-
-    info: CROSS_RSDP_128_SMALL_INFO
-  },
-  {
-    name: 'CROSS-rsdp-192-balanced',
-    factory: createCrossRsdp192Balanced,
-    info: CROSS_RSDP_192_BALANCED_INFO
-  },
-  {
-    name: 'CROSS-rsdp-192-fast',
-    factory: createCrossRsdp192Fast,
-    info: CROSS_RSDP_192_FAST_INFO
-  },
-  {
-    name: 'CROSS-rsdp-192-small',
-    factory: createCrossRsdp192Small,
-    info: CROSS_RSDP_192_SMALL_INFO
-  },
-  {
-    name: 'CROSS-rsdp-256-balanced',
-    factory: createCrossRsdp256Balanced,
-    info: CROSS_RSDP_256_BALANCED_INFO
-  },
-  {
-    name: 'CROSS-rsdp-256-fast',
-    factory: createCrossRsdp256Fast,
-    info: CROSS_RSDP_256_FAST_INFO
-  },
-  {
-    name: 'CROSS-rsdp-256-small',
-    factory: createCrossRsdp256Small,
-    info: CROSS_RSDP_256_SMALL_INFO
-  },
-  {
-    name: 'CROSS-rsdpg-128-balanced',
-    factory: createCrossRsdpg128Balanced,
-    info: CROSS_RSDPG_128_BALANCED_INFO
-  },
-  {
-    name: 'CROSS-rsdpg-128-fast',
-    factory: createCrossRsdpg128Fast,
-    info: CROSS_RSDPG_128_FAST_INFO
-  },
-  {
-    name: 'CROSS-rsdpg-128-small',
-    factory: createCrossRsdpg128Small,
-    info: CROSS_RSDPG_128_SMALL_INFO
-  },
-  {
-    name: 'CROSS-rsdpg-192-balanced',
-    factory: createCrossRsdpg192Balanced,
-    info: CROSS_RSDPG_192_BALANCED_INFO
-  },
-  {
-    name: 'CROSS-rsdpg-192-fast',
-    factory: createCrossRsdpg192Fast,
-    info: CROSS_RSDPG_192_FAST_INFO
-  },
-  {
-    name: 'CROSS-rsdpg-192-small',
-    factory: createCrossRsdpg192Small,
-    info: CROSS_RSDPG_192_SMALL_INFO
-  },
-  {
-    name: 'CROSS-rsdpg-256-balanced',
-    factory: createCrossRsdpg256Balanced,
-    info: CROSS_RSDPG_256_BALANCED_INFO
-  },
-  {
-    name: 'CROSS-rsdpg-256-fast',
-    factory: createCrossRsdpg256Fast,
-    info: CROSS_RSDPG_256_FAST_INFO
-  },
-  {
-    name: 'CROSS-rsdpg-256-small',
-    factory: createCrossRsdpg256Small,
-    info: CROSS_RSDPG_256_SMALL_INFO
-  },
-  {
-    name: 'SPHINCS+-SHA2-128f-simple',
-    factory: createSphincsSha2128fSimple,
-    info: SPHINCSPLUS_SHA2_128F_SIMPLE_INFO
-  },
-  {
-    name: 'SPHINCS+-SHA2-128s-simple',
-    factory: createSphincsSha2128sSimple,
-    info: SPHINCSPLUS_SHA2_128S_SIMPLE_INFO
-  },
-  {
-    name: 'SPHINCS+-SHA2-192f-simple',
-    factory: createSphincsSha2192fSimple,
-    info: SPHINCSPLUS_SHA2_192F_SIMPLE_INFO
-  },
-  {
-    name: 'SPHINCS+-SHA2-192s-simple',
-    factory: createSphincsSha2192sSimple,
-    info: SPHINCSPLUS_SHA2_192S_SIMPLE_INFO
-  },
-  {
-    name: 'SPHINCS+-SHA2-256f-simple',
-    factory: createSphincsSha2256fSimple,
-    info: SPHINCSPLUS_SHA2_256F_SIMPLE_INFO
-  },
-  {
-    name: 'SPHINCS+-SHA2-256s-simple',
-    factory: createSphincsSha2256sSimple,
-    info: SPHINCSPLUS_SHA2_256S_SIMPLE_INFO
-  },
-  {
-    name: 'SPHINCS+-SHAKE-128f-simple',
-    factory: createSphincsShake128fSimple,
-    info: SPHINCSPLUS_SHAKE_128F_SIMPLE_INFO
-  },
-  {
-    name: 'SPHINCS+-SHAKE-128s-simple',
-    factory: createSphincsShake128sSimple,
-    info: SPHINCSPLUS_SHAKE_128S_SIMPLE_INFO
-  },
-  {
-    name: 'SPHINCS+-SHAKE-192f-simple',
-    factory: createSphincsShake192fSimple,
-    info: SPHINCSPLUS_SHAKE_192F_SIMPLE_INFO
-  },
-  {
-    name: 'SPHINCS+-SHAKE-192s-simple',
-    factory: createSphincsShake192sSimple,
-    info: SPHINCSPLUS_SHAKE_192S_SIMPLE_INFO
-  },
-  {
-    name: 'SPHINCS+-SHAKE-256f-simple',
-    factory: createSphincsShake256fSimple,
-    info: SPHINCSPLUS_SHAKE_256F_SIMPLE_INFO
-  },
-  {
-    name: 'SPHINCS+-SHAKE-256s-simple',
-    factory: createSphincsShake256sSimple,
-    info: SPHINCSPLUS_SHAKE_256S_SIMPLE_INFO
-  },
-  {
-    name: 'SNOVA-24-5-4',
-    factory: createSnova2454,
-    info: SNOVA_24_5_4_INFO
-  },
-  {
-    name: 'SNOVA-24-5-4-esk',
-    factory: createSnova2454Esk,
-    info: SNOVA_24_5_4_ESK_INFO
-  },
-  {
-    name: 'SNOVA-24-5-4-SHAKE',
-    factory: createSnova2454Shake,
-    info: SNOVA_24_5_4_SHAKE_INFO
-  },
-  {
-    name: 'SNOVA-24-5-4-SHAKE-esk',
-    factory: createSnova2454ShakeEsk,
-    info: SNOVA_24_5_4_SHAKE_ESK_INFO
-  },
-  {
-    name: 'SNOVA-24-5-5',
-    factory: createSnova2455,
-    info: SNOVA_24_5_5_INFO
-  },
-  {
-    name: 'SNOVA-25-8-3',
-    factory: createSnova2583,
-    info: SNOVA_25_8_3_INFO
-  },
-  {
-    name: 'SNOVA-29-6-5',
-    factory: createSnova2965,
-    info: SNOVA_29_6_5_INFO
-  },
-  {
-    name: 'SNOVA-37-17-2',
-    factory: createSnova37172,
-    info: SNOVA_37_17_2_INFO
-  },
-  {
-    name: 'SNOVA-37-8-4',
-    factory: createSnova3784,
-    info: SNOVA_37_8_4_INFO
-  },
-  {
-    name: 'SNOVA-49-11-3',
-    factory: createSnova49113,
-    info: SNOVA_49_11_3_INFO
-  },
-  {
-    name: 'SNOVA-56-25-2',
-    factory: createSnova56252,
-    info: SNOVA_56_25_2_INFO
-  },
-  {
-    name: 'SNOVA-60-10-4',
-    factory: createSnova60104,
-    info: SNOVA_60_10_4_INFO
-  }
-];
+    { name: 'ML-DSA-44', factory: createMLDSA44, info: ML_DSA_44_INFO },
+    { name: 'ML-DSA-65', factory: createMLDSA65, info: ML_DSA_65_INFO },
+    { name: 'ML-DSA-87', factory: createMLDSA87, info: ML_DSA_87_INFO },
+    { name: 'Falcon-512', factory: createFalcon512, info: FALCON_512_INFO },
+    { name: 'Falcon-1024', factory: createFalcon1024, info: FALCON_1024_INFO },
+    { name: 'Falcon-padded-512', factory: createFalconPadded512, info: FALCON_PADDED_512_INFO },
+    { name: 'Falcon-padded-1024', factory: createFalconPadded1024, info: FALCON_PADDED_1024_INFO },
+    { name: 'MAYO-1', factory: createMAYO1, info: MAYO_1_INFO },
+    { name: 'MAYO-2', factory: createMAYO2, info: MAYO_2_INFO },
+    { name: 'MAYO-3', factory: createMAYO3, info: MAYO_3_INFO },
+    { name: 'MAYO-5', factory: createMAYO5, info: MAYO_5_INFO },
+    { name: 'OV-Ip', factory: createOVIp, info: OV_IP_INFO },
+    { name: 'OV-Ip-pkc', factory: createOVIpPkc, info: OV_IP_PKC_INFO },
+    { name: 'OV-Ip-pkc-skc', factory: createOVIpPkcSkc, info: OV_IP_PKC_SKC_INFO },
+    { name: 'OV-Is', factory: createOVIs, info: OV_IS_INFO },
+    { name: 'OV-Is-pkc', factory: createOVIsPkc, info: OV_IS_PKC_INFO },
+    { name: 'OV-Is-pkc-skc', factory: createOVIsPkcSkc, info: OV_IS_PKC_SKC_INFO },
+    { name: 'OV-III', factory: createOVIII, info: OV_III_INFO },
+    { name: 'OV-III-pkc', factory: createOVIIIPkc, info: OV_III_PKC_INFO },
+    { name: 'OV-III-pkc-skc', factory: createOVIIIPkcSkc, info: OV_III_PKC_SKC_INFO },
+    { name: 'OV-V', factory: createOVV, info: OV_V_INFO },
+    { name: 'OV-V-pkc', factory: createOVVPkc, info: OV_V_PKC_INFO },
+    { name: 'OV-V-pkc-skc', factory: createOVVPkcSkc, info: OV_V_PKC_SKC_INFO },
+    { name: 'CROSS-rsdp-128-balanced', factory: createCrossRsdp128Balanced, info: CROSS_RSDP_128_BALANCED_INFO },
+    { name: 'CROSS-rsdp-128-fast', factory: createCrossRsdp128Fast, info: CROSS_RSDP_128_FAST_INFO },
+    { name: 'CROSS-rsdp-128-small', factory: createCrossRsdp128Small, info: CROSS_RSDP_128_SMALL_INFO },
+    { name: 'CROSS-rsdp-192-balanced', factory: createCrossRsdp192Balanced, info: CROSS_RSDP_192_BALANCED_INFO },
+    { name: 'CROSS-rsdp-192-fast', factory: createCrossRsdp192Fast, info: CROSS_RSDP_192_FAST_INFO },
+    { name: 'CROSS-rsdp-192-small', factory: createCrossRsdp192Small, info: CROSS_RSDP_192_SMALL_INFO },
+    { name: 'CROSS-rsdp-256-balanced', factory: createCrossRsdp256Balanced, info: CROSS_RSDP_256_BALANCED_INFO },
+    { name: 'CROSS-rsdp-256-fast', factory: createCrossRsdp256Fast, info: CROSS_RSDP_256_FAST_INFO },
+    { name: 'CROSS-rsdp-256-small', factory: createCrossRsdp256Small, info: CROSS_RSDP_256_SMALL_INFO },
+    { name: 'CROSS-rsdpg-128-balanced', factory: createCrossRsdpg128Balanced, info: CROSS_RSDPG_128_BALANCED_INFO },
+    { name: 'CROSS-rsdpg-128-fast', factory: createCrossRsdpg128Fast, info: CROSS_RSDPG_128_FAST_INFO },
+    { name: 'CROSS-rsdpg-128-small', factory: createCrossRsdpg128Small, info: CROSS_RSDPG_128_SMALL_INFO },
+    { name: 'CROSS-rsdpg-192-balanced', factory: createCrossRsdpg192Balanced, info: CROSS_RSDPG_192_BALANCED_INFO },
+    { name: 'CROSS-rsdpg-192-fast', factory: createCrossRsdpg192Fast, info: CROSS_RSDPG_192_FAST_INFO },
+    { name: 'CROSS-rsdpg-192-small', factory: createCrossRsdpg192Small, info: CROSS_RSDPG_192_SMALL_INFO },
+    { name: 'CROSS-rsdpg-256-balanced', factory: createCrossRsdpg256Balanced, info: CROSS_RSDPG_256_BALANCED_INFO },
+    { name: 'CROSS-rsdpg-256-fast', factory: createCrossRsdpg256Fast, info: CROSS_RSDPG_256_FAST_INFO },
+    { name: 'CROSS-rsdpg-256-small', factory: createCrossRsdpg256Small, info: CROSS_RSDPG_256_SMALL_INFO },
+    { name: 'SLH-DSA-SHA2-128f', factory: createSlhDsaSha2128f, info: SLH_DSA_SHA2_128F_INFO },
+    { name: 'SLH-DSA-SHA2-128s', factory: createSlhDsaSha2128s, info: SLH_DSA_SHA2_128S_INFO },
+    { name: 'SLH-DSA-SHA2-192f', factory: createSlhDsaSha2192f, info: SLH_DSA_SHA2_192F_INFO },
+    { name: 'SLH-DSA-SHA2-192s', factory: createSlhDsaSha2192s, info: SLH_DSA_SHA2_192S_INFO },
+    { name: 'SLH-DSA-SHA2-256f', factory: createSlhDsaSha2256f, info: SLH_DSA_SHA2_256F_INFO },
+    { name: 'SLH-DSA-SHA2-256s', factory: createSlhDsaSha2256s, info: SLH_DSA_SHA2_256S_INFO },
+    { name: 'SLH-DSA-SHAKE-128f', factory: createSlhDsaShake128f, info: SLH_DSA_SHAKE_128F_INFO },
+    { name: 'SLH-DSA-SHAKE-128s', factory: createSlhDsaShake128s, info: SLH_DSA_SHAKE_128S_INFO },
+    { name: 'SLH-DSA-SHAKE-192f', factory: createSlhDsaShake192f, info: SLH_DSA_SHAKE_192F_INFO },
+    { name: 'SLH-DSA-SHAKE-192s', factory: createSlhDsaShake192s, info: SLH_DSA_SHAKE_192S_INFO },
+    { name: 'SLH-DSA-SHAKE-256f', factory: createSlhDsaShake256f, info: SLH_DSA_SHAKE_256F_INFO },
+    { name: 'SLH-DSA-SHAKE-256s', factory: createSlhDsaShake256s, info: SLH_DSA_SHAKE_256S_INFO },
+    { name: 'SNOVA-24-5-4', factory: createSnova2454, info: SNOVA_24_5_4_INFO },
+    { name: 'SNOVA-24-5-4-esk', factory: createSnova2454Esk, info: SNOVA_24_5_4_ESK_INFO },
+    { name: 'SNOVA-24-5-4-SHAKE', factory: createSnova2454Shake, info: SNOVA_24_5_4_SHAKE_INFO },
+    { name: 'SNOVA-24-5-4-SHAKE-esk', factory: createSnova2454ShakeEsk, info: SNOVA_24_5_4_SHAKE_ESK_INFO },
+    { name: 'SNOVA-24-5-5', factory: createSnova2455, info: SNOVA_24_5_5_INFO },
+    { name: 'SNOVA-25-8-3', factory: createSnova2583, info: SNOVA_25_8_3_INFO },
+    { name: 'SNOVA-29-6-5', factory: createSnova2965, info: SNOVA_29_6_5_INFO },
+    { name: 'SNOVA-37-17-2', factory: createSnova37172, info: SNOVA_37_17_2_INFO },
+    { name: 'SNOVA-37-8-4', factory: createSnova3784, info: SNOVA_37_8_4_INFO },
+    { name: 'SNOVA-49-11-3', factory: createSnova49113, info: SNOVA_49_11_3_INFO },
+    { name: 'SNOVA-56-25-2', factory: createSnova56252, info: SNOVA_56_25_2_INFO },
+    { name: 'SNOVA-60-10-4', factory: createSnova60104, info: SNOVA_60_10_4_INFO }
+  ];
 
 describe('Signature Algorithms', () => {
   describe.each(sigAlgorithms)('$name', ({ name, factory, info }) => {
@@ -525,7 +256,9 @@ describe('Signature Algorithms', () => {
 
       expect(signature).toBeInstanceOf(Uint8Array);
       expect(signature.length).toBeGreaterThan(0);
-      expect(signature.length).toBeLessThanOrEqual(info.keySize.signature);
+      if (info.keySize.signature !== undefined) {
+        expect(signature.length).toBeLessThanOrEqual(info.keySize.signature);
+      }
 
       sig.destroy();
     });

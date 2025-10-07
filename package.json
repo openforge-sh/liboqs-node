@@ -29,7 +29,8 @@
   },
   "files": [
     "src/",
-    "bin/"
+    "bin/",
+    "dist/"
   ],
   "scripts": {
     "build": "./build.sh",
@@ -37,8 +38,8 @@
     "docs": "typedoc",
     "typecheck": "tsc --noEmit",
     "test": "bun run typecheck && bun run test:node && bun run test:browser",
-    "test:node": "vitest run --environment node",
-    "test:browser": "vitest run --environment jsdom",
+    "test:node": "vitest run",
+    "test:browser": "TEST_ENV=browser vitest run",
     "test:watch": "vitest",
     "test:kem": "vitest run tests/kem.test.ts",
     "test:sig": "vitest run tests/sig.test.ts",
@@ -62,7 +63,7 @@
     "kyber",
     "dilithium",
     "falcon",
-    "sphincs",
+    "slh-dsa",
     "classic-mceliece",
     "frodokem",
     "ntru",
@@ -97,7 +98,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
-    "jsdom": "^27.0.0",
+    "@vitest/browser": "^3.2.4",
+    "playwright": "^1.55.1",
     "typedoc": "^0.28.13",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4"

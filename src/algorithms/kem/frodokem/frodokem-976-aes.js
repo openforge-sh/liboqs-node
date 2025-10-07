@@ -16,33 +16,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/frodokem-976-aes.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/frodokem-976-aes.min.js`;
+    ? `../../../../dist/frodokem-976-aes.deno.js`
+    : `../../../../dist/frodokem-976-aes.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for FrodoKEM-976-AES
- * @constant {Object} FRODOKEM_976_AES_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('kem')
- * @property {number} securityLevel - NIST security level (3 = 192-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and ciphertext sizes in bytes
- * @property {number} keySize.publicKey - Public key size (15632 bytes)
- * @property {number} keySize.secretKey - Secret key size (31296 bytes)
- * @property {number} keySize.ciphertext - Ciphertext size (15744 bytes)
- * @property {number} keySize.sharedSecret - Shared secret size (24 bytes)
+ * FRODOKEM-976-AES-INFO algorithm constants and metadata
+ * @type {{readonly name: 'FrodoKEM-976-AES', readonly identifier: 'FrodoKEM-976-AES', readonly type: 'kem', readonly securityLevel: 3, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 15632, readonly secretKey: 31296, readonly ciphertext: 15744, readonly sharedSecret: 24}}}
  */
 export const FRODOKEM_976_AES_INFO = {
   name: 'FrodoKEM-976-AES',
@@ -303,7 +291,7 @@ export class FrodoKEM976AES {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof FRODOKEM_976_AES_INFO} Algorithm metadata
    *
    * @example
    * console.log(kem.info.name);           // 'FrodoKEM-976-AES'
@@ -311,7 +299,7 @@ export class FrodoKEM976AES {
    * console.log(kem.info.keySize);        // { publicKey: 15632, secretKey: 31296, ciphertext: 15744, sharedSecret: 24 }
    */
   get info() {
-    return { ...FRODOKEM_976_AES_INFO };
+    return FRODOKEM_976_AES_INFO;
   }
 
   /**

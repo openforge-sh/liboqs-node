@@ -17,32 +17,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/ml-dsa-44.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/ml-dsa-44.min.js`;
+    ? `../../../../dist/ml-dsa-44.deno.js`
+    : `../../../../dist/ml-dsa-44.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for ML-DSA-44
- * @constant {Object} ML_DSA_44_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (2 = 128-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (1312 bytes)
- * @property {number} keySize.secretKey - Secret key size (2560 bytes)
- * @property {number} keySize.signature - Maximum signature size (2420 bytes)
+ * ML-DSA-44-INFO algorithm constants and metadata
+ * @type {{readonly name: 'ML-DSA-44', readonly identifier: 'ML-DSA-44', readonly type: 'sig', readonly securityLevel: 2, readonly standardized: true, readonly description: string, readonly keySize: {readonly publicKey: 1312, readonly secretKey: 2560, readonly signature: 2420}}}
  */
 export const ML_DSA_44_INFO = {
   name: 'ML-DSA-44',
@@ -282,10 +271,10 @@ export class MLDSA44 {
 
   /**
    * Get algorithm information
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof ML_DSA_44_INFO} Algorithm metadata
    */
   get info() {
-    return { ...ML_DSA_44_INFO };
+    return ML_DSA_44_INFO;
   }
 
   #checkDestroyed() {

@@ -16,33 +16,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/frodokem-640-shake.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/frodokem-640-shake.min.js`;
+    ? `../../../../dist/frodokem-640-shake.deno.js`
+    : `../../../../dist/frodokem-640-shake.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for FrodoKEM-640-SHAKE
- * @constant {Object} FRODOKEM_640_SHAKE_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('kem')
- * @property {number} securityLevel - NIST security level (1 = 128-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and ciphertext sizes in bytes
- * @property {number} keySize.publicKey - Public key size (9616 bytes)
- * @property {number} keySize.secretKey - Secret key size (19888 bytes)
- * @property {number} keySize.ciphertext - Ciphertext size (9720 bytes)
- * @property {number} keySize.sharedSecret - Shared secret size (16 bytes)
+ * FRODOKEM-640-SHAKE-INFO algorithm constants and metadata
+ * @type {{readonly name: 'FrodoKEM-640-SHAKE', readonly identifier: 'FrodoKEM-640-SHAKE', readonly type: 'kem', readonly securityLevel: 1, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 9616, readonly secretKey: 19888, readonly ciphertext: 9720, readonly sharedSecret: 16}}}
  */
 export const FRODOKEM_640_SHAKE_INFO = {
   name: 'FrodoKEM-640-SHAKE',
@@ -303,7 +291,7 @@ export class FrodoKEM640SHAKE {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof FRODOKEM_640_SHAKE_INFO} Algorithm metadata
    *
    * @example
    * console.log(kem.info.name);           // 'FrodoKEM-640-SHAKE'
@@ -311,7 +299,7 @@ export class FrodoKEM640SHAKE {
    * console.log(kem.info.keySize);        // { publicKey: 9616, secretKey: 19888, ciphertext: 9720, sharedSecret: 16 }
    */
   get info() {
-    return { ...FRODOKEM_640_SHAKE_INFO };
+    return FRODOKEM_640_SHAKE_INFO;
   }
 
   /**

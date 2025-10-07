@@ -17,33 +17,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/sntrup761.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/sntrup761.min.js`;
+    ? `../../../../dist/sntrup761.deno.js`
+    : `../../../../dist/sntrup761.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for sntrup761
- * @constant {Object} SNTRUP761_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('kem')
- * @property {number} securityLevel - NIST security level (3 = 192-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and ciphertext sizes in bytes
- * @property {number} keySize.publicKey - Public key size (1158 bytes)
- * @property {number} keySize.secretKey - Secret key size (1763 bytes)
- * @property {number} keySize.ciphertext - Ciphertext size (1039 bytes)
- * @property {number} keySize.sharedSecret - Shared secret size (32 bytes)
+ * SNTRUP761-INFO algorithm constants and metadata
+ * @type {{readonly name: 'sntrup761', readonly identifier: 'sntrup761', readonly type: 'kem', readonly securityLevel: 3, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 1158, readonly secretKey: 1763, readonly ciphertext: 1039, readonly sharedSecret: 32}}}
  */
 export const SNTRUP761_INFO = {
   name: 'sntrup761',
@@ -304,7 +292,7 @@ export class Sntrup761 {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof SNTRUP761_INFO} Algorithm metadata
    *
    * @example
    * console.log(kem.info.name);           // 'sntrup761'
@@ -312,7 +300,7 @@ export class Sntrup761 {
    * console.log(kem.info.keySize);        // { publicKey: 1158, secretKey: 1763, ciphertext: 1039, sharedSecret: 32 }
    */
   get info() {
-    return { ...SNTRUP761_INFO };
+    return SNTRUP761_INFO;
   }
 
   /**

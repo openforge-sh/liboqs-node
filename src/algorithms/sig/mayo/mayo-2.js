@@ -16,32 +16,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/mayo-2.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/mayo-2.min.js`;
+    ? `../../../../dist/mayo-2.deno.js`
+    : `../../../../dist/mayo-2.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for MAYO-2
- * @constant {Object} MAYO_2_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (1 = 128-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (4912 bytes)
- * @property {number} keySize.secretKey - Secret key size (24 bytes)
- * @property {number} keySize.signature - Maximum signature size (186 bytes)
+ * MAYO-2-INFO algorithm constants and metadata
+ * @type {{readonly name: 'MAYO-2', readonly identifier: 'MAYO-2', readonly type: 'sig', readonly securityLevel: 1, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 4912, readonly secretKey: 24, readonly signature: 186}}}
  */
 export const MAYO_2_INFO = {
   name: 'MAYO-2',
@@ -306,7 +295,7 @@ export class MAYO2 {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof MAYO_2_INFO} Algorithm metadata
    *
    * @example
    * console.log(sig.info.name);           // 'MAYO-2'
@@ -314,7 +303,7 @@ export class MAYO2 {
    * console.log(sig.info.keySize);        // { publicKey: 4912, secretKey: 24, signature: 186 }
    */
   get info() {
-    return { ...MAYO_2_INFO };
+    return MAYO_2_INFO;
   }
 
   /**

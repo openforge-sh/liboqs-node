@@ -2,8 +2,8 @@
  * @fileoverview CLI input/output utilities
  */
 
-import { existsSync } from 'fs';
-import { readFile, writeFile } from 'fs/promises';
+import { existsSync } from 'node:fs';
+import { readFile, writeFile } from 'node:fs/promises';
 import process from "node:process";
 import { Buffer } from "node:buffer";
 
@@ -100,10 +100,10 @@ export async function writeOutput(data, format = 'hex', outputPath = null) {
       await writeFile(outputPath, output);
     }
   } else if (typeof output === 'string') {
-      console.log(output);
-    } else {
-      process.stdout.write(output);
-    }
+    console.log(output);
+  } else {
+    process.stdout.write(output);
+  }
 }
 
 /**

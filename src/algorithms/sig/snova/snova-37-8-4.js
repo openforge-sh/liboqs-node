@@ -17,32 +17,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/snova-37-8-4.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/snova-37-8-4.min.js`;
+    ? `../../../../dist/snova-37-8-4.deno.js`
+    : `../../../../dist/snova-37-8-4.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for SNOVA-37-8-4
- * @constant {Object} SNOVA_37_8_4_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (3 = 192-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (4112 bytes)
- * @property {number} keySize.secretKey - Secret key size (48 bytes)
- * @property {number} keySize.signature - Maximum signature size (376 bytes)
+ * SNOVA-37-8-4-INFO algorithm constants and metadata
+ * @type {{readonly name: 'SNOVA-37-8-4', readonly identifier: 'SNOVA_37_8_4', readonly type: 'sig', readonly securityLevel: 3, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 4112, readonly secretKey: 48, readonly signature: 376}}}
  */
 export const SNOVA_37_8_4_INFO = {
   name: 'SNOVA-37-8-4',
@@ -307,7 +296,7 @@ export class Snova3784 {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof SNOVA_37_8_4_INFO} Algorithm metadata
    *
    * @example
    * console.log(sig.info.name);           // 'SNOVA-37-8-4'
@@ -315,7 +304,7 @@ export class Snova3784 {
    * console.log(sig.info.keySize);        // { publicKey: 4112, secretKey: 48, signature: 376 }
    */
   get info() {
-    return { ...SNOVA_37_8_4_INFO };
+    return SNOVA_37_8_4_INFO;
   }
 
   /**

@@ -16,32 +16,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/cross-rsdp-192-balanced.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/cross-rsdp-192-balanced.min.js`;
+    ? `../../../../dist/cross-rsdp-192-balanced.deno.js`
+    : `../../../../dist/cross-rsdp-192-balanced.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for CROSS-rsdpg-192-balanced
- * @constant {Object} CROSS_RSDPG_192_BALANCED_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (3 = 192-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (83 bytes)
- * @property {number} keySize.secretKey - Secret key size (48 bytes)
- * @property {number} keySize.signature - Maximum signature size (22464 bytes)
+ * CROSS-RSDPG-192-BALANCED-INFO algorithm constants and metadata
+ * @type {{readonly name: 'CROSS-rsdpg-192-balanced', readonly identifier: 'CROSS-rsdpg-192-balanced', readonly type: 'sig', readonly securityLevel: 3, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 83, readonly secretKey: 48, readonly signature: 22464}}}
  */
 export const CROSS_RSDPG_192_BALANCED_INFO = {
   name: 'CROSS-rsdpg-192-balanced',
@@ -307,7 +296,7 @@ export class CrossRsdpg192Balanced {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof CROSS_RSDPG_192_BALANCED_INFO} Algorithm metadata
    *
    * @example
    * console.log(sig.info.name);           // 'CROSS-rsdpg-192-balanced'
@@ -315,7 +304,7 @@ export class CrossRsdpg192Balanced {
    * console.log(sig.info.keySize);        // { publicKey: 83, secretKey: 48, signature: 22464 }
    */
   get info() {
-    return { ...CROSS_RSDPG_192_BALANCED_INFO };
+    return CROSS_RSDPG_192_BALANCED_INFO;
   }
 
   /**

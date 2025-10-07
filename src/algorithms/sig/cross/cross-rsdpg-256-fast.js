@@ -15,34 +15,22 @@
  */
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
-import moduleFactory from `https://cdn.openforge.sh/${VERSION}/cross-rsdpg-256-fast.min.js`;
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/cross-rsdp-256-fast.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/cross-rsdp-256-fast.min.js`;
+    ? `../../../../dist/cross-rsdp-256-fast.deno.js`
+    : `../../../../dist/cross-rsdp-256-fast.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for CROSS-rsdpg-256-fast
- * @constant {Object} CROSS_RSDPG_256_FAST_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (5 = 256-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (106 bytes)
- * @property {number} keySize.secretKey - Secret key size (64 bytes)
- * @property {number} keySize.signature - Maximum signature size (48102 bytes)
+ * CROSS-RSDPG-256-FAST-INFO algorithm constants and metadata
+ * @type {{readonly name: 'CROSS-rsdpg-256-fast', readonly identifier: 'CROSS-rsdpg-256-fast', readonly type: 'sig', readonly securityLevel: 5, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 106, readonly secretKey: 64, readonly signature: 48102}}}
  */
 export const CROSS_RSDPG_256_FAST_INFO = {
   name: 'CROSS-rsdpg-256-fast',
@@ -308,7 +296,7 @@ export class CrossRsdpg256Fast {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof CROSS_RSDPG_256_FAST_INFO} Algorithm metadata
    *
    * @example
    * console.log(sig.info.name);           // 'CROSS-rsdpg-256-fast'
@@ -316,7 +304,7 @@ export class CrossRsdpg256Fast {
    * console.log(sig.info.keySize);        // { publicKey: 106, secretKey: 64, signature: 48102 }
    */
   get info() {
-    return { ...CROSS_RSDPG_256_FAST_INFO };
+    return CROSS_RSDPG_256_FAST_INFO;
   }
 
   /**

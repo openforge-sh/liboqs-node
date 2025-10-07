@@ -16,32 +16,21 @@
 
 import { LibOQSError, LibOQSInitError, LibOQSOperationError, LibOQSValidationError } from '../../../core/errors.js';
 import { isUint8Array } from '../../../core/validation.js';
-import { VERSION } from '../../../index.js';
 
 // Dynamic module loading for cross-runtime compatibility
 async function loadModule() {
   const isDeno = typeof Deno !== 'undefined';
   const modulePath = isDeno
-    ? `https://cdn.openforge.sh/${VERSION}/ov-v.deno.js`
-    : `https://cdn.openforge.sh/${VERSION}/ov-v.min.js`;
+    ? `../../../../dist/ov-v.deno.js`
+    : `../../../../dist/ov-v.min.js`;
 
   const module = await import(modulePath);
   return module.default;
 }
 
 /**
- * Algorithm metadata for OV-V
- * @constant {Object} OV_V_INFO
- * @property {string} name - Algorithm display name
- * @property {string} identifier - liboqs identifier string
- * @property {string} type - Algorithm type ('sig')
- * @property {number} securityLevel - NIST security level (5 = 256-bit)
- * @property {boolean} standardized - NIST standardization status
- * @property {string} description - Algorithm description
- * @property {Object} keySize - Key and signature sizes in bytes
- * @property {number} keySize.publicKey - Public key size (2869440 bytes)
- * @property {number} keySize.secretKey - Secret key size (2436704 bytes)
- * @property {number} keySize.signature - Maximum signature size (260 bytes)
+ * OV-V-INFO algorithm constants and metadata
+ * @type {{readonly name: 'OV-V', readonly identifier: 'OV-V', readonly type: 'sig', readonly securityLevel: 5, readonly standardized: false, readonly description: string, readonly keySize: {readonly publicKey: 2869440, readonly secretKey: 2436704, readonly signature: 260}}}
  */
 export const OV_V_INFO = {
   name: 'OV-V',
@@ -306,7 +295,7 @@ export class OVV {
    * Get algorithm information
    *
    * @readonly
-   * @returns {Object} Algorithm metadata
+   * @returns {typeof OV_V_INFO} Algorithm metadata
    *
    * @example
    * console.log(sig.info.name);           // 'OV-V'
@@ -314,7 +303,7 @@ export class OVV {
    * console.log(sig.info.keySize);        // { publicKey: 2869440, secretKey: 2436704, signature: 260 }
    */
   get info() {
-    return { ...OV_V_INFO };
+    return OV_V_INFO;
   }
 
   /**

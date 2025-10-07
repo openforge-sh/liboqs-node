@@ -22,7 +22,7 @@
 export function isUint8Array(value) {
   // Check if value is a typed array view and specifically Uint8Array
   return value != null &&
-         typeof value === 'object' &&
-         ArrayBuffer.isView(value) &&
-         value.constructor.name === 'Uint8Array';
+    typeof value === 'object' &&
+    ArrayBuffer.isView(value) &&
+    value.constructor.name === 'Uint8Array';
 }
