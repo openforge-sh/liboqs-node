@@ -41,7 +41,7 @@ jobs:
 
       - name: Build WASM modules
         if: steps.cache-wasm.outputs.cache-hit != 'true'
-        run: bun run build
+        run: bun run clean && bun run build
         env:
           PARALLEL_JOBS: 12
 
