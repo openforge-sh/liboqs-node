@@ -86,6 +86,13 @@ jobs:
       - name: Generate documentation
         run: bun run docs
 
+      - name: Upload WASM modules artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+
       - name: Upload documentation artifacts
         uses: actions/upload-artifact@v4
         with:
