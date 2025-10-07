@@ -159,7 +159,7 @@ jobs:
       - name: Prepare docs branch
         run: |
           # Remove everything except .git
-          find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name 'docs' -exec rm -rf {} 
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name 'docs' -exec rm -rf {} \;
           
       - name: Commit and push documentation
         run: |
