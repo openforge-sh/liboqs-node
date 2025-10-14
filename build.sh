@@ -79,18 +79,6 @@ setup_liboqs() {
 
     cd "$LIBOQS_DIR"
 
-    # Apply patch if it exists
-    local patch_file="$SCRIPT_DIR/liboqs.patch"
-    if [ -f "$patch_file" ]; then
-        log_info "Applying patch: liboqs.patch"
-        if git apply --check "$patch_file" 2>/dev/null; then
-            git apply "$patch_file"
-            log_success "Patch applied successfully"
-        else
-            log_warn "Patch already applied or cannot be applied cleanly"
-        fi
-    fi
-
     local commit=$(git rev-parse HEAD)
     local short_commit=$(git rev-parse --short HEAD)
     log_success "LibOQS ready: $short_commit ($commit)"

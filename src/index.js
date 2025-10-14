@@ -153,4 +153,4 @@ export { createSnova60104, Snova60104, SNOVA_60_10_4_INFO } from './algorithms/s
  * Library version
  * @constant {string}
  */
-export const VERSION = '0.14.2';
+export const VERSION = '0.14.3';

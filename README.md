@@ -40,7 +40,7 @@ The algorithms implementing NIST FIPS standards are:
 
 These algorithm names are stable and will be maintained. If NIST updates implementation details, this library will track those changes as closely as possible.
 
-### Additional Algorithms
+### Available Algorithms
 
 The library provides JavaScript wrappers for **97 algorithms** including experimental and alternative post-quantum schemes:
 
@@ -70,7 +70,7 @@ The library provides JavaScript wrappers for **97 algorithms** including experim
 
 </details>
 
-See `algorithms.json` for the complete algorithm registry. All 97 algorithms have WASM modules, JavaScript wrappers, TypeScript definitions, and test coverage.
+See `algorithms.json` for the complete algorithm registry, or [the algorithms section](#available-algorithms-1). All 97 algorithms have WASM modules, JavaScript wrappers, TypeScript definitions, and test coverage.
 
 ## Installation
 
@@ -114,7 +114,7 @@ kem.destroy();
 ```json
 {
   "imports": {
-    "liboqs": "npm:@openforge-sh/liboqs@^0.14.0"
+    "liboqs": "npm:@openforge-sh/liboqs@^0.14.3"
   }
 }
 ```
@@ -246,50 +246,192 @@ signer.destroy();
 
 ### NIST Standardized (Recommended)
 
-#### Key Encapsulation
-- **ML-KEM-512** - NIST Level 1 (128-bit quantum security) - `createMLKEM512()`
-- **ML-KEM-768** - NIST Level 3 (192-bit quantum security) - `createMLKEM768()`
-- **ML-KEM-1024** - NIST Level 5 (256-bit quantum security) - `createMLKEM1024()`
+These are the officially standardized post-quantum cryptographic algorithms approved by NIST for production use.
 
-#### Digital Signatures
-- **ML-DSA-44** - NIST Level 2 (128-bit quantum security) - `createMLDSA44()`
-- **ML-DSA-65** - NIST Level 3 (192-bit quantum security) - `createMLDSA65()`
-- **ML-DSA-87** - NIST Level 5 (256-bit quantum security) - `createMLDSA87()`
-- **SLH-DSA-SHA2-128f** - NIST Level 1 (128-bit quantum security, fast) - `createSLHDSASHA2128f()`
-- **SLH-DSA-SHA2-128s** - NIST Level 1 (128-bit quantum security, small) - `createSLHDSASHA2128s()`
-- **SLH-DSA-SHA2-192f** - NIST Level 3 (192-bit quantum security, fast) - `createSLHDSASHA2192f()`
-- **SLH-DSA-SHA2-192s** - NIST Level 3 (192-bit quantum security, small) - `createSLHDSASHA2192s()`
-- **SLH-DSA-SHA2-256f** - NIST Level 5 (256-bit quantum security, fast) - `createSLHDSASHA2256f()`
-- **SLH-DSA-SHA2-256s** - NIST Level 5 (256-bit quantum security, small) - `createSLHDSASHA2256s()`
-- **SLH-DSA-SHAKE-128f** - NIST Level 1 (128-bit quantum security, fast) - `createSLHDSASHAKE128f()`
-- **SLH-DSA-SHAKE-128s** - NIST Level 1 (128-bit quantum security, small) - `createSLHDSASHAKE128s()`
-- **SLH-DSA-SHAKE-192f** - NIST Level 3 (192-bit quantum security, fast) - `createSLHDSASHAKE192f()`
-- **SLH-DSA-SHAKE-192s** - NIST Level 3 (192-bit quantum security, small) - `createSLHDSASHAKE192s()`
-- **SLH-DSA-SHAKE-256f** - NIST Level 5 (256-bit quantum security, fast) - `createSLHDSASHAKE256f()`
-- **SLH-DSA-SHAKE-256s** - NIST Level 5 (256-bit quantum security, small) - `createSLHDSASHAKE256s()`
+#### Key Encapsulation - ML-KEM (Module-Lattice-Based KEM)
 
-### Algorithm Details
+| Algorithm | Security Level | Public Key | Secret Key | Ciphertext | Factory Function |
+|-----------|----------------|------------|------------|------------|------------------|
+| ML-KEM-512 | Level 1 (128-bit) | 800 B | 1,632 B | 768 B | `createMLKEM512()` |
+| ML-KEM-768 | Level 3 (192-bit) | 1,184 B | 2,400 B | 1,088 B | `createMLKEM768()` |
+| ML-KEM-1024 | Level 5 (256-bit) | 1,568 B | 3,168 B | 1,568 B | `createMLKEM1024()` |
 
-| Algorithm | Security Level | Public Key | Secret Key | Ciphertext/Signature |
-|-----------|----------------|------------|------------|----------------------|
-| ML-KEM-512 | Level 1 (128-bit) | 800 B | 1,632 B | 768 B |
-| ML-KEM-768 | Level 3 (192-bit) | 1,184 B | 2,400 B | 1,088 B |
-| ML-KEM-1024 | Level 5 (256-bit) | 1,568 B | 3,168 B | 1,568 B |
-| ML-DSA-44 | Level 2 (128-bit) | 1,312 B | 2,560 B | ~2,420 B |
-| ML-DSA-65 | Level 3 (192-bit) | 1,952 B | 4,032 B | ~3,309 B |
-| ML-DSA-87 | Level 5 (256-bit) | 2,592 B | 4,896 B | ~4,627 B |
-| SLH-DSA-SHA2-128f | Level 1 (128-bit) | 32 B | 64 B | 17,088 B |
-| SLH-DSA-SHA2-128s | Level 1 (128-bit) | 32 B | 64 B | 7,856 B |
-| SLH-DSA-SHA2-192f | Level 3 (192-bit) | 48 B | 96 B | 35,664 B |
-| SLH-DSA-SHA2-192s | Level 3 (192-bit) | 48 B | 96 B | 16,224 B |
-| SLH-DSA-SHA2-256f | Level 5 (256-bit) | 64 B | 128 B | 49,856 B |
-| SLH-DSA-SHA2-256s | Level 5 (256-bit) | 64 B | 128 B | 29,792 B |
-| SLH-DSA-SHAKE-128f | Level 1 (128-bit) | 32 B | 64 B | 17,088 B |
-| SLH-DSA-SHAKE-128s | Level 1 (128-bit) | 32 B | 64 B | 7,856 B |
-| SLH-DSA-SHAKE-192f | Level 3 (192-bit) | 48 B | 96 B | 35,664 B |
-| SLH-DSA-SHAKE-192s | Level 3 (192-bit) | 48 B | 96 B | 16,224 B |
-| SLH-DSA-SHAKE-256f | Level 5 (256-bit) | 64 B | 128 B | 49,856 B |
-| SLH-DSA-SHAKE-256s | Level 5 (256-bit) | 64 B | 128 B | 29,792 B |
+**Formerly known as**: CRYSTALS-Kyber
+
+#### Digital Signatures - ML-DSA (Module-Lattice-Based DSA)
+
+| Algorithm | Security Level | Public Key | Secret Key | Signature | Factory Function |
+|-----------|----------------|------------|------------|-----------|------------------|
+| ML-DSA-44 | Level 2 (128-bit) | 1,312 B | 2,560 B | ~2,420 B | `createMLDSA44()` |
+| ML-DSA-65 | Level 3 (192-bit) | 1,952 B | 4,032 B | ~3,309 B | `createMLDSA65()` |
+| ML-DSA-87 | Level 5 (256-bit) | 2,592 B | 4,896 B | ~4,627 B | `createMLDSA87()` |
+
+**Formerly known as**: CRYSTALS-Dilithium
+
+#### Digital Signatures - SLH-DSA (Stateless Hash-Based DSA)
+
+| Algorithm | Security Level | Public Key | Secret Key | Signature | Factory Function |
+|-----------|----------------|------------|------------|-----------|------------------|
+| SLH-DSA-SHA2-128f | Level 1 (128-bit) | 32 B | 64 B | 17,088 B | `createSLHDSASHA2128f()` |
+| SLH-DSA-SHA2-128s | Level 1 (128-bit) | 32 B | 64 B | 7,856 B | `createSLHDSASHA2128s()` |
+| SLH-DSA-SHA2-192f | Level 3 (192-bit) | 48 B | 96 B | 35,664 B | `createSLHDSASHA2192f()` |
+| SLH-DSA-SHA2-192s | Level 3 (192-bit) | 48 B | 96 B | 16,224 B | `createSLHDSASHA2192s()` |
+| SLH-DSA-SHA2-256f | Level 5 (256-bit) | 64 B | 128 B | 49,856 B | `createSLHDSASHA2256f()` |
+| SLH-DSA-SHA2-256s | Level 5 (256-bit) | 64 B | 128 B | 29,792 B | `createSLHDSASHA2256s()` |
+| SLH-DSA-SHAKE-128f | Level 1 (128-bit) | 32 B | 64 B | 17,088 B | `createSLHDSASHAKE128f()` |
+| SLH-DSA-SHAKE-128s | Level 1 (128-bit) | 32 B | 64 B | 7,856 B | `createSLHDSASHAKE128s()` |
+| SLH-DSA-SHAKE-192f | Level 3 (192-bit) | 48 B | 96 B | 35,664 B | `createSLHDSASHAKE192f()` |
+| SLH-DSA-SHAKE-192s | Level 3 (192-bit) | 48 B | 96 B | 16,224 B | `createSLHDSASHAKE192s()` |
+| SLH-DSA-SHAKE-256f | Level 5 (256-bit) | 64 B | 128 B | 49,856 B | `createSLHDSASHAKE256f()` |
+| SLH-DSA-SHAKE-256s | Level 5 (256-bit) | 64 B | 128 B | 29,792 B | `createSLHDSASHAKE256s()` |
+
+**Formerly known as**: SPHINCS+
+**Variants**: `f` = fast signing/slower verification, `s` = small signatures/slower signing
+
+### Additional Algorithms
+
+Beyond the NIST-standardized algorithms, this library includes experimental and alternative post-quantum schemes for research purposes.
+
+#### Legacy Kyber (Deprecated)
+
+| Algorithm | Security Level | Public Key | Secret Key | Ciphertext | Factory Function |
+|-----------|----------------|------------|------------|------------|------------------|
+| Kyber512 | Level 1 (128-bit) | 800 B | 1,632 B | 768 B | `createKyber512()` |
+| Kyber768 | Level 3 (192-bit) | 1,184 B | 2,400 B | 1,088 B | `createKyber768()` |
+| Kyber1024 | Level 5 (256-bit) | 1,568 B | 3,168 B | 1,568 B | `createKyber1024()` |
+
+**Note**: Use ML-KEM instead. Kyber is the pre-standardization version.
+
+#### Key Encapsulation - Classic McEliece (10 variants)
+
+| Algorithm | Security Level | Public Key | Secret Key | Ciphertext | Factory Function |
+|-----------|----------------|------------|------------|------------|------------------|
+| Classic-McEliece-348864 | Level 1 (128-bit) | 261,120 B | 6,492 B | 96 B | `createClassicMcEliece348864()` |
+| Classic-McEliece-348864f | Level 1 (128-bit) | 261,120 B | 6,492 B | 96 B | `createClassicMcEliece348864f()` |
+| Classic-McEliece-460896 | Level 3 (192-bit) | 524,160 B | 13,608 B | 156 B | `createClassicMcEliece460896()` |
+| Classic-McEliece-460896f | Level 3 (192-bit) | 524,160 B | 13,608 B | 156 B | `createClassicMcEliece460896f()` |
+| Classic-McEliece-6688128 | Level 5 (256-bit) | 1,044,992 B | 13,932 B | 208 B | `createClassicMcEliece6688128()` |
+| Classic-McEliece-6688128f | Level 5 (256-bit) | 1,044,992 B | 13,932 B | 208 B | `createClassicMcEliece6688128f()` |
+| Classic-McEliece-6960119 | Level 5 (256-bit) | 1,047,319 B | 13,948 B | 194 B | `createClassicMcEliece6960119()` |
+| Classic-McEliece-6960119f | Level 5 (256-bit) | 1,047,319 B | 13,948 B | 194 B | `createClassicMcEliece6960119f()` |
+| Classic-McEliece-8192128 | Level 5 (256-bit) | 1,357,824 B | 14,120 B | 208 B | `createClassicMcEliece8192128()` |
+| Classic-McEliece-8192128f | Level 5 (256-bit) | 1,357,824 B | 14,120 B | 208 B | `createClassicMcEliece8192128f()` |
+
+#### Key Encapsulation - FrodoKEM (6 variants)
+
+| Algorithm | Security Level | Public Key | Secret Key | Ciphertext | Factory Function |
+|-----------|----------------|------------|------------|------------|------------------|
+| FrodoKEM-640-AES | Level 1 (128-bit) | 9,616 B | 19,888 B | 9,720 B | `createFrodoKEM640AES()` |
+| FrodoKEM-640-SHAKE | Level 1 (128-bit) | 9,616 B | 19,888 B | 9,720 B | `createFrodoKEM640SHAKE()` |
+| FrodoKEM-976-AES | Level 3 (192-bit) | 15,632 B | 31,296 B | 15,744 B | `createFrodoKEM976AES()` |
+| FrodoKEM-976-SHAKE | Level 3 (192-bit) | 15,632 B | 31,296 B | 15,744 B | `createFrodoKEM976SHAKE()` |
+| FrodoKEM-1344-AES | Level 5 (256-bit) | 21,520 B | 43,088 B | 21,632 B | `createFrodoKEM1344AES()` |
+| FrodoKEM-1344-SHAKE | Level 5 (256-bit) | 21,520 B | 43,088 B | 21,632 B | `createFrodoKEM1344SHAKE()` |
+
+#### Key Encapsulation - HQC (3 variants)
+
+| Algorithm | Security Level | Public Key | Secret Key | Ciphertext | Factory Function |
+|-----------|----------------|------------|------------|------------|------------------|
+| HQC-128 | Level 1 (128-bit) | 2,249 B | 2,305 B | 4,433 B | `createHQC128()` |
+| HQC-192 | Level 3 (192-bit) | 4,522 B | 4,586 B | 8,978 B | `createHQC192()` |
+| HQC-256 | Level 5 (256-bit) | 7,245 B | 7,317 B | 14,421 B | `createHQC256()` |
+
+#### Key Encapsulation - NTRU (6 variants)
+
+| Algorithm | Security Level | Public Key | Secret Key | Ciphertext | Factory Function |
+|-----------|----------------|------------|------------|------------|------------------|
+| NTRU-HPS-2048-509 | Level 1 (128-bit) | 699 B | 935 B | 699 B | `createNTRUHPS2048509()` |
+| NTRU-HPS-2048-677 | Level 3 (192-bit) | 930 B | 1,234 B | 930 B | `createNTRUHPS2048677()` |
+| NTRU-HPS-4096-821 | Level 5 (256-bit) | 1,230 B | 1,590 B | 1,230 B | `createNTRUHPS4096821()` |
+| NTRU-HPS-4096-1229 | Level 5 (256-bit) | 1,842 B | 2,366 B | 1,842 B | `createNTRUHPS40961229()` |
+| NTRU-HRSS-701 | Level 3 (192-bit) | 1,138 B | 1,450 B | 1,138 B | `createNTRUHRSS701()` |
+| NTRU-HRSS-1373 | Level 5 (256-bit) | 2,401 B | 2,983 B | 2,401 B | `createNTRUHRSS1373()` |
+
+#### Key Encapsulation - NTRU Prime
+
+| Algorithm | Security Level | Public Key | Secret Key | Ciphertext | Factory Function |
+|-----------|----------------|------------|------------|------------|------------------|
+| sntrup761 | Level 3 (192-bit) | 1,158 B | 1,763 B | 1,039 B | `createSntrup761()` |
+
+#### Digital Signatures - Falcon (4 variants)
+
+| Algorithm | Security Level | Public Key | Secret Key | Signature | Factory Function |
+|-----------|----------------|------------|------------|-----------|------------------|
+| Falcon-512 | Level 1 (128-bit) | 897 B | 1,281 B | ~752 B | `createFalcon512()` |
+| Falcon-1024 | Level 5 (256-bit) | 1,793 B | 2,305 B | ~1,462 B | `createFalcon1024()` |
+| Falcon-padded-512 | Level 1 (128-bit) | 897 B | 1,281 B | 666 B | `createFalconPadded512()` |
+| Falcon-padded-1024 | Level 5 (256-bit) | 1,793 B | 2,305 B | 1,280 B | `createFalconPadded1024()` |
+
+#### Digital Signatures - CROSS (18 variants)
+
+| Algorithm | Security Level | Public Key | Secret Key | Signature | Factory Function |
+|-----------|----------------|------------|------------|-----------|------------------|
+| CROSS-rsdp-128-balanced | Level 1 (128-bit) | 77 B | 32 B | 13,152 B | `createCROSSRSDP128Balanced()` |
+| CROSS-rsdp-128-fast | Level 1 (128-bit) | 77 B | 32 B | 18,432 B | `createCROSSRSDP128Fast()` |
+| CROSS-rsdp-128-small | Level 1 (128-bit) | 77 B | 32 B | 12,432 B | `createCROSSRSDP128Small()` |
+| CROSS-rsdp-192-balanced | Level 3 (192-bit) | 115 B | 48 B | 29,853 B | `createCROSSRSDP192Balanced()` |
+| CROSS-rsdp-192-fast | Level 3 (192-bit) | 115 B | 48 B | 41,406 B | `createCROSSRSDP192Fast()` |
+| CROSS-rsdp-192-small | Level 3 (192-bit) | 115 B | 48 B | 28,391 B | `createCROSSRSDP192Small()` |
+| CROSS-rsdp-256-balanced | Level 5 (256-bit) | 153 B | 64 B | 53,527 B | `createCROSSRSDP256Balanced()` |
+| CROSS-rsdp-256-fast | Level 5 (256-bit) | 153 B | 64 B | 74,590 B | `createCROSSRSDP256Fast()` |
+| CROSS-rsdp-256-small | Level 5 (256-bit) | 153 B | 64 B | 50,818 B | `createCROSSRSDP256Small()` |
+| CROSS-rsdpg-128-balanced | Level 1 (128-bit) | 54 B | 32 B | 9,120 B | `createCROSSRSDPG128Balanced()` |
+| CROSS-rsdpg-128-fast | Level 1 (128-bit) | 54 B | 32 B | 11,980 B | `createCROSSRSDPG128Fast()` |
+| CROSS-rsdpg-128-small | Level 1 (128-bit) | 54 B | 32 B | 8,960 B | `createCROSSRSDPG128Small()` |
+| CROSS-rsdpg-192-balanced | Level 3 (192-bit) | 83 B | 48 B | 22,464 B | `createCROSSRSDPG192Balanced()` |
+| CROSS-rsdpg-192-fast | Level 3 (192-bit) | 83 B | 48 B | 26,772 B | `createCROSSRSDPG192Fast()` |
+| CROSS-rsdpg-192-small | Level 3 (192-bit) | 83 B | 48 B | 20,452 B | `createCROSSRSDPG192Small()` |
+| CROSS-rsdpg-256-balanced | Level 5 (256-bit) | 106 B | 64 B | 40,100 B | `createCROSSRSDPG256Balanced()` |
+| CROSS-rsdpg-256-fast | Level 5 (256-bit) | 106 B | 64 B | 48,102 B | `createCROSSRSDPG256Fast()` |
+| CROSS-rsdpg-256-small | Level 5 (256-bit) | 106 B | 64 B | 36,454 B | `createCROSSRSDPG256Small()` |
+
+#### Digital Signatures - MAYO (4 variants)
+
+| Algorithm | Security Level | Public Key | Secret Key | Signature | Factory Function |
+|-----------|----------------|------------|------------|-----------|------------------|
+| MAYO-1 | Level 1 (128-bit) | 1,420 B | 24 B | 454 B | `createMAYO1()` |
+| MAYO-2 | Level 1 (128-bit) | 4,912 B | 24 B | 186 B | `createMAYO2()` |
+| MAYO-3 | Level 3 (192-bit) | 2,986 B | 32 B | 681 B | `createMAYO3()` |
+| MAYO-5 | Level 5 (256-bit) | 5,554 B | 40 B | 964 B | `createMAYO5()` |
+
+#### Digital Signatures - SNOVA (12 variants)
+
+| Algorithm | Security Level | Public Key | Secret Key | Signature | Factory Function |
+|-----------|----------------|------------|------------|-----------|------------------|
+| SNOVA-24-5-4 | Level 1 (128-bit) | 1,016 B | 48 B | 248 B | `createSNOVA2454()` |
+| SNOVA-24-5-4-esk | Level 1 (128-bit) | 1,016 B | 36,848 B | 248 B | `createSNOVA2454ESK()` |
+| SNOVA-24-5-4-SHAKE | Level 1 (128-bit) | 1,016 B | 48 B | 248 B | `createSNOVA2454SHAKE()` |
+| SNOVA-24-5-4-SHAKE-esk | Level 1 (128-bit) | 1,016 B | 36,848 B | 248 B | `createSNOVA2454SHAKEESK()` |
+| SNOVA-24-5-5 | Level 1 (128-bit) | 1,579 B | 48 B | 379 B | `createSNOVA2455()` |
+| SNOVA-25-8-3 | Level 1 (128-bit) | 2,320 B | 48 B | 165 B | `createSNOVA2583()` |
+| SNOVA-29-6-5 | Level 3 (192-bit) | 2,716 B | 48 B | 454 B | `createSNOVA2965()` |
+| SNOVA-37-17-2 | Level 3 (192-bit) | 9,842 B | 48 B | 124 B | `createSNOVA37172()` |
+| SNOVA-37-8-4 | Level 3 (192-bit) | 4,112 B | 48 B | 376 B | `createSNOVA3784()` |
+| SNOVA-49-11-3 | Level 5 (256-bit) | 6,006 B | 48 B | 286 B | `createSNOVA49113()` |
+| SNOVA-56-25-2 | Level 5 (256-bit) | 31,266 B | 48 B | 178 B | `createSNOVA56252()` |
+| SNOVA-60-10-4 | Level 5 (256-bit) | 8,016 B | 48 B | 576 B | `createSNOVA60104()` |
+
+#### Digital Signatures - UOV (12 variants)
+
+| Algorithm | Security Level | Public Key | Secret Key | Signature | Factory Function |
+|-----------|----------------|------------|------------|-----------|------------------|
+| OV-Ip | Level 1 (128-bit) | 278,432 B | 237,896 B | 128 B | `createOVIp()` |
+| OV-Ip-pkc | Level 1 (128-bit) | 43,576 B | 237,896 B | 128 B | `createOVIpPKC()` |
+| OV-Ip-pkc-skc | Level 1 (128-bit) | 43,576 B | 32 B | 128 B | `createOVIpPKCSKC()` |
+| OV-Is | Level 1 (128-bit) | 412,160 B | 348,704 B | 96 B | `createOVIs()` |
+| OV-Is-pkc | Level 1 (128-bit) | 66,576 B | 348,704 B | 96 B | `createOVIsPKC()` |
+| OV-Is-pkc-skc | Level 1 (128-bit) | 66,576 B | 32 B | 96 B | `createOVIsPKCSKC()` |
+| OV-III | Level 3 (192-bit) | 1,225,440 B | 1,044,320 B | 200 B | `createOVIII()` |
+| OV-III-pkc | Level 3 (192-bit) | 189,232 B | 1,044,320 B | 200 B | `createOVIIIPKC()` |
+| OV-III-pkc-skc | Level 3 (192-bit) | 189,232 B | 32 B | 200 B | `createOVIIIPKCSKC()` |
+| OV-V | Level 5 (256-bit) | 2,869,440 B | 2,436,704 B | 260 B | `createOVV()` |
+| OV-V-pkc | Level 5 (256-bit) | 446,992 B | 2,436,704 B | 260 B | `createOVVPKC()` |
+| OV-V-pkc-skc | Level 5 (256-bit) | 446,992 B | 32 B | 260 B | `createOVVPKCSKC()` |
+
+**Notes:**
+- UOV variants with `-pkc` (public key compression) have smaller public keys
+- UOV variants with `-skc` (secret key compression) have smaller secret keys
+- `-esk` SNOVA variants use expanded secret keys for faster signing
 
 ## Bundle Size Optimization
 
@@ -716,7 +858,7 @@ MIT License - see [LICENSE.md](LICENSE.md) for details.
 ## Versioning
 
 This library's version tracks the bundled LibOQS version:
-- `@openforge-sh/liboqs 0.14.0` includes `LibOQS 0.14.0`
+- `@openforge-sh/liboqs 0.14.3` includes `LibOQS 0.14.0`
 
 ## Disclaimer
 
