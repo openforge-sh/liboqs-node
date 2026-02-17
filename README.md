@@ -1,5 +1,21 @@
 # @openforge-sh/liboqs
 
+> **DEPRECATED**: This package has been adopted by the [Open Quantum Safe](https://openquantumsafe.org/) project and is now maintained as [`@oqs/liboqs-js`](https://www.npmjs.com/package/@oqs/liboqs-js). This repository is archived and will no longer receive updates. Please migrate to the new package.
+>
+> ```bash
+> # Remove old package
+> npm uninstall @openforge-sh/liboqs
+>
+> # Install new package
+> npm install @oqs/liboqs-js
+> ```
+>
+> The API is fully compatible. Update your imports:
+> ```diff
+> - import { createMLKEM768 } from '@openforge-sh/liboqs';
+> + import { createMLKEM768 } from '@oqs/liboqs-js';
+> ```
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-22+-green.svg)](https://nodejs.org/)
 
@@ -74,26 +90,24 @@ See `algorithms.json` for the complete algorithm registry, or [the algorithms se
 
 ## Installation
 
-This package works with all major JavaScript package managers:
+> **Note**: This package is deprecated. Install [`@oqs/liboqs-js`](https://www.npmjs.com/package/@oqs/liboqs-js) instead.
 
 ```bash
 # bun (recommended - fastest)
-bun add @openforge-sh/liboqs
+bun add @oqs/liboqs-js
 
 # npm
-npm install @openforge-sh/liboqs
+npm install @oqs/liboqs-js
 
 # pnpm
-pnpm add @openforge-sh/liboqs
+pnpm add @oqs/liboqs-js
 
 # yarn
-yarn add @openforge-sh/liboqs
+yarn add @oqs/liboqs-js
 
 # deno (via npm: specifier - no install needed)
 # See "Deno Usage" section below
 ```
-
-This project uses **bun** by default for development, but all package managers are fully supported.
 
 ### Deno Usage
 
@@ -101,7 +115,7 @@ This project uses **bun** by default for development, but all package managers a
 
 ```typescript
 // Alternative: Import from npm
-import { createMLKEM768 } from "npm:@openforge-sh/liboqs";
+import { createMLKEM768 } from "npm:@oqs/liboqs-js";
 
 const kem = await createMLKEM768();
 const { publicKey, secretKey } = kem.generateKeyPair();
@@ -114,7 +128,7 @@ kem.destroy();
 ```json
 {
   "imports": {
-    "liboqs": "npm:@openforge-sh/liboqs@^0.14.3"
+    "liboqs": "npm:@oqs/liboqs-js@^0.15.0"
   }
 }
 ```
@@ -127,17 +141,17 @@ import { createMLKEM768 } from "liboqs";
 **Using the CLI with Deno:**
 ```bash
 # Run CLI directly (JSR)
-deno run --allow-read npm:@openforge-sh/liboqs/cli kem keygen ml-kem-768
+deno run --allow-read npm:@oqs/liboqs-js/cli kem keygen ml-kem-768
 
 # Or from npm
-deno run --allow-read npm:@openforge-sh/liboqs/cli kem keygen ml-kem-768
+deno run --allow-read npm:@oqs/liboqs-js/cli kem keygen ml-kem-768
 ```
 
 ```json
 # Or add to deno.json tasks:
 {
   "tasks": {
-    "liboqs": "deno run --allow-read npm:@openforge-sh/liboqs/cli"
+    "liboqs": "deno run --allow-read npm:@oqs/liboqs-js/cli"
   }
 }
 ```
@@ -152,7 +166,7 @@ deno task liboqs list --kem
 deno run --allow-read your-script.ts
 
 # CLI usage (may need write for output files)
-deno run --allow-read --allow-write npm:@openforge-sh/liboqs/cli kem keygen ml-kem-768 --output-dir ./keys
+deno run --allow-read --allow-write npm:@oqs/liboqs-js/cli kem keygen ml-kem-768 --output-dir ./keys
 ```
 
 Deno automatically caches packages on first run - no separate install step needed.
@@ -172,39 +186,39 @@ The package includes a CLI for cryptographic operations without writing code:
 
 ```bash
 # Generate ML-KEM-768 keypair
-npx @openforge-sh/liboqs kem keygen ml-kem-768 --output-dir ./keys
+npx @oqs/liboqs-js kem keygen ml-kem-768 --output-dir ./keys
 
 # Encapsulate to create shared secret
-npx @openforge-sh/liboqs kem encapsulate ml-kem-768 ./keys/public.key --format base64
+npx @oqs/liboqs-js kem encapsulate ml-kem-768 ./keys/public.key --format base64
 
 # Sign a message
-npx @openforge-sh/liboqs sig sign ml-dsa-65 message.txt ./keys/secret.key -o signature.sig
+npx @oqs/liboqs-js sig sign ml-dsa-65 message.txt ./keys/secret.key -o signature.sig
 
 # Verify signature
-npx @openforge-sh/liboqs sig verify ml-dsa-65 message.txt signature.sig ./keys/public.key
+npx @oqs/liboqs-js sig verify ml-dsa-65 message.txt signature.sig ./keys/public.key
 
 # List available algorithms
-npx @openforge-sh/liboqs list --kem
+npx @oqs/liboqs-js list --kem
 
 # Get algorithm info
-npx @openforge-sh/liboqs info ml-kem-768
+npx @oqs/liboqs-js info ml-kem-768
 ```
 
 **Works with all package managers:**
-- `npx @openforge-sh/liboqs` (npm)
-- `bunx @openforge-sh/liboqs` (bun)
-- `pnpm dlx @openforge-sh/liboqs` (pnpm)
-- `yarn dlx @openforge-sh/liboqs` (yarn)
+- `npx @oqs/liboqs-js` (npm)
+- `bunx @oqs/liboqs-js` (bun)
+- `pnpm dlx @oqs/liboqs-js` (pnpm)
+- `yarn dlx @oqs/liboqs-js` (yarn)
 
 **For full CLI documentation, run:**
 ```bash
-npx @openforge-sh/liboqs --help
+npx @oqs/liboqs-js --help
 ```
 
 ### Key Encapsulation (ML-KEM)
 
 ```javascript
-import { createMLKEM768 } from '@openforge-sh/liboqs';
+import { createMLKEM768 } from '@oqs/liboqs-js';
 
 // Alice generates keypair
 const alice = await createMLKEM768();
@@ -228,7 +242,7 @@ bob.destroy();
 ### Digital Signatures (ML-DSA)
 
 ```javascript
-import { createMLDSA65 } from '@openforge-sh/liboqs';
+import { createMLDSA65 } from '@oqs/liboqs-js';
 
 const signer = await createMLDSA65();
 const { publicKey, secretKey } = signer.generateKeyPair();
@@ -353,6 +367,8 @@ Beyond the NIST-standardized algorithms, this library includes experimental and 
 |-----------|----------------|------------|------------|------------|------------------|
 | sntrup761 | Level 3 (192-bit) | 1,158 B | 1,763 B | 1,039 B | `createSntrup761()` |
 
+**Note**: `sntrup761` is included primarily for interoperability testing.
+
 #### Digital Signatures - Falcon (4 variants)
 
 | Algorithm | Security Level | Public Key | Secret Key | Signature | Factory Function |
@@ -439,11 +455,11 @@ Each algorithm is compiled separately into individual WASM modules, so you only 
 
 ```javascript
 // Single algorithm (~80-160KB depending on algorithm complexity)
-import { createMLKEM768 } from '@openforge-sh/liboqs';
+import { createMLKEM768 } from '@oqs/liboqs-js';
 const kem = await createMLKEM768();
 
 // Multiple algorithms - each adds its own WASM module
-import { createMLKEM768, createMLDSA65 } from '@openforge-sh/liboqs';
+import { createMLKEM768, createMLDSA65 } from '@oqs/liboqs-js';
 const kem = await createMLKEM768();
 const sig = await createMLDSA65();
 ```
@@ -456,30 +472,30 @@ Tree-shaking ensures unused algorithms are never included in your bundle. Each a
 
 ```javascript
 // Main entry - all 97 algorithm factory functions, classes, and metadata
-import { createMLKEM768, MLKEM768, ML_KEM_768_INFO } from '@openforge-sh/liboqs';
+import { createMLKEM768, MLKEM768, ML_KEM_768_INFO } from '@oqs/liboqs-js';
 
 // KEM-only exports (32 algorithms)
 import {
   createMLKEM512,
   createClassicMcEliece348864,
   createFrodoKEM640AES
-} from '@openforge-sh/liboqs/kem';
+} from '@oqs/liboqs-js/kem';
 
 // Signature-only exports (65 algorithms)
 import {
   createMLDSA44,
   createFalcon512,
   createSphincsSha2128fSimple
-} from '@openforge-sh/liboqs/sig';
+} from '@oqs/liboqs-js/sig';
 
 // Error classes only
-import { LibOQSError, LibOQSInitError } from '@openforge-sh/liboqs/errors';
+import { LibOQSError, LibOQSInitError } from '@oqs/liboqs-js/errors';
 ```
 
 ### File Structure
 
 ```
-@openforge-sh/liboqs/
+@oqs/liboqs-js/
 ├── src/
 │   ├── algorithms/
 │   │   ├── kem/
@@ -632,8 +648,8 @@ See [SECURITY.md](SECURITY.md) for our vulnerability disclosure policy. Issues s
 
 ```bash
 # Clone repository
-git clone https://github.com/openforge-sh/liboqs-node.git
-cd liboqs-node
+git clone https://github.com/open-quantum-safe/liboqs-js.git
+cd liboqs-js
 
 # Build all algorithms
 ./build.sh
@@ -677,66 +693,15 @@ The `build.sh` script:
 
 ### Adding New Algorithms
 
-The library provides an **automated template generator** that creates algorithm wrapper files from `algorithms.json`:
-
 #### Quick Start
 
 ```bash
 # 1. Add algorithm metadata to algorithms.json
-# 2. Fetch key sizes from existing file (if updating)
-node scripts/fetch-key-sizes.js
-
-# 3. Generate algorithm wrapper
-node scripts/generate-algorithm.js <algorithm-slug>
-
-# Or generate multiple algorithms at once
-node scripts/generate-algorithm.js --all    # All algorithms
-node scripts/generate-algorithm.js --kem    # All KEM algorithms
-node scripts/generate-algorithm.js --sig    # All signature algorithms
-
-# 4. Build WASM module
+# 2. Create the algorithm wrapper file (see existing files for patterns)
+# 3. Build WASM module
 ./build.sh <algorithm-slug>
 
-# 5. Export from src/index.js, src/kem.js, or src/sig.js
-```
-
-#### Template System
-
-All algorithm wrapper files follow a consistent pattern defined by the template generator (`scripts/generate-algorithm.js`). The templates automatically generate:
-
-- **Documentation**: JSDoc comments with algorithm details, security levels, key sizes
-- **Module loading**: Cross-runtime compatibility (Node.js, Deno, browsers)
-- **Class structure**: Factory functions, wrapper classes, memory management
-- **Validation**: Input validation for keys, ciphertexts, signatures
-- **Type definitions**: Full TypeScript support via JSDoc
-
-**Example**: Adding a new algorithm to `algorithms.json`:
-
-```json
-{
-  "sig": {
-    "slh-dsa": {
-      "SLH-DSA-SHA2-128f": {
-        "slug": "slh-dsa-sha2-128f",
-        "cmake_var": "SLH_DSA_PURE_SHA2_128F",
-        "security": 1,
-        "standardized": true,
-        "keySize": {
-          "publicKey": 32,
-          "secretKey": 64,
-          "signature": 17088
-        }
-      }
-    }
-  }
-}
-```
-
-Then generate the wrapper:
-
-```bash
-node scripts/generate-algorithm.js slh-dsa-sha2-128f
-# ✓ Generated: src/algorithms/sig/slh-dsa/slh-dsa-sha2-128f.js
+# 4. Export from src/index.js, src/kem.js, or src/sig.js
 ```
 
 #### Key Size Management
@@ -754,16 +719,15 @@ This is useful when:
 - Ensuring consistency across the codebase
 - Adding new algorithms
 
-#### Manual Steps Required
+#### Steps
 
-After generating wrappers:
+1. **Add to `algorithms.json`**: Include the algorithm metadata (slug, cmake_var, security level, key sizes)
+2. **Create wrapper file**: Follow patterns in existing files under `src/algorithms/kem/` or `src/algorithms/sig/`
+3. **Export in index files**: Add to `src/index.js`, `src/kem.js`, or `src/sig.js`
+4. **Add tests**: Follow patterns in `tests/kem.test.ts` or `tests/sig.test.ts`
+5. **Update TypeScript definitions**: If needed, update `src/types/algorithms.d.ts`
 
-1. **Export in index files**: Add to `src/index.js`, `src/kem.js`, or `src/sig.js`
-2. **Add tests**: Follow patterns in `tests/kem.test.ts` or `tests/sig.test.ts`
-3. **Update TypeScript definitions**: If needed, update `src/types/algorithms.d.ts`
-4. **Add additional algorithm information**: The script leaves a TODO section in JSDoc, for algorithm-specific information that's difficult to automate
-
-The template system ensures all 97 algorithms maintain consistent APIs, documentation, and error handling patterns.
+All 97 algorithms maintain consistent APIs, documentation, and error handling patterns.
 
 ## Testing
 
@@ -796,10 +760,10 @@ Test coverage includes:
 Contributions are welcome! Please:
 
 - **Tests must pass**: Run `bun run test` (or `npm run test`) and `deno test --allow-read --allow-write --allow-run --allow-env --no-check tests/deno/` before submitting
-- **Follow existing code style**: Use ESM, async/await, JSDoc comments (if not using the generator script)
-- **Document public APIs**: Add comprehensive JSDoc for all exported functions and classes (if not using the generator script)
+- **Follow existing code style**: Use ESM, async/await, JSDoc comments
+- **Document public APIs**: Add comprehensive JSDoc for all exported functions and classes
 - **Security first**: Consider security implications, especially for cryptographic operations
-- **Consistency matters**: Follow established patterns in existing wrappers (if not using the generator script)
+- **Consistency matters**: Follow established patterns in existing wrappers
 
 For larger changes, open an issue first to discuss the approach.
 
@@ -841,6 +805,8 @@ Contributions that add new algorithm wrappers, improve documentation, add tests,
 
 ## Documentation
 
+> **Note**: Documentation for this package will no longer be updated. See the new [`@oqs/liboqs-js`](https://github.com/open-quantum-safe/liboqs-js) repository for current documentation.
+
 - **[Security Policy](SECURITY.md)** - Vulnerability reporting and security guidance
 - **[LibOQS Documentation](https://github.com/open-quantum-safe/liboqs)** - Underlying C library
 
@@ -858,7 +824,7 @@ MIT License - see [LICENSE.md](LICENSE.md) for details.
 ## Versioning
 
 This library's version tracks the bundled LibOQS version:
-- `@openforge-sh/liboqs 0.14.3` includes `LibOQS 0.14.0`
+- `@oqs/liboqs-js 0.15.x` includes `LibOQS 0.15.0`
 
 ## Disclaimer
 

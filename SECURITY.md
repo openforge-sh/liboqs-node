@@ -1,17 +1,19 @@
 # Security Policy
 
+> **NOTICE**: This package (`@openforge-sh/liboqs`) has been adopted by the [Open Quantum Safe](https://openquantumsafe.org/) project and is now maintained as [`@oqs/liboqs-js`](https://github.com/open-quantum-safe/liboqs-js). This repository is archived. Please report all security issues to the new repository.
+
 ## Supported Versions
 
-We support the latest release and provide security updates for critical vulnerabilities.
+This package is no longer maintained. Please migrate to [`@oqs/liboqs-js`](https://www.npmjs.com/package/@oqs/liboqs-js).
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 0.14.x  | :white_check_mark: |
-| < 0.14  | :x:                |
+| @oqs/liboqs-js | :white_check_mark: |
+| @openforge-sh/liboqs (any) | :x: (archived) |
 
 ## Scope of This Library
 
-This library (@openforge-sh/liboqs) is a **JavaScript/WebAssembly wrapper** for the native [LibOQS library](https://github.com/open-quantum-safe/liboqs). Security issues can originate from:
+This library is a **JavaScript/WebAssembly wrapper** for the native [LibOQS library](https://github.com/open-quantum-safe/liboqs), now maintained as [`@oqs/liboqs-js`](https://github.com/open-quantum-safe/liboqs-js). Security issues can originate from:
 
 1. **This wrapper library** - JavaScript/TypeScript code, WASM bindings, memory management, API design
 2. **The underlying LibOQS library** - Native cryptographic implementations compiled to WASM
@@ -19,9 +21,9 @@ This library (@openforge-sh/liboqs) is a **JavaScript/WebAssembly wrapper** for 
 
 ## Determining Where to Report
 
-### Report to OpenForge (This Library)
+### Report to OQS (This Library)
 
-Report security issues to us if they involve:
+Report security issues for the JavaScript wrapper to the [new repository](https://github.com/open-quantum-safe/liboqs-js/security) if they involve:
 
 - ✅ Memory safety issues in the JavaScript wrapper (buffer overflows, incorrect buffer sizing)
 - ✅ WASM function call vulnerabilities (incorrect parameter passing, type confusion)
@@ -56,7 +58,7 @@ Report to the [LibOQS project](https://github.com/open-quantum-safe/liboqs/secur
 - "Timing side-channel in Falcon signature verification"
 - "Buffer overflow in Classic-McEliece implementation"
 
-**Note:** Issues with our build scripts (`build.sh`, Emscripten configuration) or the WASM binaries should be reported to OpenForge, not LibOQS.
+**Note:** Issues with build scripts (`build.sh`, Emscripten configuration) or the WASM binaries should be reported to the [new repository](https://github.com/open-quantum-safe/liboqs-js/security), not LibOQS.
 
 See the [LibOQS security policy](https://github.com/open-quantum-safe/liboqs/blob/main/SECURITY.md) for their reporting process.
 
@@ -69,21 +71,17 @@ Report to [Emscripten](https://github.com/emscripten-core/emscripten/security) i
 - ❌ Memory model issues in compiled WASM
 - ❌ Browser API integration vulnerabilities
 
-## Reporting a Vulnerability to OpenForge
+## Reporting a Vulnerability
 
-**Please do not report security vulnerabilities through public GitHub issues.**
+**This repository is archived.** Please report all security vulnerabilities to the new repository:
 
-### Preferred Method: GitHub Security Advisories
-
-1. Go to the [Security Advisories page](https://github.com/openforge-sh/liboqs-node/security/advisories)
+1. Go to the [Security Advisories page](https://github.com/open-quantum-safe/liboqs-js/security/advisories)
 2. Click "Report a vulnerability"
 3. Fill out the vulnerability details
 
-### Alternative Method: Email
+Alternatively, follow the [OQS security reporting process](https://openquantumsafe.org/liboqs/security.html#reporting-security-bugs).
 
-Send an email to: **security@openforge.sh**
-
-Include the following information:
+When reporting, include the following information:
 - **Description**: Clear explanation of the vulnerability
 - **Affected Components**: Which parts of the wrapper are affected (JavaScript code, WASM bindings, build system)
 - **Impact**: Security impact and potential attack scenarios
@@ -95,14 +93,14 @@ Include the following information:
 ## Security Updates
 
 Security updates are released as:
-- **Patch versions** (0.14.x) for the current major/minor version
+- **Patch versions** (0.15.x) for the current major/minor version
 - **Security advisories** on GitHub
 - **Release notes** highlighting the CVE or vulnerability ID
 - **npm package updates** with security fixes
 
 Subscribe to:
-- [GitHub Security Advisories](https://github.com/openforge-sh/liboqs-node/security/advisories) for notifications
-- [Releases page](https://github.com/openforge-sh/liboqs-node/releases) for update announcements
+- [GitHub Security Advisories](https://github.com/open-quantum-safe/liboqs-js/security/advisories) for notifications
+- [Releases page](https://github.com/open-quantum-safe/liboqs-js/releases) for update announcements
 
 ## Threat Model
 
@@ -167,13 +165,13 @@ To use this library securely:
 
 ### Algorithm Support
 
-- **NIST algorithms only**: Only ML-KEM and ML-DSA have JavaScript wrappers currently
-- **120+ algorithms available**: Other algorithms can be built but lack high-level wrappers
+- **97 algorithms available**: All algorithms listed in `algorithms.json` have JavaScript wrappers, TypeScript definitions, and test coverage
+- **Algorithm stability**: Only NIST-standardized algorithms (ML-KEM, ML-DSA, SLH-DSA) have stable names; other algorithm names may change as standardization progresses
 
 ## Security Testing
 
 We employ:
-- ✅ Comprehensive unit tests (planned - infrastructure in development)
+- ✅ Comprehensive unit tests (1295+ tests across 97 algorithms via Vitest)
 - ✅ Memory leak detection via WASM memory monitoring
 - ✅ Code analysis with ESLint strict rules
 - ✅ Cross-platform CI/CD testing (Node.js + browsers)
@@ -208,7 +206,7 @@ This library relies on platform-provided entropy:
 - Emscripten's `getentropy()` polyfill handles platform differences
 - LibOQS `OQS_randombytes_system` calls into Emscripten's entropy
 
-If you suspect RNG issues, report them to OpenForge (if JavaScript-side) or Node.js/browser vendors (if platform-side).
+If you suspect RNG issues, report them to the [new repository](https://github.com/open-quantum-safe/liboqs-js/security) (if JavaScript-side) or Node.js/browser vendors (if platform-side).
 
 ## Acknowledgments
 
@@ -220,9 +218,9 @@ We follow security best practices inspired by:
 
 ## Questions?
 
-For non-security questions, please use:
-- [GitHub Discussions](https://github.com/openforge-sh/liboqs-node/discussions)
-- [GitHub Issues](https://github.com/openforge-sh/liboqs-node/issues)
+For non-security questions, please use the new repository:
+- [GitHub Discussions](https://github.com/open-quantum-safe/liboqs-js/discussions)
+- [GitHub Issues](https://github.com/open-quantum-safe/liboqs-js/issues)
 
 For security concerns, always use the reporting channels described above.
 

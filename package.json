@@ -1,7 +1,8 @@
 {
   "name": "@openforge-sh/liboqs",
-  "version": "0.14.3",
-  "description": "Post-quantum cryptography for Node.js and browsers via WebAssembly bindings to liboqs",
+  "version": "0.14.5",
+  "deprecated": "This package has been adopted by the Open Quantum Safe project. Use @oqs/liboqs-js instead: npm install @oqs/liboqs-js",
+  "description": "DEPRECATED - Use @oqs/liboqs-js instead. Post-quantum cryptography for Node.js and browsers via WebAssembly bindings to liboqs",
   "type": "module",
   "main": "src/index.js",
   "types": "src/types/index.d.ts",
@@ -77,18 +78,18 @@
     "hash-based"
   ],
   "author": {
-    "name": "OpenForge",
-    "url": "https://github.com/openforge-sh"
+    "name": "Open Quantum Safe",
+    "url": "https://github.com/open-quantum-safe"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/openforge-sh/liboqs-node.git"
+    "url": "git+https://github.com/open-quantum-safe/liboqs-js.git"
   },
   "bugs": {
-    "url": "https://github.com/openforge-sh/liboqs-node/issues"
+    "url": "https://github.com/open-quantum-safe/liboqs-js/issues"
   },
-  "homepage": "https://liboqs-node.openforge.sh",
+  "homepage": "https://open-quantum-safe.github.io/liboqs-js",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

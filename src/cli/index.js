@@ -81,6 +81,6 @@ Examples:
   export LIBOQS_SECRET_KEY="$(cat secret.key)"
   liboqs sig sign ml-dsa-65 message.txt LIBOQS_SECRET_KEY
 
-For more information: https://liboqs-node.openforge.sh
+For more information: https://open-quantum-safe.github.io/liboqs-js
 `);
 }

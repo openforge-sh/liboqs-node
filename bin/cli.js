@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * @fileoverview CLI entry point for @openforge-sh/liboqs
+ * @fileoverview CLI entry point for @oqs/liboqs-js
  * @description Command-line interface for post-quantum cryptography operations
  */
 

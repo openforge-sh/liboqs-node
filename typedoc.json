@@ -3,7 +3,7 @@
     "src/index.js"
   ],
   "out": "docs",
-  "name": "@openforge-sh/liboqs",
+  "name": "@oqs/liboqs-js",
   "readme": "README.md",
   "excludePrivate": true,
   "excludeProtected": true,
@@ -41,15 +41,15 @@
   "githubPages": false,
   "gitRevision": "main",
   "gitRemote": "origin",
-  "sourceLinkTemplate": "https://github.com/openforge-sh/liboqs-node/blob/{gitRevision}/{path}#L{line}",
+  "sourceLinkTemplate": "https://github.com/open-quantum-safe/liboqs-js/blob/{gitRevision}/{path}#L{line}",
   "markdownItOptions": {
     "html": true
   },
   "searchInComments": true,
   "cleanOutputDir": true,
-  "titleLink": "https://github.com/openforge-sh/liboqs-node",
+  "titleLink": "https://github.com/open-quantum-safe/liboqs-js",
   "navigationLinks": {
-    "GitHub": "https://github.com/openforge-sh/liboqs-node",
-    "NPM": "https://www.npmjs.com/package/@openforge-sh/liboqs"
+    "GitHub": "https://github.com/open-quantum-safe/liboqs-js",
+    "NPM": "https://www.npmjs.com/package/@oqs/liboqs-js"
   }
 }
