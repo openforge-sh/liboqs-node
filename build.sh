@@ -74,7 +74,7 @@ setup_liboqs() {
         cd "$SCRIPT_DIR"
     else
         log_info "Cloning LibOQS from $LIBOQS_REPO..."
-        git clone --depth 1 --branch "0.14.0" "$LIBOQS_REPO" "$LIBOQS_DIR"
+        git clone --depth 1 --branch "0.15.0" "$LIBOQS_REPO" "$LIBOQS_DIR"
     fi
 
     cd "$LIBOQS_DIR"
